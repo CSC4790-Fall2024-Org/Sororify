@@ -1,0 +1,36 @@
+body {
+    background-color: #FBEEFA;
+}
+
+.AboutUs h1, .AboutUs h2 {
+    text-align: center;
+    color: #F94EA0;
+}
+
+.AboutUs p {
+    text-align: center;
+}
+
+.team-images {
+    display: flex;
+    justify-content: center;
+}
+
+.centered-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.circle-image {
+    border-radius: 50%; /* This will make the image round */
+    width: 200px; /* Set the width of the image */
+    height: 200px; /* Set the height of the image */
+    object-fit: cover; /* This will ensure the image covers the whole area of the circle */
+}
+
+.team-images {
+    display: flex;
+    gap: 100px;
+    justify-content: center; /* This will add some space between the images */
+}

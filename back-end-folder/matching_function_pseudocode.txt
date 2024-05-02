@@ -1,0 +1,19 @@
+## Pseudocode for how PNMs will be matched to a bump group
+
+
+for i=100 -> i=0:
+	for each Pnm:
+		for each percent in list:
+			if percent == 1:
+				find index aka bump group
+				append PNM to bump group list (another dictionary)
+				remove PNM from available list
+				update the # of PNMs that can still be assigned to that bump group (if len(PNM_assignments_list) < 3)
+
+
+--- Output of the algorithm:
+
+Bump Group 1:
+	PNM Hannah Example: Matched 94%
+	PNM Jane Doe: Matched 87%
+	PNM Julia Sample: Matched 92%

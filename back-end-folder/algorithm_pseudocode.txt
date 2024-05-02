@@ -1,0 +1,65 @@
+For PNM in PNMs:
+
+	For bump_group in bump_groups:
+
+	location_total = 0
+	major_total = 0
+	interest_total = 0
+	involvement_total = 0
+	bump_group_total = 0
+
+		for member in bump_group:
+
+			location_total += location(member, PNM)
+			major_total += major(member, PNM)
+			interest_total += interest(member, PNM)
+			involvement_total += involvement(member, PNM)
+
+		bump_group_total = ((location_total + major_total + interest_total + involvement_total) / (16 * bump_group.size())) * 100
+
+		/// we are storing PNM matches in a dictionary -- PNM# as a key attached to a list of all their bump group compatibility percentages
+		// so below is not actually what we are doing but we will replace it with the dictionary
+		thisPNM_compatibility_list.add(bump_group, bump_group_total)
+
+In a for loop going down --->
+if thisPNM_compatibility_list.contains(100):
+	if(thisPNM_available_matches > 0):
+		thisPNMmatches.add(indexOf(100))
+		thisPNM_available_matches --
+
+Def major(member, PNM)
+	if member[2] == PNM[2]:
+		return 1
+	else:
+		return 0
+
+------------ totaling methods -------------
+
+Def location (member, PNM):
+	if match on town + county + state:
+		return 5/3 * 3
+	elif match on county + state:
+		return 5/3 * 2
+	elif match on state:
+		return 5/3
+	return 0
+
+Def major (pMajors, mMajors):
+	for pMajor in pMajors:
+		if Major is not NULL and pMajor in mMajors:
+			return 4
+		return 0
+
+Def interests (pInts, mInts):
+	score = 0
+	for pInt in pInts:
+		if pInt in mINts and pInt is not NULL:
+			score += 1
+	return score
+
+Def involvement (pInvs, mInvs):
+	score = 0
+	for pInv in pInvs:
+		if pInv in mInvs and pInv is not NULL:
+			score += 4/3
+	return score

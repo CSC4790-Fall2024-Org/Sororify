@@ -1,0 +1,37 @@
+nav{
+    display:flex; 
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f94ea0;
+}
+.logo {
+    height: 50px; /* Adjust as needed */
+    margin-right: auto; /* Pushes the rest of the content to the right */
+}
+
+nav .title{
+    font-size: 1.5em;
+    margin: 1em;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+nav ul{
+    display: flex;
+}
+
+nav ul li{
+    list-style: none;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem;
+    margin: 0 5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 25pt;
+    font-family: 'Georgia', sans-serif;
+}
