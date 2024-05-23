@@ -17,6 +17,9 @@ export const Navbar = () => {
                     <Link to = "/MemberSurvey">  Member Survey</Link>
                  </li>
                  <li>
+                    <Link to = "/InfoPage">  Info Page</Link>
+                 </li>
+                 <li>
                     <Link to = "/">  </Link>
                   </li>
 
