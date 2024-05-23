@@ -17,6 +17,7 @@ function App() {
           <Route path = "/" element = {<AboutUs />} />
           <Route path = "/PNMSurvey" element = {<PNMsurvey />} />
           <Route path = "/MemberSurvey" element = {<MemberSurvey />} />
+         
         </Routes>
     </div>
   )

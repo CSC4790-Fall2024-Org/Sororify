@@ -1,10 +1,10 @@
 import React from 'react';
 import './AboutUs.css';
-import amithaheadshot from './amithaheadshot.jpg';
-import juliaheadshot from './juliaheadshot.jpg';
-import moriahheadshot from './moriahheadshot.jpeg';
-import shayheadshot from './shayheadshot.jpeg';
-import mayaheadshot from './mayaheadshot.jpeg';
+import amithaheadshot from './photos/amithaheadshot.jpg';
+import juliaheadshot from './photos/juliaheadshot.jpg';
+import moriahheadshot from './photos/moriahheadshot.jpeg';
+import shayheadshot from './photos/shayheadshot.jpeg';
+import mayaheadshot from './photos/mayaheadshot.jpeg';
 
 
 const AboutUs = () => {
