@@ -1,6 +1,6 @@
-Sororify Prototype Report
-Amitha Soundararajan, Maya McFadden, Moriah Owens, Shay McDowell, Julia Foy
-TESTING MY GIT
+Sororify Prototype Report <br/>
+Amitha Soundararajan, Maya McFadden, Moriah Owens, Shay McDowell, Julia Foy <br/>
+
 **Summary**
 Our prototype proposal states that “A working product prototype would, at the very least, fulfill the needs of these two user stories,” these user stories being that we would match PNMs with similar members and match members with similar PNMs. It is doubtless that this has been achieved. Our prototype successfully matches bump groups to their most similar PNMs. We also output the percentages of similarity that each PNM has to the bump group. We have tested these percentages by hand to ensure their accuracy. These percentages come from our algorithm, which takes in data from PNMs and members. This data is: their major(s), location (hometown, home county, and home state), involvement on campus, and interests. We have successfully assigned PNM numbers and bump groups. We have also resolved the risk that PNMs with earlier alphabetical names would get better matches by assigning the best matches (highest percentages) first, then working down the list. Thus, PNMs at the end of the list have an equal chance of a good match. 
 
