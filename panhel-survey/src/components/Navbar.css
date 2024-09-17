@@ -2,7 +2,7 @@ nav{
     display:flex; 
     justify-content: space-between;
     align-items: center;
-    background-color: #FDF7FC;
+    background-color: white;
     height:62px;
 }
 .logo {
