@@ -27,6 +27,7 @@ nav ul li{
 }
 
 nav ul li a{
+    display: flex;
     text-decoration: none;
     color: #f94ea0;
     padding: 0.5rem;
