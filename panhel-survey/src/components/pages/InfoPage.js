@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import './InfoPage.css';
 const chapterInfo = {
     "title": "Chapter Information",
-    "description": "Let us know how your chapter runs your sisterhood round!",
+    "description": " ",
     "logoPosition": "right",
     "pages": [
      {

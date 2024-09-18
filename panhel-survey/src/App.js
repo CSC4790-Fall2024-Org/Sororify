@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-do
 import { Navbar } from './components/Navbar';
 import AboutUs from './components/pages/AboutUs';
 import InfoPage from './components/pages/InfoPage';
+import AGDSurvey from './components/pages/AGDSurvey';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path = "/PNMSurvey" element = {<PNMsurvey />} />
           <Route path = "/MemberSurvey" element = {<MemberSurvey />} />
           <Route path = "/InfoPage" element = {<InfoPage />} />
+          <Route path = "/AGDSurvey" element = {<AGDSurvey />} />
         </Routes>
     </div>
   )

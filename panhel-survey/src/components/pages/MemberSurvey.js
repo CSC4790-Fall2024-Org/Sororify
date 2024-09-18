@@ -3,10 +3,10 @@ import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
 
 
-const memSurveyJson =
+const AXOSurveyJson =
 {
 
-  
+
   "surveyId": "b46ab50b-81a6-407d-8083-febcacaab405",
   "surveyPostId": "54dd01b5-1d21-49dd-919a-39a3da201e4e",
   "title": "Member Recruitment Survey",
@@ -3849,12 +3849,12 @@ const memSurveyJson =
  }
 ;
 function MemberSurvey() {
-  const memSurvey = new Model(memSurveyJson);
+  const AXOSurveys = new Model(AXOSurveyJson);
 
   
 
  
-  memSurvey.applyTheme(
+  AXOSurveys.applyTheme(
     {
       "backgroundImage": "",
       "backgroundImageFit": "cover",
@@ -3977,7 +3977,7 @@ function MemberSurvey() {
 
   return (
     <div>
-      <Survey model={memSurvey} />
+      <Survey model={AXOSurveys} />
     </div>
      
   )

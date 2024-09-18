@@ -1,40 +1,61 @@
-nav{
-    display:flex; 
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
-    height:62px;
-}
-.logo {
-    height: 50px; /* Adjust as needed */
-    margin-right: auto; /* Pushes the rest of the content to the right */
+/* ./components/Navbar.css */
+/* Navbar */
+.navbar { 
+  display: flex;
+  background-color: white;
+  padding: 1rem;
 }
 
-nav .title{
-    font-size: 1.5em;
-    margin: 1em;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
+
+.navbar-logo {
+    height: 40px; /* Set the desired height */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 1rem; /* Add some space between the logo and the links */
+  }
+
+
+.nav-link, .dropbtn {
+  color: #f94ea0;
+  padding: 14px 20px;
+  text-decoration: none;
+  text-align: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px; 
+  font-family: 'Roboto', sans-serif;
 }
 
-nav ul{
-    display: flex;
+.dropdown {
+  position: relative;
+  display: inline-block;
 }
 
-nav ul li{
-    list-style: none;
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
 }
 
-nav ul li a{
-    display: flex;
-    text-decoration: none;
+.dropdown-content .dropdown-item {
     color: #f94ea0;
-    padding: 0.5rem;
-    margin: 5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    font-size: 15pt;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
 
+.dropdown-content .dropdown-item:hover {
+  background-color: #f1f1f1;
+  color: #f94ea0;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropbtn:hover, .nav-link:hover {
+  background-color: #ffffff;
 }
