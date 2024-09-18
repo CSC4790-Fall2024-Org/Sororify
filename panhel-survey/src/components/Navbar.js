@@ -19,7 +19,7 @@ export const Navbar = () => {
         {dropdownOpen && (
           <div className="dropdown-content">
             <NavLink to="/PNMSurvey" className="dropdown-item">PNM Survey</NavLink>
-            <NavLink to="/MemberSurvey" className="dropdown-item">AXO</NavLink>
+            <NavLink to="/AXOSurvey" className="dropdown-item">AXO</NavLink>
             <NavLink to="/AGDSurvey" className="dropdown-item">AGD</NavLink>
           </div>
         )}

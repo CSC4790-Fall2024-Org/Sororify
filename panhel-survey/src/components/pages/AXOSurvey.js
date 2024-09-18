@@ -3848,7 +3848,7 @@ const AXOSurveyJson =
   ]
  }
 ;
-function MemberSurvey() {
+function AXOSurvey() {
   const AXOSurveys = new Model(AXOSurveyJson);
 
   
@@ -3984,4 +3984,4 @@ function MemberSurvey() {
     
 }
 
-export default MemberSurvey;
+export default AXOSurvey;
