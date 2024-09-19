@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "djangoapp",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "djongo",
 ]
 
 MIDDLEWARE = [
@@ -74,11 +76,15 @@ WSGI_APPLICATION = "TestDjango.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-      'default': {
-          'ENGINE': 'djongo',
-          'NAME': 'your-database-name',
-      }
-  }
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'SororifySurvey',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://sororify-admin:Sororify1!@mycluster.o1kdr.mongodb.net/'
+            }  
+        }
+}
 
 
 # Password validation
