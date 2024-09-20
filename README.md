@@ -24,3 +24,17 @@ One of the largest obstacles we encountered was how to match the PNMs and member
 
 https://youtu.be/nlEMmksDOic
 
+**django notes**
+Path to run migrate commands and runserver:
+/Users/ShayMcDowell/Desktop/Fall24/senior-proj/Sororify/TestDjango
+
+commands (do these everytime u make changes):
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py runserver
+
+activate venv:
+cd to env folder, run:
+source tutorial-env/bin/activate
+
+then go back into path mentioned above
