@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import PNM, Activities, Involvement
+
+admin.site.register(PNM)
+admin.site.register(Activities)
+admin.site.register(Involvement)

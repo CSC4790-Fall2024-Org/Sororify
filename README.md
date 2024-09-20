@@ -35,6 +35,8 @@ python3 manage.py runserver
 
 activate venv:
 cd to env folder, run:
-source tutorial-env/bin/activate
+source env/bin/activate
 
-then go back into path mentioned above
+then go back into path mentioned above to runsever, or run in a separate terminal
+
+superadmin address: http://127.0.0.1:8000/admin

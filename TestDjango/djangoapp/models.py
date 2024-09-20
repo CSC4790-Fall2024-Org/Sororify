@@ -4,12 +4,16 @@ from django.urls import reverse # Used in get_absolute_url() to get URL for spec
 from django.db.models import UniqueConstraint # Constrains fields to unique values
 from django.db.models.functions import Lower # Returns lower cased value of field
 
-class Hometown(models.Model):
-    """Model representing a book genre."""
+""""{"first name": fname, "last name": lname, "state": hometown_state, 
+   "county": third_element, "hometown": city, "major": major, 
+   "involvement": campus_involvement, "activities": activities}"""
+
+class Involvement(models.Model):
+    
     name = models.CharField(
         max_length=200,
         unique=True,
-        help_text="Enter hometown name (e.g. Atlanta, GA)"
+        help_text="Enter clubs or orgs you're involved in on campus"
     )
 
     def __str__(self):
@@ -17,28 +21,42 @@ class Hometown(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        """Returns the url to access a particular genre instance."""
-        return reverse('hometown-detail', args=[str(self.id)])
+        """Returns the url to access a particular involvement instance."""
+        return reverse('involvement-detail', args=[str(self.id)])
+    
+class Activities(models.Model):
+    """Model representing a book genre."""
+    name = models.CharField(
+        max_length=200,
+        unique=True,
+        help_text="Enter hobbies or activities you enjoy"
+    )
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.name
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular activity instance."""
+        return reverse('activities-detail', args=[str(self.id)])
 
 
 class PNM(models.Model):
         """Model representing a PNM."""
-        title = models.CharField(max_length=200)
-        # Foreign Key used because book can only have one author, but authors can have multiple books.
-        # Author as a string rather than object because it hasn't been declared yet in file.
-
-        summary = models.TextField(
-            max_length=1000, help_text="Enter PNM name")
-
-
-        # ManyToManyField used because genre can contain many books. Books can cover many genres.
-        # Genre class has already been defined so we can specify the object above.
-        hometown = models.ManyToManyField(
-            Hometown, help_text="Select a hometown for this PNM")
+        firstname = models.CharField(max_length=200)
+        lastname = models.CharField(max_length=200)
+        state = models.CharField(max_length=200)
+        county = models.CharField(max_length=200)
+        hometown = models.CharField(max_length=200)
+        major = models.CharField(max_length=200)
+        involvement = models.ManyToManyField(
+            Involvement, help_text="Select campus involement for this PNM")
+        activites = models.ManyToManyField(
+            Activities, help_text="Select hobbies or activities for this PNM")
 
         def __str__(self):
             """String for representing the Model object."""
-            return self.title
+            return self.firstname
 
         def get_absolute_url(self):
             """Returns the URL to access a detail record for this book."""
