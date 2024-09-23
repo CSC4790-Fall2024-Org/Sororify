@@ -24,3 +24,31 @@ One of the largest obstacles we encountered was how to match the PNMs and member
 
 https://youtu.be/nlEMmksDOic
 
+**django notes**
+
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
+
+atlas:
+https://cloud.mongodb.com/v2#/org/66e84cd1b5a3f42d1fc1598a/projects
+
+upgrade pip
+Django==4.2.16
+pymongo==3.12.3
+djongo==1.3.6
+pytz==2024.2
+
+Path to run migrate commands and runserver:
+/Users/ShayMcDowell/Desktop/Fall24/senior-proj/Sororify/TestDjango
+
+commands (do these everytime u make changes):
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py runserver
+
+activate venv:
+cd to folder above env folder, run:
+source env/bin/activate
+
+then go back into path mentioned above to runsever, or run in a separate terminal
+
+superadmin address: http://127.0.0.1:8000/admin
