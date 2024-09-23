@@ -43,12 +43,12 @@ class Activities(models.Model):
 
 class PNM(models.Model):
         """Model representing a PNM."""
-        firstname = models.CharField(max_length=200)
-        lastname = models.CharField(max_length=200)
-        state = models.CharField(max_length=200)
-        county = models.CharField(max_length=200)
-        hometown = models.CharField(max_length=200)
-        major = models.CharField(max_length=200)
+        firstname = models.CharField(max_length=200, default='SOME STRING')
+        lastname = models.CharField(max_length=200, default='SOME STRING')
+        state = models.CharField(max_length=200, default='SOME STRING')
+        county = models.CharField(max_length=200, default='SOME STRING')
+        hometown = models.CharField(max_length=200, default='SOME STRING')
+        major = models.CharField(max_length=200, default='SOME STRING')
         involvement = models.ManyToManyField(
             Involvement, help_text="Select campus involement for this PNM")
         activites = models.ManyToManyField(
