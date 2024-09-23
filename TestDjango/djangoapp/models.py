@@ -61,3 +61,25 @@ class PNM(models.Model):
         def get_absolute_url(self):
             """Returns the URL to access a detail record for this book."""
             return reverse('pnm-detail', args=[str(self.id)])
+
+#member model (?)
+class Member(models.Model):
+        """Model representing a PNM."""
+        firstname = models.CharField(max_length=200)
+        lastname = models.CharField(max_length=200)
+        state = models.CharField(max_length=200)
+        county = models.CharField(max_length=200)
+        hometown = models.CharField(max_length=200)
+        major = models.CharField(max_length=200)
+        involvement = models.ManyToManyField(
+            Involvement, help_text="Select campus involement for this PNM")
+        activites = models.ManyToManyField(
+            Activities, help_text="Select hobbies or activities for this PNM")
+
+        def __str__(self):
+            """String for representing the Model object."""
+            return self.firstname
+
+        def get_absolute_url(self):
+            """Returns the URL to access a detail record for this book."""
+            return reverse('pnm-detail', args=[str(self.id)])
