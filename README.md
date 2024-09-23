@@ -26,6 +26,11 @@ https://youtu.be/nlEMmksDOic
 
 **django notes**
 
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
+
+atlas:
+https://cloud.mongodb.com/v2#/org/66e84cd1b5a3f42d1fc1598a/projects
+
 upgrade pip
 Django==4.2.16
 pymongo==3.12.3
