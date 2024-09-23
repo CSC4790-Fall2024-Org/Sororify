@@ -25,11 +25,6 @@ One of the largest obstacles we encountered was how to match the PNMs and member
 https://youtu.be/nlEMmksDOic
 
 **django notes**
-https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
-
-atlas:
-https://cloud.mongodb.com/v2#/org/66e84cd1b5a3f42d1fc1598a/projects
-
 Path to run migrate commands and runserver:
 /Users/ShayMcDowell/Desktop/Fall24/senior-proj/Sororify/TestDjango
 
