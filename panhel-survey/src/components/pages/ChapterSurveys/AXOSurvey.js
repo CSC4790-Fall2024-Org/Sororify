@@ -5,11 +5,9 @@ import { Model } from 'survey-core';
 
 const AXOSurveyJson =
 {
-
-
   "surveyId": "b46ab50b-81a6-407d-8083-febcacaab405",
   "surveyPostId": "54dd01b5-1d21-49dd-919a-39a3da201e4e",
-  "title": "Member Recruitment Survey",
+  "title": "AXΩ",
   "pages": [
    {
     "name": "page1",

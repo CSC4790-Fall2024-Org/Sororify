@@ -3,9 +3,9 @@ import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
 
 
-const AGDSurveyJson =
+const KKGSurveyJson =
 {
-    "title": "AGD",
+    "title": "KKΓ",
     "logoPosition": "right",
     "pages": [
       {
@@ -3844,13 +3844,13 @@ const AGDSurveyJson =
       }
     ]
   }
-function AGDSurvey() {
-  const AGDSurveys = new Model(AGDSurveyJson);
+function KKGSurvey() {
+  const KKGSurveys = new Model(KKGSurveyJson);
 
   
 
  
-  AGDSurveys.applyTheme(
+  KKGSurveys.applyTheme(
     {
       "backgroundImage": "",
       "backgroundImageFit": "cover",
@@ -3973,11 +3973,11 @@ function AGDSurvey() {
 
   return (
     <div>
-      <Survey model={AGDSurveys} />
+      <Survey model={KKGSurveys} />
     </div>
      
   )
     
 }
 
-export default AGDSurvey;
+export default KKGSurvey;
