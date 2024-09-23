@@ -25,6 +25,13 @@ One of the largest obstacles we encountered was how to match the PNMs and member
 https://youtu.be/nlEMmksDOic
 
 **django notes**
+
+upgrade pip
+Django==4.2.16
+pymongo==3.12.3
+djongo==1.3.6
+pytz==2024.2
+
 Path to run migrate commands and runserver:
 /Users/ShayMcDowell/Desktop/Fall24/senior-proj/Sororify/TestDjango
 
@@ -34,7 +41,7 @@ python3 manage.py migrate
 python3 manage.py runserver
 
 activate venv:
-cd to env folder, run:
+cd to folder above env folder, run:
 source env/bin/activate
 
 then go back into path mentioned above to runsever, or run in a separate terminal
