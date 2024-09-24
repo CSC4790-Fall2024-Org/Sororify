@@ -1,7 +1,7 @@
 import 'survey-core/defaultV2.min.css';
 import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
-
+import axios from 'axios';
 
 const DDDSurveyJson =
 {
@@ -3971,12 +3971,26 @@ function DDDSurvey() {
     );
 
 
+  // Function to handle survey completion
+  DDDSurveys.onComplete.add(function (sender) {
+    // 'sender.data' contains the survey data
+    axios.post('http://localhost:5000/api/survey-results', {
+        surveyType: 'DDD Survey',  // Unique identifier for DG Survey
+        surveyData: sender.data
+    })
+    .then(response => {
+        console.log('DDD Survey result saved:', response.data);
+    })
+    .catch(error => {
+        console.error('Error saving DDD Survey result:', error);
+    });
+  });
+
   return (
     <div>
-      <Survey model={DDDSurveys} />
+        <Survey model={DDDSurveys} />
     </div>
-     
-  )
+);
     
 }
 

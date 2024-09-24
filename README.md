@@ -52,3 +52,14 @@ source env/bin/activate
 then go back into path mentioned above to runsever, or run in a separate terminal
 
 superadmin address: http://127.0.0.1:8000/admin
+
+
+julia addition:
+
+cd survey-backend
+npm start
+
+open new terminal
+
+cd panhel-survey
+npm start

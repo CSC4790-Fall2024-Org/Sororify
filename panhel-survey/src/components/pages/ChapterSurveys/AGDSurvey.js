@@ -1,7 +1,7 @@
 import 'survey-core/defaultV2.min.css';
 import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
-
+import axios from 'axios';
 
 const AGDSurveyJson =
 {
@@ -3971,13 +3971,25 @@ function AGDSurvey() {
     );
 
 
-  return (
-    <div>
-      <Survey model={AGDSurveys} />
-    </div>
-     
-  )
-    
-}
+  // Function to handle survey completion
+  AGDSurveys.onComplete.add(function (sender) {
+      // 'sender.data' contains the survey data
+      axios.post('http://localhost:5000/api/survey-results', {
+          surveyType: 'AGD Survey',  // Unique identifier for DG Survey
+          surveyData: sender.data
+      })
+      .then(response => {
+          console.log('AGD Survey result saved:', response.data);
+      })
+      .catch(error => {
+          console.error('Error saving AGD Survey result:', error);
+      });
+  });
 
+  return (
+      <div>
+          <Survey model={AGDSurveys} />
+      </div>
+  );
+}
 export default AGDSurvey;
