@@ -165,26 +165,52 @@ function InfoPage() {
 
     return (
         <div>
-          <Survey model={chapterInfo} />
-          <div>
-                {surveyResults.length > 0 ? (
-                    <ul>
+            <Survey model={chapterInfo} />
+
+            {surveyResults.length > 0 ? (
+                <div style={{ marginBottom: "20px" }}>
+                    <h3>All PNM Matches</h3>
+                    <ul style={{ listStyleType: "none", padding: 0 }}>
                         {surveyResults.map((result, index) => (
                             <li key={index}>
-                                <pre>{JSON.stringify(result.surveyData, null, 2)}</pre>
+                                {result.surveyData["First Name"]} {result.surveyData["Last Name"]}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ) : (
+                <p>No survey results available.</p>
+            )}
+
+            <div>
+                {surveyResults.length > 0 ? (
+                    <ul style={{ listStyleType: "none", padding: 0 }}>
+                        {surveyResults.map((result, index) => (
+                            <li key={index} style={{ marginBottom: "20px", border: "1px solid #ccc", padding: "15px", borderRadius: "5px" }}>
+                                <h3>Detailed PNM Match {index + 1}</h3>
+                                <p><strong>First Name:</strong> {result.surveyData["First Name"]}</p>
+                                <p><strong>Last Name:</strong> {result.surveyData["Last Name"]}</p>
+                                <p><strong>State:</strong> {result.surveyData["State"]}</p>
+                                <p>
+                                    <strong>County:</strong> {
+                                        Object.keys(result.surveyData).find(key => key.endsWith("Counties"))
+                                            ? result.surveyData[Object.keys(result.surveyData).find(key => key.endsWith("Counties"))]
+                                            : "N/A"
+                                    }
+                                </p>
+                                <p><strong>Hometown:</strong> {result.surveyData["Hometown"]}</p>
+                                <p><strong>Major:</strong> {result.surveyData["Major"].join(", ")}</p>
+                                <p><strong>Involvement:</strong> {result.surveyData["Involvement"].join(", ")}</p>
+                                <p><strong>Activities:</strong> {result.surveyData["Activities"].join(", ")}</p>
                             </li>
                         ))}
                     </ul>
                 ) : (
-                    <p>hello.</p>
+                    <p>No survey results available.</p>
                 )}
             </div>
-
-
         </div>
-        
-      )
-
+    );
 }
 
 
