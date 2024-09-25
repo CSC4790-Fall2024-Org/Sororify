@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
 import Button from '@mui/material/Button';
+import axios from 'axios';
 import './InfoPage.css';
-const chapterInfo = {
+
+const chapterInfoSurvey = {
     "title": "Chapter Information",
     "description": " ",
     "logoPosition": "right",
@@ -28,9 +30,11 @@ const chapterInfo = {
 
 
 function InfoPage() {
-    const chapterSurvey = new Model(chapterInfo);
+    const chapterInfo= new Model(chapterInfoSurvey);
 
-    chapterSurvey.applyTheme(
+    const [surveyResults, setSurveyResults] = useState([]);
+
+    chapterInfo.applyTheme(
         {
             "backgroundImage": "",
             "backgroundImageFit": "cover",
@@ -148,10 +152,35 @@ function InfoPage() {
         }
     );
 
+    chapterInfo.onComplete.add(() => {
+        axios.get('http://localhost:5000/api/survey-results?surveyType=DG Survey')
+            .then((response) => {
+                setSurveyResults(response.data);  // Update the state with fetched results
+                console.log('DG Survey results fetched:', response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching DG Survey results:', error);
+            });
+    });
 
     return (
         <div>
-          <Survey model={chapterSurvey} />
+          <Survey model={chapterInfo} />
+          <div>
+                {surveyResults.length > 0 ? (
+                    <ul>
+                        {surveyResults.map((result, index) => (
+                            <li key={index}>
+                                <pre>{JSON.stringify(result.surveyData, null, 2)}</pre>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>hello.</p>
+                )}
+            </div>
+
+
         </div>
         
       )

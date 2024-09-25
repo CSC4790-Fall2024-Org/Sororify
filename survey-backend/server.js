@@ -56,6 +56,22 @@ app.post('/api/survey-results', (req, res) => {
         });
 });
 
+//get request for survey results
+app.get('/api/survey-results', async (req, res) => {
+    const { surveyType } = req.query;  // Get the survey type from the route parameters
+    console.log('Fetching results for survey type:', surveyType);
+
+    try {
+        const SurveyResult = getSurveyModel(surveyType);
+        const results = await SurveyResult.find({});  // Fetch only surveys with the matching type
+        res.json(results);  // Send the filtered results as a JSON response
+        console.log('responses:', results);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch survey results' });
+    }
+});
+
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
