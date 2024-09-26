@@ -1651,15 +1651,19 @@ function InfoPage() {
         }
     );
 
-    chapterInfo.onComplete.add(() => {
-        axios.get('http://localhost:5000/api/survey-results?surveyType=DG Survey')
-            .then((response) => {
-                setSurveyResults(response.data);  // Update the state with fetched results
-                console.log('DG Survey results fetched:', response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching DG Survey results:', error);
-            });
+    // Function to handle survey completion
+    chapterInfo.onComplete.add(function (sender) {
+        // 'sender.data' contains the survey data
+        axios.post('http://localhost:5000/api/survey-results', {
+            surveyType: 'Info Page',  // Unique identifier for DG Survey
+            surveyData: sender.data
+        })
+        .then(response => {
+            console.log('Info Page result saved:', response.data);
+        })
+        .catch(error => {
+            console.error('Error saving Info Page Survey result:', error);
+        });
     });
 
     return (
