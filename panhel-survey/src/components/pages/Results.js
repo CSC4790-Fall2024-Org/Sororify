@@ -7,28 +7,26 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemButton from '@mui/material/ListItemButton';
 
 const Results = () => {
     const [chapterResults, setChapterResults] = useState([]);
     const [expectedResults, setExpectedResults] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [displayNames, setDisplayNames] = useState([]);
+    const [selectedResult, setSelectedResult] = useState(null);
 
     const handleButtonClick = () => {
         const namesOnly = extractNames(chapterResults);
         console.log('Names only:', namesOnly);
-
         const bumpNames = expectedResults.map(result => extractBumpNames(result));
         console.log('Bump Names:', bumpNames.flat());
-
         const comparedNames = bumpNames.flat().map(name => ({
             name,
             isInNamesOnly: namesOnly.includes(name)
         }));
-
         // Log the entire comparedNames array
         console.log('Compared Names:', comparedNames);
-
         // Set the displayNames state with comparedNames
         setDisplayNames(comparedNames);
     };
@@ -57,11 +55,20 @@ const Results = () => {
         return names;
     };
 
+    const handleListItemClick = (name) => {
+        setSelectedIndex(name);
+        const [firstName, lastName] = name.split(' ');
+        const result = chapterResults.find(result => {
+            return result.surveyData["First Name"] === firstName && result.surveyData["Last Name"] === lastName;
+        });
+        setSelectedResult(result);
+    };
+
     useEffect(() => {
-        axios.get('http://localhost:5000/api/survey-results?surveyType=DG Survey')
+        axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
                 setChapterResults(response.data);  // Update the state with fetched results
-                console.log('DG Survey results fetched:', response.data);
+                console.log('KD Survey results fetched:', response.data);
             })
             .catch((error) => {
                 console.error('Error fetching DG Survey results:', error);
@@ -94,16 +101,28 @@ const Results = () => {
             </Button> 
             <List className="results-list">
                 {displayNames.map((item, index) => (
-                    <ListItem key={index} className="results-list-item">
+                    <ListItemButton 
+                        key={index} 
+                        selected={selectedIndex === item.name} 
+                        onClick={() => handleListItemClick(item.name)}
+                        className="results-list-item"
+                        disabled={!item.isInNamesOnly} // Disable if not in namesOnly
+                    >
                         <ListItemText primary={item.name} />
                         {item.isInNamesOnly && (
                             <ListItemIcon>
                                 <DoneIcon />
                             </ListItemIcon>
                         )}
-                    </ListItem>
+                    </ListItemButton>
                 ))}
             </List>
+            {selectedResult && (
+                <div className="selected-result">
+                    <h2>Selected Result</h2>
+                    <pre>{JSON.stringify(selectedResult, null, 2)}</pre>
+                </div>
+            )}
         </div>
     );
 };
