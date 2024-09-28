@@ -24,6 +24,7 @@ const chapterInfoSurvey = {
           {
             "type": "dropdown",
             "name": "How many bump groups?",
+            "isRequired": true,
             "title": "How many bump groups will you have? ",
             "choices": [
               {
@@ -47,42 +48,6 @@ const chapterInfoSurvey = {
           {
             "type": "multipletext",
             "name": "Bump 1",
-            "visibleIf": "{How many bump groups?} = 'Item 1' or {How many bump groups?} = 'Item 3' or {How many bump groups?} = 'Item 4' or {How many bump groups?} = 'Item 5'",
-            "title": "Bump Group 1",
-            "items": [
-              {
-                "name": "text1",
-                "title": "Name 1"
-              },
-              {
-                "name": "text2",
-                "title": "Name 2"
-              },
-              {
-                "name": "text3",
-                "title": "Name 3"
-              },
-              {
-                "name": "text4",
-                "title": "Name 4"
-              },
-              {
-                "name": "text5",
-                "title": "Name 5"
-              },
-              {
-                "name": "text6",
-                "title": "Name 6"
-              },
-              {
-                "name": "text7",
-                "title": "Name 7"
-              }
-            ]
-          },
-          {
-            "type": "multipletext",
-            "name": "question1",
             "visibleIf": "{How many bump groups?} = 'Item 1' or {How many bump groups?} = 'Item 3' or {How many bump groups?} = 'Item 4' or {How many bump groups?} = 'Item 5'",
             "title": "Bump Group 1",
             "items": [
