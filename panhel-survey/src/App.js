@@ -13,7 +13,7 @@ import DDDSurvey from './components/pages/ChapterSurveys/DDDSurvey';
 import DGSurvey from './components/pages/ChapterSurveys/DGSurvey';
 import KDSurvey from './components/pages/ChapterSurveys/KDSurvey';
 import KKGSurvey from './components/pages/ChapterSurveys/KKGSurvey'; 
-
+import Results from './components/pages/Results';
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
           <Route path = "/DGSurvey" element = {<DGSurvey />} />
           <Route path = "/KDSurvey" element = {<KDSurvey />} /> 
           <Route path = "/KKGSurvey" element = {<KKGSurvey />} />
+          <Route path = "/Results" element = {<Results />} />
 
           
         </Routes>

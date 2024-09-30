@@ -1,7 +1,7 @@
 import 'survey-core/defaultV2.min.css';
 import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
-
+import axios from 'axios';
 
 const KDSurveyJson =
 {
@@ -3971,12 +3971,26 @@ function KDSurvey() {
     );
 
 
+  // Function to handle survey completion
+  KDSurveys.onComplete.add(function (sender) {
+    // 'sender.data' contains the survey data
+    axios.post('http://localhost:5000/api/survey-results', {
+        surveyType: 'KD Survey',  // Unique identifier for DG Survey
+        surveyData: sender.data
+    })
+    .then(response => {
+        console.log('KD Survey result saved:', response.data);
+    })
+    .catch(error => {
+        console.error('Error saving KD Survey result:', error);
+    });
+  });
+
   return (
     <div>
-      <Survey model={KDSurveys} />
+        <Survey model={KDSurveys} />
     </div>
-     
-  )
+);
     
 }
 

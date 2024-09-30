@@ -1,7 +1,7 @@
 import 'survey-core/defaultV2.min.css';
 import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
-
+import axios from 'axios';
 
 const XOSurveyJson =
 {
@@ -3971,12 +3971,26 @@ function XOSurvey() {
     );
 
 
+  // Function to handle survey completion
+  XOSurveys.onComplete.add(function (sender) {
+    // 'sender.data' contains the survey data
+    axios.post('http://localhost:5000/api/survey-results', {
+        surveyType: 'XO Survey',  // Unique identifier for DG Survey
+        surveyData: sender.data
+    })
+    .then(response => {
+        console.log('XO Survey result saved:', response.data);
+    })
+    .catch(error => {
+        console.error('Error saving AXO Survey result:', error);
+    });
+  });
+
   return (
     <div>
-      <Survey model={XOSurveys} />
+        <Survey model={XOSurveys} />
     </div>
-     
-  )
+);
     
 }
 

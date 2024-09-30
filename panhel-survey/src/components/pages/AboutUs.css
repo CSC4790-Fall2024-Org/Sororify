@@ -37,3 +37,13 @@ body {
     gap: 100px;
     justify-content: center; /* This will add some space between the images */
 }
+
+.results-list {
+    padding: 0;
+}
+
+.results-list-item {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc; /* Add a thin line between each element */
+    padding-bottom: 10px; 
+}
