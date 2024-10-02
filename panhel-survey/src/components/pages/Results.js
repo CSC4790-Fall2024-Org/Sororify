@@ -15,6 +15,7 @@ const Results = () => {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [displayNames, setDisplayNames] = useState([]);
     const [selectedResult, setSelectedResult] = useState(null);
+    const [permissions, setPermissions] = useState([]);
 
     const handleButtonClick = () => {
         const namesOnly = extractNames(chapterResults);
@@ -65,6 +66,16 @@ const Results = () => {
     };
 
     useEffect(() => {
+        axios.get('/api/permissions')
+            .then(response => {
+                setPermissions(response.data.permissions);
+            })
+            .catch(error => {
+                console.error('You do not have access to this page!', error);
+            });
+    }, []);
+
+    useEffect(() => {
         axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
                 setChapterResults(response.data);  // Update the state with fetched results
@@ -85,6 +96,13 @@ const Results = () => {
                 console.error('Error fetching Info Page survey results:', error);
             });
     }, []);
+
+       // Only render the results if the user has the 'view_results' permission
+       if (!permissions.includes('view_results')) {
+        return <div>
+            <h2>You do not have access to this page!</h2>
+            </div>;
+        }
 
     return (
         <div className="AboutUs">
