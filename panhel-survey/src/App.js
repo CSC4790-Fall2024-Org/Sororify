@@ -5,6 +5,7 @@ import AXOSurvey from './components/pages/ChapterSurveys/AXOSurvey';
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import AboutUs from './components/pages/AboutUs';
+import SignUpForm from './components/pages/SignUpForm';
 import InfoPage from './components/pages/InfoPage';
 import AGDSurvey from './components/pages/ChapterSurveys/AGDSurvey';
 import APHISurvey from './components/pages/ChapterSurveys/APHISurvey';
@@ -21,6 +22,7 @@ function App() {
       <Navbar />
         <Routes>
           <Route path = "/" element = {<AboutUs />} />
+          <Route path = "/signup" element = {<SignUpForm />} />
           <Route path = "/PNMSurvey" element = {<PNMsurvey />} />
           <Route path = "/AXOSurvey" element = {<AXOSurvey />} />
           <Route path = "/InfoPage" element = {<InfoPage />} />
