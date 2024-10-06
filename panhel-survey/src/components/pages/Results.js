@@ -86,6 +86,35 @@ const Results = () => {
             });
     }, []);
 
+    useEffect(() => {
+        if (chapterResults.length > 0) {
+            // Use map() to create a list of dictionaries (objects)
+            const listOfDictionaries = chapterResults.map(result => {
+                const state = result.surveyData["State"]
+                const countyKey = state + " Counties";  
+
+                return {
+                    FirstName: result.surveyData["First Name"],
+                    LastName: result.surveyData["Last Name"],
+                    Hometown: result.surveyData["Hometown"],
+                    State: state,
+                    County: result.surveyData[countyKey],
+                    Major: result.surveyData["Major"],
+                    Involvement: result.surveyData["Involvement"],
+                    Activities: result.surveyData["Activities"]
+                };
+            });
+    
+            // Log the list of dictionaries
+            console.log("List of dictionaries:", listOfDictionaries);
+    
+            // Set the list of dictionaries in a state if you need to use it later
+            // setSomeState(listOfDictionaries);
+        }
+    }, [chapterResults]);  // Runs every time chapterResults is updated
+    
+
+
     return (
         <div className="AboutUs">
             <h1>View Results</h1>
