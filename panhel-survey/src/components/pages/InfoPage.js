@@ -5,9 +5,8 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import './InfoPage.css';
 
-const chapterInfoSurvey = {
+const chapterInfoSurvey = { 
     "title": "Chapter Information",
-    "description": "Let us know how your chapter runs your sisterhood round!",
     "logoPosition": "right",
     "pages": [
       {
@@ -1491,12 +1490,10 @@ const chapterInfoSurvey = {
   }
      
    
-
-
 function InfoPage() {
     const chapterInfo= new Model(chapterInfoSurvey);
-    const [surveyResults, setSurveyResults] = useState([]);
-    const [selectedIndex, setSelectedIndex] = useState(null); // State to track selected person
+   // const [surveyResults, setSurveyResults] = useState([]);
+   //const [selectedIndex, setSelectedIndex] = useState(null); // State to track selected person
 
     chapterInfo.applyTheme(
         {
@@ -1617,7 +1614,7 @@ function InfoPage() {
     );
 
     // Function to handle survey completion
-    chapterInfo.onComplete.add(function (sender) {
+    chapterInfo.onComplete.add(function (sender) { //this is a post request to send the data to MongoDB
         // 'sender.data' contains the survey data
         axios.post('http://localhost:5000/api/survey-results', {
             surveyType: 'Info Page',  // Unique identifier for DG Survey
@@ -1635,7 +1632,7 @@ function InfoPage() {
         <div>
             <Survey model={chapterInfo} />
 
-            {surveyResults.length > 0 ? (
+            {/* {surveyResults.length > 0 ? (
                 <div style={{ marginBottom: "20px" }}>
                     <h3>All PNM Matches</h3>
                     <ul style={{ listStyleType: "none", padding: 0 }}>
@@ -1653,8 +1650,8 @@ function InfoPage() {
                 </div>
             ) : (
                 <p>No survey results available.</p>
-            )}
-
+            )} */}
+{/* 
             {selectedIndex !== null && surveyResults[selectedIndex] && ( // Check if there's a selected index
                 <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "15px", borderRadius: "5px" }}>
                     <h3>Detailed PNM Match</h3>
@@ -1673,7 +1670,7 @@ function InfoPage() {
                     <p><strong>Involvement:</strong> {surveyResults[selectedIndex].surveyData["Involvement"].join(", ")}</p>
                     <p><strong>Activities:</strong> {surveyResults[selectedIndex].surveyData["Activities"].join(", ")}</p>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }
