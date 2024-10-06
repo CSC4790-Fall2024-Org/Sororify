@@ -16,20 +16,7 @@ const Results = () => {
     const [displayNames, setDisplayNames] = useState([]);
     const [selectedResult, setSelectedResult] = useState(null);
 
-    const handleButtonClick = () => {
-        const namesOnly = extractNames(chapterResults);
-        console.log('Names only:', namesOnly);
-        const bumpNames = expectedResults.map(result => extractBumpNames(result));
-        console.log('Bump Names:', bumpNames.flat());
-        const comparedNames = bumpNames.flat().map(name => ({
-            name,
-            isInNamesOnly: namesOnly.includes(name)
-        }));
-        // Log the entire comparedNames array
-        console.log('Compared Names:', comparedNames);
-        // Set the displayNames state with comparedNames
-        setDisplayNames(comparedNames);
-    };
+   
 
     const extractNames = (results) => {
         return results.map(result => {
@@ -54,6 +41,24 @@ const Results = () => {
         }
         return names;
     };
+
+    useEffect(() => {
+        if (chapterResults.length > 0 && expectedResults.length > 0) {
+            const namesOnly = extractNames(chapterResults);
+            console.log('Names only:', namesOnly);
+
+            const bumpNames = expectedResults.flatMap(result => extractBumpNames(result));
+            console.log('Bump Names:', bumpNames);
+
+            const comparedNames = bumpNames.map(name => ({
+                name,
+                isInNamesOnly: namesOnly.includes(name)
+            }));
+
+            console.log('Compared Names:', comparedNames);
+            setDisplayNames(comparedNames);
+        }
+    }, [chapterResults, expectedResults]);
 
     const handleListItemClick = (name) => {
         setSelectedIndex(name);
@@ -89,16 +94,6 @@ const Results = () => {
     return (
         <div className="AboutUs">
             <h1>View Results</h1>
-            <Button 
-                variant="contained" 
-                style={{
-                    backgroundColor: '#F94EA0',
-                    color: '#fff',
-                }}
-                onClick={handleButtonClick}
-            >
-                Get Results!
-            </Button> 
             <List className="results-list">
                 {displayNames.map((item, index) => (
                     <ListItemButton 
