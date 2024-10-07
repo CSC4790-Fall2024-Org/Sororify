@@ -12,12 +12,15 @@ import ListItemButton from '@mui/material/ListItemButton';
 const Results = () => {
     const [chapterResults, setChapterResults] = useState([]);
     const [expectedResults, setExpectedResults] = useState([]);
+    const [pnmResults, setPNMResults] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [displayNames, setDisplayNames] = useState([]);
     const [selectedResult, setSelectedResult] = useState(null);
     const [bumpGroups, setBumpGroups] = useState([]);
     const [listOfDictionaries, setListOfDictionaries] = useState([]);
     const [detailedBumpGroups, setDetailedBumpGroups] = useState({});
+    const [matches, createMatches] = useState({});
+
 
     const handleButtonClick = () => {
         const namesOnly = extractNames(chapterResults);
@@ -90,6 +93,17 @@ const Results = () => {
     }, []);
 
     useEffect(() => {
+        axios.get('http://localhost:5000/api/survey-results?surveyType=PNM Survey')
+            .then((response) => {
+                setPNMResults(response.data);  // Update the state with fetched results
+                console.log('PNM Survey survey results fetched:', response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching PNM Survey survey results:', error);
+            });
+    }, []);
+
+    useEffect(() => {
         if (chapterResults.length > 0) {
             // Use map() to create a list of dictionaries (objects)
             const listOfDictionaries = chapterResults.map(result => {
@@ -111,6 +125,32 @@ const Results = () => {
             // Log the list of dictionaries
             console.log("List of dictionaries:", listOfDictionaries);
             setListOfDictionaries(listOfDictionaries);
+        }
+    }, [chapterResults]);  // Runs every time chapterResults is updated
+
+    // Parse PNM Survey Data
+    useEffect(() => {
+        if (pnmResults.length > 0) {
+            // Use map() to create a list of dictionaries (objects)
+            const pnmDictionaries = pnmResults.map(result => {
+                const state = result.surveyData["State"]
+                const countyKey = state + " Counties";
+
+                return {
+                    FirstName: result.surveyData["First Name"],
+                    LastName: result.surveyData["Last Name"],
+                    Hometown: result.surveyData["Hometown"],
+                    State: state,
+                    County: result.surveyData[countyKey],
+                    Major: result.surveyData["Major"],
+                    Involvement: result.surveyData["Involvement"],
+                    Activities: result.surveyData["Activities"]
+                };
+            });
+    
+            // Log the list of dictionaries
+            console.log("List of PNM dictionaries:", pnmDictionaries);
+            setPNMResults(pnmDictionaries);
         }
     }, [chapterResults]);  // Runs every time chapterResults is updated
 
@@ -194,6 +234,108 @@ const Results = () => {
         }
     }, [bumpGroups, listOfDictionaries]);
 
+
+    // This is an attempt at implementing the algorithm
+    // I am going to come back to it but wanted to push PNM data processing changes first
+    // You can delete / edit this as you will
+    /*
+
+    useEffect(() => {
+        const calculatePercent = (bumpGroups, pnms) => {
+            const pnmCompatibility = {};
+    
+            pnms.forEach(pnm => {
+                pnmCompatibility[pnm['PNM number']] = Array(Object.keys(bumpGroups).length).fill(0);
+            });
+    
+            Object.keys(bumpGroups).forEach((bumpKey, bumpGroupIndex) => {
+                const bumpGroupMembers = bumpGroups[bumpKey];
+                bumpGroupMembers.forEach(member => {
+                    pnms.forEach(pnm => {
+                        const locationTotal = location(member, pnm);
+                        const majorTotal = major(member.Major, pnm.Major);
+                        const interestsTotal = interests(member.Activities, pnm.Activities);
+                        const involvementTotal = involvement(member.Involvement, pnm.Involvement);
+                        const bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
+    
+                        pnmCompatibility[pnm['PNM number']][bumpGroupIndex] = Math.round(bumpGroupTotal);
+                    });
+                });
+            });
+    
+            return pnmCompatibility;
+        };
+    
+        const location = (member, pnm) => {
+            if (member.State === pnm.State && member.County === pnm.County && member.Hometown === pnm.Hometown) {
+                return 5;
+            } else if (member.State === pnm.State && member.County === pnm.County) {
+                return (5 / 3) * 2;
+            } else if (member.State === pnm.State) {
+                return 5 / 3;
+            } else {
+                return 0;
+            }
+        };
+    
+        const major = (memberMajors, pnmMajors) => {
+            if (!Array.isArray(pnmMajors)) {
+                return 0; // Return 0 if pnmInvs is not an array
+            }
+            return pnmMajors.some(pnmMajor => memberMajors.includes(pnmMajor)) ? 4 : 0;
+        };
+    
+        const interests = (memberInts, pnmInts) => {
+            if (!Array.isArray(pnmInts)) {
+                return 0; // Return 0 if pnmInvs is not an array
+            }
+            return pnmInts.filter(pnmInt => memberInts.includes(pnmInt)).length;
+        };
+    
+        const involvement = (memberInvs, pnmInvs) => {
+            if (!Array.isArray(pnmInvs)) {
+                return 0; // Return 0 if pnmInvs is not an array
+            }
+            return pnmInvs.reduce((score, pnmInv) => {
+                return memberInvs.includes(pnmInv) ? score + (4 / 3) : score;
+            }, 0);
+        };
+    
+        const match = (pnmPercents) => {
+            const finalMatches = {};
+            for (let j = 1; j <= 20; j++) {
+                finalMatches[j] = [];
+            }
+    
+            for (let i = 100; i >= 0; i--) {
+                for (const [pnm, percentList] of Object.entries(pnmPercents)) {
+                    percentList.forEach((percent, index) => {
+                        if (percent === i && finalMatches[index + 1].length < 5) {
+                            finalMatches[index + 1].push({ [pnm]: `${percent}%` });
+                            pnmPercents[pnm] = [];
+                        }
+                    });
+                }
+            }
+    
+            return finalMatches;
+        };
+    
+        const createMatches = () => {
+            const pnmPercents = calculatePercent(detailedBumpGroups, pnmResults);
+            const finalMatches = match(pnmPercents);
+    
+            console.log("Final Matches:", finalMatches);
+            // If you need to set state for final matches, you can do it here
+            // setFinalMatches(finalMatches); // Uncomment if you're using state to store matches
+        };
+    
+        if (detailedBumpGroups && pnmResults.length > 0) {
+            createMatches();
+        }
+    }, [detailedBumpGroups, pnmResults]);
+    
+    */
 
     return (
         <div className="AboutUs">
