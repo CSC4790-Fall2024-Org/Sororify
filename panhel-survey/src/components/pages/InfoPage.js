@@ -28,19 +28,19 @@ const chapterInfoSurvey = {
             "title": "How many bump groups will you have? ",
             "choices": [
               {
-                "value": "Item 1",
+                "value": "10",
                 "text": "10"
               },
               {
-                "value": "Item 3",
+                "value": "11 - 20",
                 "text": "11 - 20"
               },
               {
-                "value": "Item 4",
+                "value": "21 - 30",
                 "text": "21 - 30"
               },
               {
-                "value": "Item 5",
+                "value": "31 - 40",
                 "text": "31 - 40"
               }
             ]
