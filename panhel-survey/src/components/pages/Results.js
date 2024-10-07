@@ -91,7 +91,7 @@ const Results = () => {
             // Use map() to create a list of dictionaries (objects)
             const listOfDictionaries = chapterResults.map(result => {
                 const state = result.surveyData["State"]
-                const countyKey = state + " Counties";  
+                const countyKey = state + " Counties";
 
                 return {
                     FirstName: result.surveyData["First Name"],
@@ -108,11 +108,55 @@ const Results = () => {
             // Log the list of dictionaries
             console.log("List of dictionaries:", listOfDictionaries);
     
-            // Set the list of dictionaries in a state if you need to use it later
-            // setSomeState(listOfDictionaries);
         }
     }, [chapterResults]);  // Runs every time chapterResults is updated
-    
+
+    useEffect(() => {
+        if (expectedResults.length > 0) {
+          const bumpGroups = {};
+      
+          // Loop through each result
+          expectedResults.forEach(result => {
+            // Loop through each bump group key (e.g., 'Bump 1', 'Bump 2', etc.)
+            Object.keys(result.surveyData).forEach(bumpKey => {
+              if (bumpKey.startsWith("Bump")) {
+                // Extract the bump group object (e.g., result.surveyData['Bump 1'])
+                const bumpGroup = result.surveyData[bumpKey];
+      
+                // Create an array of just the values (names), ignoring the keys
+                const bumpGroupValues = Object.values(bumpGroup);
+      
+                // If the bumpGroup key already exists, concatenate the new values
+                if (bumpGroups[bumpKey]) {
+                  bumpGroups[bumpKey] = bumpGroups[bumpKey].concat(bumpGroupValues);
+                } else {
+                  // Otherwise, initialize it with the current values
+                  bumpGroups[bumpKey] = bumpGroupValues;
+                }
+              }
+            });
+          });
+      
+          // Use bumpGroups as needed, e.g., setting state
+          console.log("Bump Groups Dictionary:", bumpGroups);
+        }
+      }, [expectedResults]);
+
+      useEffect(() => {
+        if (expectedResults.length > 0) {
+          // Create an object to store the number of PNMs for each result
+          const numberOfPNMs = expectedResults.map(result => {
+            // Extract the "How many PNMS" value from surveyData
+            return result.surveyData["How many PNMS"];
+          });
+      
+          // Log the "How many PNMS" values for each result
+          console.log("How many PNMS per bump group:", numberOfPNMs);
+      
+          // If you need to store it in state, you could do it here
+          // setPNMs(numberOfPNMs);  // Example if you are using state
+        }
+      }, [expectedResults]);
 
 
     return (
