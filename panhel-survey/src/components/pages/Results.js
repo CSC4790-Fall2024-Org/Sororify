@@ -15,6 +15,9 @@ const Results = () => {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [displayNames, setDisplayNames] = useState([]);
     const [selectedResult, setSelectedResult] = useState(null);
+    const [bumpGroups, setBumpGroups] = useState([]);
+    const [listOfDictionaries, setListOfDictionaries] = useState([]);
+    const [detailedBumpGroups, setDetailedBumpGroups] = useState({});
 
     const handleButtonClick = () => {
         const namesOnly = extractNames(chapterResults);
@@ -107,7 +110,7 @@ const Results = () => {
     
             // Log the list of dictionaries
             console.log("List of dictionaries:", listOfDictionaries);
-    
+            setListOfDictionaries(listOfDictionaries);
         }
     }, [chapterResults]);  // Runs every time chapterResults is updated
 
@@ -139,6 +142,7 @@ const Results = () => {
       
           // Use bumpGroups as needed, e.g., setting state
           console.log("Bump Groups Dictionary:", bumpGroups);
+          setBumpGroups(bumpGroups);
         }
       }, [expectedResults]);
 
@@ -157,6 +161,38 @@ const Results = () => {
           // setPNMs(numberOfPNMs);  // Example if you are using state
         }
       }, [expectedResults]);
+
+      useEffect(() => {
+        const createBumpGroupsWithDetails = () => {
+            const bumpGroupsWithDetails = {};
+
+            // Loop through each bump group (e.g., 'Bump 1', 'Bump 2', etc.)
+            Object.keys(bumpGroups).forEach(bumpKey => {
+                bumpGroupsWithDetails[bumpKey] = [];
+
+                // Get the list of names for this bump group
+                const groupMembers = bumpGroups[bumpKey];
+
+                // Loop through each name in the bump group
+                groupMembers.forEach(memberName => {
+                    const memberDetails = listOfDictionaries.find(
+                        member => `${member.FirstName} ${member.LastName}` === memberName
+                    );
+
+                    if (memberDetails) {
+                        bumpGroupsWithDetails[bumpKey].push(memberDetails);
+                    }
+                });
+            });
+
+            console.log("Bump Groups with details:", bumpGroupsWithDetails);
+            setDetailedBumpGroups(bumpGroupsWithDetails); // Update state with detailed bump groups
+        };
+
+        if (bumpGroups && listOfDictionaries.length > 0) {
+            createBumpGroupsWithDetails(); // Call function if both states are populated
+        }
+    }, [bumpGroups, listOfDictionaries]);
 
 
     return (
