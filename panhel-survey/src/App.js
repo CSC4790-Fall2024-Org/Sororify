@@ -14,6 +14,7 @@ import DGSurvey from './components/pages/ChapterSurveys/DGSurvey';
 import KDSurvey from './components/pages/ChapterSurveys/KDSurvey';
 import KKGSurvey from './components/pages/ChapterSurveys/KKGSurvey'; 
 import Results from './components/pages/Results';
+import SignUp from './components/pages/SignUp';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path = "/KDSurvey" element = {<KDSurvey />} /> 
           <Route path = "/KKGSurvey" element = {<KKGSurvey />} />
           <Route path = "/Results" element = {<Results />} />
+          <Route path = "/SignUp" element = {<SignUp />} />
 
           
         </Routes>
