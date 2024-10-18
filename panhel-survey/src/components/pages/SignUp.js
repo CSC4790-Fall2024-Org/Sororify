@@ -76,15 +76,6 @@ export default function SignUp() {
     }
   }, []);
 
-  const toggleColorMode = () => {
-    const newMode = mode === 'dark' ? 'light' : 'dark';
-    setMode(newMode);
-    localStorage.setItem('themeMode', newMode); // Save the selected mode to localStorage
-  };
-
-  const toggleCustomTheme = () => {
-    setShowCustomTheme((prev) => !prev);
-  };
 
   const validateInputs = () => {
     const email = document.getElementById('email');

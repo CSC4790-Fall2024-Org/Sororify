@@ -10,11 +10,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 const Results = () => {
     const [chapterResults, setChapterResults] = useState([]); //array populated with chapter survey results on render
     const [expectedResults, setExpectedResults] = useState([]); //array populated with bump group survey results on render
+    const [pnmInfo, setPNMInfo] = useState([]); //array populated with PNM survey results on render
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [displayNames, setDisplayNames] = useState([]);
     const [selectedResult, setSelectedResult] = useState(null);
-
-   
 
     useEffect(() => {  // Fetch the survey results on component load
         axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
@@ -27,11 +26,22 @@ const Results = () => {
             });
     }, []);  // Empty dependency array ensures this runs once on component load
 
+
     useEffect(() => { // Fetch the survey results on component load
         axios.get('http://localhost:5000/api/survey-results?surveyType=Info Page')
             .then((response) => {
                 setExpectedResults(response.data);  // Update the state with fetched results
                 console.log('Info Page survey results fetched:', response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching Info Page survey results:', error);
+            });
+    }, []);
+    useEffect(() => { // Fetch the survey results on component load
+        axios.get('http://localhost:5000/api/survey-results?surveyType=PNM Survey')
+            .then((response) => {
+                setPNMInfo(response.data);  // Update the state with fetched results
+                console.log('PNM Info:', response.data);
             })
             .catch((error) => {
                 console.error('Error fetching Info Page survey results:', error);
@@ -91,7 +101,6 @@ const Results = () => {
         setSelectedResult(result);
     };
 
-  
 
     useEffect(() => {
         if (chapterResults.length > 0) {
@@ -111,15 +120,16 @@ const Results = () => {
                     Activities: result.surveyData["Activities"]
                 };
             });
-    
             // Log the list of dictionaries
             console.log("List of dictionaries:", listOfDictionaries);
-    
             // Set the list of dictionaries in a state if you need to use it later
             // setSomeState(listOfDictionaries);
         }
     }, [chapterResults]);  // Runs every time chapterResults is updated
     
+
+
+
 
 
     return (
