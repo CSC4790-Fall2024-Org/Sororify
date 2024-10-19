@@ -127,6 +127,30 @@ const Results = () => {
         }
     }, [chapterResults]);  // Runs every time chapterResults is updated
     
+    useEffect(() => {
+        if (pnmInfo.length > 0) {
+            // Use map() to create a list of dictionaries (objects)
+            const PNMlistOfDictionaries = pnmInfo.map(result => {
+                const state = result.surveyData["State"]
+                const countyKey = state + " Counties";  
+
+                return {
+                    FirstName: result.surveyData["First Name"],
+                    LastName: result.surveyData["Last Name"],
+                    Hometown: result.surveyData["Hometown"],
+                    State: state,
+                    County: result.surveyData[countyKey],
+                    Major: result.surveyData["Major"],
+                    Involvement: result.surveyData["Involvement"],
+                    Activities: result.surveyData["Activities"]
+                };
+            });
+            // Log the list of dictionaries
+            console.log("PNM List of dictionaries:", PNMlistOfDictionaries);
+            // Set the list of dictionaries in a state if you need to use it later
+            // setSomeState(listOfDictionaries);
+        }
+    }, [pnmInfo]);  // Runs every time chapterResults is updated
 
 
 
