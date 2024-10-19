@@ -43,16 +43,6 @@ const Results = () => {
                 console.error('Error fetching Info Page survey results:', error);
             });
     }, []);
-    useEffect(() => { // Fetch the survey results on component load
-        axios.get('http://localhost:5000/api/survey-results?surveyType=PNM Survey')
-            .then((response) => {
-                setPNMInfo(response.data);  // Update the state with fetched results
-                console.log('PNM Info:', response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching Info Page survey results:', error);
-            });
-    }, []);
 
 
     const extractNames = (results) => {
@@ -118,6 +108,8 @@ const Results = () => {
                 console.error('Error fetching PNM Survey survey results:', error);
             });
     }, []);
+
+
 
     useEffect(() => {
         if (chapterResults.length > 0) {
@@ -255,37 +247,65 @@ const Results = () => {
     }, [bumpGroups, listOfDictionaries]);
 
 
-    // This is an attempt at implementing the algorithm
-    // I am going to come back to it but wanted to push PNM data processing changes first
-    // You can delete / edit this as you will
-    /*
+
+    // For debugging!
+    useEffect(() => {
+        if (bumpGroups.length > 0 && listOfDictionaries.length > 0) {
+          setDetailedBumpGroups();
+          console.log("Detailed Bump Groups:", detailedBumpGroups);
+        } 
+        if(bumpGroups.length <= 0){
+            console.log("Bump group is empty");
+        }
+        if(listOfDictionaries.length <= 0){
+            console.log("listofDictionaries is empty");
+        }
+        if(pnmResults.length <= 0){
+            console.log("pnm results is empty");
+        }
+      }, [bumpGroups, listOfDictionaries]);
+      
 
     useEffect(() => {
-        const calculatePercent = (bumpGroups, pnms) => {
+        
+        const calculatePercent = (detailedBumpGroups, pnmDictionaries) => {
             const pnmCompatibility = {};
-    
-            pnms.forEach(pnm => {
-                pnmCompatibility[pnm['PNM number']] = Array(Object.keys(bumpGroups).length).fill(0);
+            pnmDictionaries.forEach(pnm => {
+              pnmCompatibility[pnm['PNM number']] = Array(Object.keys(bumpGroups).length).fill(0);
             });
-    
-            Object.keys(bumpGroups).forEach((bumpKey, bumpGroupIndex) => {
-                const bumpGroupMembers = bumpGroups[bumpKey];
-                bumpGroupMembers.forEach(member => {
-                    pnms.forEach(pnm => {
-                        const locationTotal = location(member, pnm);
-                        const majorTotal = major(member.Major, pnm.Major);
-                        const interestsTotal = interests(member.Activities, pnm.Activities);
-                        const involvementTotal = involvement(member.Involvement, pnm.Involvement);
-                        const bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
-    
-                        pnmCompatibility[pnm['PNM number']][bumpGroupIndex] = Math.round(bumpGroupTotal);
-                    });
-                });
+          
+            Object.keys(detailedBumpGroups).forEach((bumpKey, bumpGroupIndex) => {
+              const bumpGroupMembers = bumpGroups[bumpKey];
+              
+              // Check if bumpGroupMembers exists and has items
+              if (!Array.isArray(bumpGroupMembers) || bumpGroupMembers.length === 0) {
+                console.warn(`No members found for bump group ${bumpKey}`);
+                return;
+              }
+          
+              bumpGroupMembers.forEach(member => {
+                // Assuming member is an object with surveyData property
+                if (!member.surveyData || !member.surveyData.State) {
+                  console.warn('Member data not available');
+                  return;
+                }
+                
+                const locationTotal = location(member, pnmDictionaries.find(dict => dict.FirstName === member.surveyData.FirstName && dict.LastName === member.surveyData.LastName));
+                const majorTotal = major(member.surveyData.Major, pnmDictionaries.find(dict => dict.FirstName === member.surveyData.FirstName && dict.LastName === member.surveyData.LastName)?.Major || '');
+                const interestsTotal = interests(member.surveyData.Activities, pnmDictionaries.find(dict => dict.FirstName === member.surveyData.FirstName && dict.LastName === member.surveyData.LastName)?.Activities || []);
+                const involvementTotal = involvement(member.surveyData.Involvement, pnmDictionaries.find(dict => dict.FirstName === member.surveyData.FirstName && dict.LastName === member.surveyData.LastName)?.Involvement || []);
+          
+                const bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
+          
+                pnmCompatibility[pnmDictionaries.find(dict => dict.FirstName === member.surveyData.FirstName && dict.LastName === member.surveyData.LastName)['PNM number']][bumpGroupIndex] = Math.round(bumpGroupTotal);
+              });
             });
-    
+          
             return pnmCompatibility;
-        };
-    
+          };
+          
+          
+
         const location = (member, pnm) => {
             if (member.State === pnm.State && member.County === pnm.County && member.Hometown === pnm.Hometown) {
                 return 5;
@@ -355,7 +375,7 @@ const Results = () => {
         }
     }, [detailedBumpGroups, pnmResults]);
     
-    */
+    
 
 
 
