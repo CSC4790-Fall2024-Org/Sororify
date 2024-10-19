@@ -8,16 +8,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemButton from '@mui/material/ListItemButton';
 
 const Results = () => {
-    const [pnmResults, setPNMResults] = useState([]);
-    const [chapterResults, setChapterResults] = useState([]); //array populated with chapter survey results on render
-    const [expectedResults, setExpectedResults] = useState([]); //array populated with bump group survey results on render
-    //const [pnmInfo, setPNMInfo] = useState([]); //array populated with PNM survey results on render
-    const [selectedIndex, setSelectedIndex] = useState(null);
-    const [displayNames, setDisplayNames] = useState([]);
-    const [selectedResult, setSelectedResult] = useState(null);
+    const [pnmResults, setPNMResults] = useState([]); //RAW PNM SURVEYS RESULTS
+    const [chapterResults, setChapterResults] = useState([]); //RAW CHAPTER SURVEY RESULTS
+    const [expectedResults, setExpectedResults] = useState([]); //RAW BUMP GROUP SURVEY RESULTS
+    const [selectedIndex, setSelectedIndex] = useState(null); //variable used to control who is being clicked for their survey results
+    const [displayNames, setDisplayNames] = useState([]); //holds an array with the name and whether they submmited the survey or not in the form of true/false
+    const [selectedResult, setSelectedResult] = useState(null); //used to hold the data from the selected person
     const [bumpGroups, setBumpGroups] = useState([]);
-    const [listOfDictionaries, setListOfDictionaries] = useState([]);
-    const [pnmDictionaryFormat, setPNMDictionary] = useState([]);
+    const [listOfDictionaries, setListOfDictionaries] = useState([]);//created by Maya this holds all the members extracted bump groups so just one big array w all people 
+    const [pnmDictionaries, setPNMDictionary] = useState([]); //one big array that holds all PNMS in one array ^same format as above array **** this doesnt seem to be used anywhere
     const [detailedBumpGroups, setDetailedBumpGroups] = useState({});
     const [matches, createMatches] = useState({});
 
@@ -94,7 +93,7 @@ const Results = () => {
                 isInNamesOnly: namesOnly.includes(name)
             }));
 
-            //console.log('Compared Names:', comparedNames);
+            console.log('Compared Names:', comparedNames);
             setDisplayNames(comparedNames);
         }
     }, [chapterResults, expectedResults]); //This will run anytime there is a change to chapterResults or expectedResults (once they are populated in the first useEffects)
@@ -110,7 +109,7 @@ const Results = () => {
     };
 
 
-    useEffect(() => {
+    useEffect(() => { //format member data for alg
         if (chapterResults.length > 0) {
             // Use map() to create a list of dictionaries (objects)
             const listOfDictionaries = chapterResults.map(result => {
@@ -140,7 +139,7 @@ const Results = () => {
     }, [chapterResults]);  // Runs every time chapterResults is updated
 
     // Parse PNM Survey Data
-    useEffect(() => {
+    useEffect(() => { //format PNM data for alg
         if (pnmResults.length > 0) {
             // Use map() to create a list of dictionaries (objects)
             const pnmDictionaries = pnmResults.map(result => {
