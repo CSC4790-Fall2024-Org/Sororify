@@ -47,3 +47,7 @@ body {
     border-bottom: 1px solid #ccc; /* Add a thin line between each element */
     padding-bottom: 10px; 
 }
+
+.selected-result {
+    margin-top: 20px;
+}
