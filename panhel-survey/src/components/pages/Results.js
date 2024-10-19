@@ -11,17 +11,18 @@ const Results = () => {
     const [pnmResults, setPNMResults] = useState([]);
     const [chapterResults, setChapterResults] = useState([]); //array populated with chapter survey results on render
     const [expectedResults, setExpectedResults] = useState([]); //array populated with bump group survey results on render
-    const [pnmInfo, setPNMInfo] = useState([]); //array populated with PNM survey results on render
+    //const [pnmInfo, setPNMInfo] = useState([]); //array populated with PNM survey results on render
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [displayNames, setDisplayNames] = useState([]);
     const [selectedResult, setSelectedResult] = useState(null);
     const [bumpGroups, setBumpGroups] = useState([]);
     const [listOfDictionaries, setListOfDictionaries] = useState([]);
+    const [pnmDictionaryFormat, setPNMDictionary] = useState([]);
     const [detailedBumpGroups, setDetailedBumpGroups] = useState({});
     const [matches, createMatches] = useState({});
 
 
-    useEffect(() => {  // Fetch the survey results on component load
+    useEffect(() => {  // FETCH CHAPTER SURVEY
         axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
                 setChapterResults(response.data);  // Update the state with fetched results
@@ -33,7 +34,7 @@ const Results = () => {
     }, []);  // Empty dependency array ensures this runs once on component load
 
 
-    useEffect(() => { // Fetch the survey results on component load
+    useEffect(() => { // FETCH BUMP GROUPS 
         axios.get('http://localhost:5000/api/survey-results?surveyType=Info Page')
             .then((response) => {
                 setExpectedResults(response.data);  // Update the state with fetched results
@@ -44,8 +45,19 @@ const Results = () => {
             });
     }, []);
 
+    useEffect(() => { //FETCH PNMs
+        axios.get('http://localhost:5000/api/survey-results?surveyType=PNM Survey')
+            .then((response) => {
+                setPNMResults(response.data);  // Update the state with fetched results
+                console.log('PNM Survey survey results fetched:', response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching PNM Survey survey results:', error);
+            });
+    }, []);
 
-    const extractNames = (results) => {
+
+    const extractNames = (results) => { //Method to extract names from the survey results 
         return results.map(result => {
             const firstName = result.surveyData["First Name"];
             const lastName = result.surveyData["Last Name"];
@@ -54,7 +66,7 @@ const Results = () => {
         });
     };
 
-    const extractBumpNames = (surveyResult) => {
+    const extractBumpNames = (surveyResult) => { //Method to extract names from the bump group survey results
         const names = [];
         for (let i = 1; i <= 40; i++) { //iterate through bump groups
             const bumpGroup = surveyResult.surveyData[`Bump ${i}`]; //constructs a key for each bump group 
@@ -69,20 +81,20 @@ const Results = () => {
         return names;
     };
 
-    useEffect(() => {
+    useEffect(() => { //Sets the names to dislay in list 
         if (chapterResults.length > 0 && expectedResults.length > 0) { //if both chapterResults and expectedResults are populated
             const namesOnly = extractNames(chapterResults); //extract names from Chapter Members info
-            console.log('Names only:', namesOnly);
+            //console.log('Names only:', namesOnly);
 
             const bumpNames = expectedResults.flatMap(result => extractBumpNames(result)); //flatMap combines all the arrays of bump group into one array
-            console.log('Bump Names:', bumpNames);
+            //console.log('Bump Names:', bumpNames);
 
             const comparedNames = bumpNames.map(name => ({ //compares the names from the bump groups to the names from the chapter members
                 name,
                 isInNamesOnly: namesOnly.includes(name)
             }));
 
-            console.log('Compared Names:', comparedNames);
+            //console.log('Compared Names:', comparedNames);
             setDisplayNames(comparedNames);
         }
     }, [chapterResults, expectedResults]); //This will run anytime there is a change to chapterResults or expectedResults (once they are populated in the first useEffects)
@@ -96,19 +108,6 @@ const Results = () => {
         });
         setSelectedResult(result);
     };
-
-
-    useEffect(() => {
-        axios.get('http://localhost:5000/api/survey-results?surveyType=PNM Survey')
-            .then((response) => {
-                setPNMResults(response.data);  // Update the state with fetched results
-                console.log('PNM Survey survey results fetched:', response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching PNM Survey survey results:', error);
-            });
-    }, []);
-
 
 
     useEffect(() => {
@@ -130,7 +129,7 @@ const Results = () => {
                 };
             });
             // Log the list of dictionaries
-            console.log("List of dictionaries:", listOfDictionaries);
+            console.log("PARSED MEMBERS FORMATTED FOR ALG:", listOfDictionaries);
 
             setListOfDictionaries(listOfDictionaries); // MAYBE REMOVE
 
@@ -161,10 +160,10 @@ const Results = () => {
             });
     
             // Log the list of dictionaries
-            console.log("List of PNM dictionaries:", pnmDictionaries);
-            setPNMResults(pnmDictionaries);
+            console.log("PARSED PNMs FOR ALG:", pnmDictionaries);
+            setPNMDictionary(pnmDictionaries);
         }
-    }, [chapterResults]);  // Runs every time chapterResults is updated
+    }, [pnmResults]);  // Runs every time chapterResults is updated
 
     useEffect(() => {
         if (expectedResults.length > 0) {
