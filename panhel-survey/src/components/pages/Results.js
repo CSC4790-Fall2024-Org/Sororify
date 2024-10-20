@@ -18,7 +18,7 @@ const Results = () => {
     const [listOfDictionaries, setListOfDictionaries] = useState([]);//created by Maya this holds all the members extracted bump groups so just one big array w all people 
     const [pnmDictionaries, setPNMDictionary] = useState([]); //one big array that holds all PNMS in one array ^same format as above array **** this doesnt seem to be used anywhere
     const [detailedBumpGroups, setDetailedBumpGroups] = useState({});
-    const [matches, createMatches] = useState({});
+    const [matches, setMatches] = useState({});
 
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
@@ -253,13 +253,13 @@ const Results = () => {
           console.log("Detailed Bump Groups:", detailedBumpGroups);
         } 
         if(bumpGroups.length <= 0){
-            console.log("Bump group is empty");
+            console.warn("Bump group is empty");
         }
         if(listOfDictionaries.length <= 0){
-            console.log("listofDictionaries is empty");
+            console.warn("listofDictionaries is empty");
         }
         if(pnmResults.length <= 0){
-            console.log("pnm results is empty");
+            console.warn("pnm results is empty");
         }
       }, [bumpGroups, listOfDictionaries]);
       
@@ -360,23 +360,18 @@ const Results = () => {
         };
     
         const createMatches = () => {
-            const pnmPercents = calculatePercent(detailedBumpGroups, pnmResults);
+            const pnmPercents = calculatePercent(detailedBumpGroups, pnmDictionaries);
             const finalMatches = match(pnmPercents);
     
             console.log("Final Matches:", finalMatches);
-            // If you need to set state for final matches, you can do it here
-            // setFinalMatches(finalMatches); // Uncomment if you're using state to store matches
+            setMatches(finalMatches);
         };
     
-        if (detailedBumpGroups && pnmResults.length > 0) {
+        if (detailedBumpGroups && pnmDictionaries.length > 0) {
             createMatches();
         }
-    }, [detailedBumpGroups, pnmResults]);
+    }, [detailedBumpGroups, pnmDictionaries]);
     
-    
-
-
-
 
     return (
         <div className="AboutUs">
