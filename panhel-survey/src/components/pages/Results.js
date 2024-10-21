@@ -278,10 +278,10 @@ const Results = () => {
                                 majorTotal += major(member.Major, pnm.Major);
                                 interestsTotal += interests(member.Activities, pnm.Activities);
                                 involvementTotal += involvement(member.Involvement, pnm.Involvement);
-                                console.log("calculating...");
+                                //console.log("calculating...");
                             })
                             var bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
-                            console.log(bumpGroupTotal);
+                            //console.log(bumpGroupTotal);
                             pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
                         });
                 });
