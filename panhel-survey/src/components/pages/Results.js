@@ -338,14 +338,17 @@ const Results = () => {
         
             const match = (pnmPercents) => {
                 const finalMatches = {};
-                for (let j = 1; j <= 20; j++) {
+                for (let j = 1; j <= Object.keys(detailedBumpGroups).length; j++) {
                     finalMatches[j] = [];
                 }
-        
+                
+            // Why percents may be showing up as 0%:
+            // Empty Percent Lists: If percentList is empty, percentList.forEach() won't execute at all.
+
                 for (let i = 100; i >= 0; i--) {
                     for (const [pnm, percentList] of Object.entries(pnmPercents)) {
                         percentList.forEach((percent, index) => {
-                            if (percent === i && finalMatches[index + 1].length < 5) {
+                            if (Number(percent) === Number(i) && finalMatches[index + 1].length < numberOfPNMs) {
                                 finalMatches[index + 1].push({ [pnm]: `${percent}%` });
                                 pnmPercents[pnm] = [];
                             }
