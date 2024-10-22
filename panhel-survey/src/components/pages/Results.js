@@ -354,9 +354,11 @@ const Results = () => {
                 for (let i = 100; i >= 0; i--) {
                     for (const [pnm, percentList] of Object.entries(pnmPercents)) {
                         percentList.forEach((percent, index) => {
-                            if (Number(percent) === Number(i) && finalMatches[index + 1].length < numberOfPNMs && percent != null) {
-                                finalMatches[index + 1].push({ [pnm]: `${percent}%` });
-                                pnmPercents[pnm] = [];
+                            if (Number(percent) === Number(i) && finalMatches[index + 1].length < numberOfPNMs && percent != null && Number(percent) != 0) {
+                                if (pnmPercents[pnm] != []){
+                                    finalMatches[index + 1].push({ [pnm]: `${Number(percent)}%` });
+                                    pnmPercents[pnm] = [];
+                                }
                             }
                         });
                     }
