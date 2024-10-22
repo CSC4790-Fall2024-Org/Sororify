@@ -285,7 +285,7 @@ const Results = () => {
                             pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
                         }
                         });
-                console.log("PNM Compatibility:", pnmCompatibility);
+                // console.log("PNM Compatibility:", pnmCompatibility);
                 // console.log(pnmCompatibility[1]); // This shows that it is actually working just not printing in console
                 // console.warn(Object.entries(pnmDictionaries).length); There are only 50 PNMs so it makes sense that not all bump groups would be full
               
@@ -379,6 +379,7 @@ const Results = () => {
         
             const createMatches = () => {
                 const pnmPercents = calculatePercent(detailedBumpGroups, pnmDictionaries);
+                console.log(calculatePercent(detailedBumpGroups, pnmDictionaries));
                 const finalMatches = match(pnmPercents);
         
                 console.log("Final Matches:", finalMatches);
