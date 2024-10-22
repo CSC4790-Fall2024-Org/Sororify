@@ -341,7 +341,8 @@ const Results = () => {
                 }, 0);
             };
         
-            const match = (pnmPercents) => {
+            
+            const match = (pnmPcts) => {
                 const finalMatches = {};
                 for (let j = 1; j <= Object.keys(detailedBumpGroups).length; j++) {
                     finalMatches[j] = [];
@@ -351,21 +352,30 @@ const Results = () => {
             // Empty Percent Lists: If percentList is empty, percentList.forEach() won't execute at all.
             // Once we resolve the empty bump group issue, we can see if that's what's also causing issues with this
 
+                let processedPNMs = new Set();
+
+        
                 for (let i = 100; i >= 0; i--) {
-                    for (const [pnm, percentList] of Object.entries(pnmPercents)) {
+                    for (const [pnm, percentList] of Object.entries(pnmPcts)) {
                         percentList.forEach((percent, index) => {
-                            if (Number(percent) === Number(i) && finalMatches[index + 1].length < numberOfPNMs && percent != null && Number(percent) != 0) {
-                                if (pnmPercents[pnm] != []){
-                                    finalMatches[index + 1].push({ [pnm]: `${Number(percent)}%` });
-                                    pnmPercents[pnm] = [];
+                            // Round the percentage to the nearest integer
+                            const roundedPercent = Math.round(Number(percent));
+                            
+                            if (roundedPercent === i && finalMatches[index + 1].length <= numberOfPNMs && percent != null && Number(percent) != 0) {
+                                if (!processedPNMs.has(pnm)){
+                                    finalMatches[index + 1].push({ [pnm]: `${percent}%` }); // can change to roundedPercent if we want it to look cuter
+                                    processedPNMs.add(pnm);
+                                    pnmPcts[pnm] = [];
                                 }
                             }
                         });
                     }
                 }
-        
+            
+                // console.warn(finalMatches[8]);
                 return finalMatches;
             };
+            
         
             const createMatches = () => {
                 const pnmPercents = calculatePercent(detailedBumpGroups, pnmDictionaries);
