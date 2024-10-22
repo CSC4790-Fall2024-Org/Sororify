@@ -251,7 +251,7 @@ const Results = () => {
     
         // useEffect to calculate percentages once detailedBumpGroups is updated
         useEffect(() => {
-        
+            
             const calculatePercent = (detailedBumpGroups, pnmDictionaries) => {
                 // Initialize new data structure
                 const pnmCompatibility = {};
@@ -260,7 +260,7 @@ const Results = () => {
                         // Set an empty array for each PNM to hold percents
                         pnmCompatibility[pnm['PNM number']] = []
                         // Loop over bump groups
-                        Object.keys(detailedBumpGroups).forEach((bumpKey, bumpGroupIndex) => {
+                        for (const [bumpKey, bumpGroupMembers] of Object.entries(detailedBumpGroups)) {
                             const bumpGroupMembers = detailedBumpGroups[bumpKey];
                             // Check if bumpGroupMembers exists and has items
                             if (!Array.isArray(bumpGroupMembers) || bumpGroupMembers.length === 0) {
@@ -283,16 +283,18 @@ const Results = () => {
                             var bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
                             //console.log(bumpGroupTotal);
                             pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
+                        }
                         });
-                });
+                
                 console.log("PNM Compatibility:", pnmCompatibility);
+                // console.log(pnmCompatibility[1]); // This shows that it is actually working just not printing in console
               
                 return pnmCompatibility;
               };
               
-              
     
             const location = (member, pnm) => {
+                // console.warn("member: " + member['State'] + " pnm: " + pnm["State"]);
                 if (member['State'] === pnm['State'] && member['County'] === pnm['County'] && member['Hometown'] === pnm['Hometown']) {
                     return 5;
                 } else if (member['State'] === pnm['State'] && member['County'] === pnm['County']) {
@@ -305,6 +307,7 @@ const Results = () => {
             };
         
             const major = (memberMajors, pnmMajors) => {
+                // console.warn("member: " + memberMajors + " pnm: " + pnmMajors);
                 if (!Array.isArray(pnmMajors)) {
                     return 0; // Return 0 if pnmInvs is not an array
                 }
@@ -315,6 +318,7 @@ const Results = () => {
             };
         
             const interests = (memberInts, pnmInts) => {
+                // console.warn("member: " + memberInts + " pnm: " + pnmInts);
                 if (!Array.isArray(pnmInts)) {
                     return 0; // Return 0 if pnmInvs is not an array
                 }
@@ -325,6 +329,7 @@ const Results = () => {
             };
         
             const involvement = (memberInvs, pnmInvs) => {
+                // console.warn("member: " + memberInvs + " pnm: " + pnmInvs);
                 if (!Array.isArray(pnmInvs)) {
                     return 0; // Return 0 if pnmInvs is not an array
                 }
@@ -344,11 +349,12 @@ const Results = () => {
                 
             // Why percents may be showing up as 0%:
             // Empty Percent Lists: If percentList is empty, percentList.forEach() won't execute at all.
+            // Once we resolve the empty bump group issue, we can see if that's what's also causing issues with this
 
                 for (let i = 100; i >= 0; i--) {
                     for (const [pnm, percentList] of Object.entries(pnmPercents)) {
                         percentList.forEach((percent, index) => {
-                            if (Number(percent) === Number(i) && finalMatches[index + 1].length < numberOfPNMs) {
+                            if (Number(percent) === Number(i) && finalMatches[index + 1].length < numberOfPNMs && percent != null) {
                                 finalMatches[index + 1].push({ [pnm]: `${percent}%` });
                                 pnmPercents[pnm] = [];
                             }
