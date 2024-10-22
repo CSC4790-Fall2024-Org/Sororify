@@ -10,7 +10,9 @@ import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
 import MuiCard from '@mui/material/Card';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
@@ -61,6 +63,7 @@ export default function SignUp() {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [role, setRole] = React.useState('');
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
     // Check if there is a preferred mode in localStorage
@@ -76,6 +79,9 @@ export default function SignUp() {
     }
   }, []);
 
+  const handleRoleChange = (event) => {
+    setRole(event.target.value);
+  };
 
   const validateInputs = () => {
     const email = document.getElementById('email');
@@ -146,6 +152,21 @@ export default function SignUp() {
               onSubmit={handleSubmit}
               sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
             >
+            <FormControl>
+          <FormLabel htmlFor="role">Role</FormLabel>
+          <Select
+            id="role"
+            placeholder="Select your role"
+            name="role"
+            value={role}
+            onChange={handleRoleChange}
+            required
+            fullWidth
+          >
+            <MenuItem value="member">Member</MenuItem>
+            <MenuItem value="pnm">PNM</MenuItem>
+          </Select>
+        </FormControl>
               <FormControl>
                 <FormLabel htmlFor="name">Full name</FormLabel>
                 <TextField
