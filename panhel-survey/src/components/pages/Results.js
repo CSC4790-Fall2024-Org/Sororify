@@ -282,7 +282,8 @@ const Results = () => {
                             })
                             var bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
                             //console.log(bumpGroupTotal);
-                            pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
+                            // Edit this one line to add name 
+                            pnmCompatibility[pnm["PNM Number"]].push(bumpGroupTotal);
                         }
                         });
                 // console.log("PNM Compatibility:", pnmCompatibility);
