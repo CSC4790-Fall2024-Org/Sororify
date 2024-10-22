@@ -285,9 +285,9 @@ const Results = () => {
                             pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
                         }
                         });
-                
                 console.log("PNM Compatibility:", pnmCompatibility);
                 // console.log(pnmCompatibility[1]); // This shows that it is actually working just not printing in console
+                // console.warn(Object.entries(pnmDictionaries).length); There are only 50 PNMs so it makes sense that not all bump groups would be full
               
                 return pnmCompatibility;
               };
