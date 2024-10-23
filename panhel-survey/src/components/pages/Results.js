@@ -450,8 +450,7 @@ const Results = () => {
 
     return (
         <div className="AboutUs">
-            <h1>View Results</h1>
-
+            <h1 style={{ fontFamily: 'Georgia, serif' }}>View Results</h1>
 
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (

@@ -29,12 +29,11 @@ const AboutUs = () => {
       ];
     return (
         <div className = "AboutUs">
-            <h1>Smarter Matches, Stronger Sisterhood</h1>
+            <h1 style={{ fontFamily: 'Georgia, serif' }}>Smarter Matches, Stronger Sisterhood</h1>
             <Carousel images={images} />
-            <h2>Our Mission</h2>
+            <h2 style={{ fontFamily: 'Georgia, serif' }}>Our Mission</h2>
             <p>“Sororify” seeks to streamline the Villanova Panhellenic Recruitment process. At Villanova roughly 600 girls rush eight sororities in the first round of recruitment known as Sisterhood Round. The process of “matching” girls to each sorority’s existing members based on like qualities takes hours to ensure that potential members have a good experience. All of the tedious work done by hand still doesn’t guarantee the PNMs will be matched with their compatible counterparts in sororities.</p>
             <p>Our algorithm bridges the gap by ensuring the best possible match between PNMS and current chapter members the sorority that fits them the best.</p>
-            <h2>Our Story</h2>
             
         </div>
     );
