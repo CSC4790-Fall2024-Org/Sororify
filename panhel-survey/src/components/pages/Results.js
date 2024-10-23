@@ -19,7 +19,7 @@ const Results = () => {
     const [listOfDictionaries, setListOfDictionaries] = useState([]);//created by Maya this holds all the members extracted bump groups so just one big array w all people 
     const [pnmDictionaries, setPNMDictionary] = useState([]); //one big array that holds all PNMS in one array ^same format as above array **** this doesnt seem to be used anywhere
     const [detailedBumpGroups, setDetailedBumpGroups] = useState({});
-    const [matches, setMatches] = useState({});
+    const [matches, setMatches] = useState([]);
     const [numberOfPNMs, setNumberOfPNMs] = useState();
 
     const handleListItemClick = (name) => {
@@ -481,6 +481,25 @@ const Results = () => {
                    <pre>{selectedResult}</pre>
                 </div>
             )}
+            <div className="matches">
+                <h2>Matches</h2>
+                <ul>
+        {Object.keys(matches).map((key) => (
+            <li key={key}>
+                <strong>Group {key}:</strong>
+                <ul>
+                    {matches[key].map((match, index) => (
+                        <li key={index}>
+                            {Object.entries(match).map(([id, percent]) => (
+                                <span key={id}>{`ID: ${id}, Percent: ${percent}`}</span>
+                            ))}
+                        </li>
+                    ))}
+                </ul>
+            </li>
+        ))}
+    </ul>
+            </div>
         </div>
     );
 };
