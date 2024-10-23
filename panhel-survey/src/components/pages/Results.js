@@ -414,7 +414,11 @@ const Results = () => {
                             
                             if (roundedPercent === i && finalMatches[index + 1].length <= numberOfPNMs && percent != null && Number(percent) != 0) {
                                 if (!processedPNMs.has(pnm)){
-                                    finalMatches[index + 1].push({ [pnm]: `${percent}%` }); // can change to roundedPercent if we want it to look cuter
+                                    /*
+                                    const pnmDict = pnmDictionaries.find(dict => dict.pnm === pnm);
+                                    finalMatches[index + 1].push({ [pnm]: pnmDict['FirstName']});
+                                    */
+                                    finalMatches[index + 1].push({ [pnm]: `${roundedPercent}%` }); // can change to roundedPercent if we want it to look cuter
                                     processedPNMs.add(pnm);
                                     pnmPcts[pnm] = [];
                                 }
