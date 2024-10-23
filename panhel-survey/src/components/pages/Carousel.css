@@ -15,7 +15,7 @@
 }
 
 .carousel__item {
-  min-width: 40%; /* Adjust this value to control the size of the preview */
+  min-width: 20%; /* Adjust this value to control the size of the preview */
   margin: 0 10px; /* Adjust this value to control the spacing between images */
   flex-shrink: 0;
 }
