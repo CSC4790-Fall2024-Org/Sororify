@@ -491,7 +491,7 @@ const Results = () => {
                     {matches[key].map((match, index) => (
                         <li key={index}>
                             {Object.entries(match).map(([id, percent]) => (
-                                <span key={id}>{`ID: ${id}, Percent: ${percent}`}</span>
+                                <span key={id}>{`PNM: ${id}, Percent: ${percent}`}</span>
                             ))}
                         </li>
                     ))}
