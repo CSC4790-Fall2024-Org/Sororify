@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AboutUs.css';
 import DoneIcon from '@mui/icons-material/Done';
-import { List, ListItemButton, ListItemText, ListItemIcon, Collapse } from '@mui/material';
+import { List, ListItemButton, ListItemText, ListItemIcon, Collapse, Button } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+
 
 
 const Results = () => {
@@ -299,7 +300,6 @@ const Results = () => {
     
         // useEffect to calculate percentages once detailedBumpGroups is updated
         useEffect(() => {
-            
             const calculatePercent = (detailedBumpGroups, pnmDictionaries) => {
                 // Initialize new data structure
                 const pnmCompatibility = {};
@@ -329,6 +329,8 @@ const Results = () => {
                                 //console.log("calculating...");
                             })
                             var bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
+
+                    
                             //console.log(bumpGroupTotal);
                             // Edit this one line to add name 
                             pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
@@ -445,7 +447,8 @@ const Results = () => {
     return (
         <div className="AboutUs">
             <h1>View Results</h1>
-            <button onClick={handleClick}>Click Me</button>
+
+
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
                     <div key={index}>
@@ -482,19 +485,33 @@ const Results = () => {
                 </div>
             )}
             <div className="matches">
-                <h2>Matches</h2>
-                <ul>
-        {Object.keys(matches).map((key) => (
-            <li key={key}>
-                <strong>Group {key}:</strong>
-                <ul>
-                    {matches[key].map((match, index) => (
-                        <li key={index}>
-                            {Object.entries(match).map(([id, percent]) => (
-                                <span key={id}>{`PNM: ${id}, Percent: ${percent}`}</span>
+            <Button
+                variant="text"
+                onClick={handleClick}
+                sx={{
+                    color: '#F94EA0',
+                    fontSize: '20px', // Adjust the size as needed
+                    fontFamily: 'Georgia, serif',
+                    display: 'block',
+                    margin: '0 auto',
+                    textTransform: 'none',
+                }}
+            >
+                 Matches
+            </Button>
+                
+             <ul>
+                {Object.keys(matches).map((key) => (
+                    <li key={key}>
+                        <strong>Group {key}:</strong>
+                        <ul>
+                            {matches[key].map((match, index) => (
+                                <li key={index}>
+                                    {Object.entries(match).map(([id, percent]) => (
+                                        <span key={id}>{`PNM: ${id}, Percent: ${percent}`}</span>
+                                    ))}
+                                </li>
                             ))}
-                        </li>
-                    ))}
                 </ul>
             </li>
         ))}

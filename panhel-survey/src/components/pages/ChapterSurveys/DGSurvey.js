@@ -3962,7 +3962,7 @@ function DGSurvey() {
           "--sjs-font-headertitle-color": "rgba(249, 78, 160, 1)",
           "--sjs-font-headertitle-weight": "400",
           "--sjs-font-headertitle-size": "29px",
-          "--sjs-font-headertitle-family": "Courier New, monospace"
+          "--sjs-font-headertitle-family": "Georgia, serif"
       },
       "headerView": "advanced"
   }
