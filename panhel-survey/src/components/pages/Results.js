@@ -11,7 +11,6 @@ const Results = () => {
     const [pnmResults, setPNMResults] = useState([]); //RAW PNM SURVEYS RESULTS
     const [chapterResults, setChapterResults] = useState([]); //RAW CHAPTER SURVEY RESULTS
     const [BumpGroupResults, setBumpGroupResults] = useState([]); //RAW BUMP GROUP SURVEY RESULTS
-   const [bumpGroups, setBumpGroups] = useState({}); //holds the bump group data
    
     const [selectedIndex, setSelectedIndex] = useState(null); //variable used to control who is being clicked for their survey results
     const [displayNames, setDisplayNames] = useState([]); //holds an array with the name and whether they submmited the survey or not in the form of true/false
@@ -19,8 +18,35 @@ const Results = () => {
     const [openGroups, setOpenGroups] = useState({});
 
     const handleListItemClick = (name) => {
-        setSelectedResult(name);
+        const result = chapterResults.find(result => {
+            const fullName = `${result.surveyData["First Name"]} ${result.surveyData["Last Name"]}`;
+            return fullName === name;
+        });
+
+        if (result) {
+            const formattedResult = formatSurveyData(result);
+            setSelectedResult(formattedResult);
+        } else {
+            setSelectedResult(null);
+        }
+
         setSelectedIndex(name);
+    };
+
+
+    const formatSurveyData = (result) => {
+        if (!result) return '';
+        const { "First Name": firstName, "Last Name": lastName, "State": state, "Hometown": hometown, "Major": major, "Involvement": involvement, "Activities": activities } = result.surveyData;
+        const countyKey = `${state} Counties`;
+        const county = result.surveyData[countyKey] || '';
+
+        return `
+        Name: ${firstName} ${lastName}
+        Hometown: ${hometown}, ${county} County, ${state}
+        Major: ${major.join(', ')}
+        Involvement: ${involvement.join(', ')}
+        Activities: ${activities.join(', ')}
+    `;
     };
 
     const handleGroupClick = (group) => {
@@ -76,21 +102,21 @@ const Results = () => {
 
     const extractBumpNames = (surveyResult) => { //Method to extract names from the bump group survey results
         const bumpGroups = {};
-          BumpGroupResults.forEach(result => {
-            Object.keys(result.surveyData).forEach(bumpKey => {
+          BumpGroupResults.forEach(result => { //iterate over reach result in bump group results 
+            Object.keys(result.surveyData).forEach(bumpKey => { //iterate over the keys in result.surveyData
               if (bumpKey.startsWith("Bump")) {
-                const bumpGroup = result.surveyData[bumpKey];
-                const bumpGroupValues = Object.values(bumpGroup);
-              if (bumpGroups[bumpKey]) {
-                  bumpGroups[bumpKey] = bumpGroups[bumpKey].concat(bumpGroupValues);
+                const bumpGroup = result.surveyData[bumpKey]; //gets the bump group data
+                const bumpGroupValues = Object.values(bumpGroup); //get values of the bump group
+              if (bumpGroups[bumpKey]) { //if bump group alr exists in bumpGroups
+                  bumpGroups[bumpKey] = bumpGroups[bumpKey].concat(bumpGroupValues); //concat the new values to the existing arrays
                 } else {
-                  bumpGroups[bumpKey] = bumpGroupValues;
+                  bumpGroups[bumpKey] = bumpGroupValues; //intitalize the key with the new names 
                 }
               }
             });
           });
           console.log("Bump Groups Dictionary:", bumpGroups);
-          setBumpGroups(bumpGroups);
+          //setBumpGroups(bumpGroups);
         return bumpGroups;
     };
 
@@ -165,7 +191,7 @@ const Results = () => {
             {selectedResult && (
                 <div className="selected-result">
                     <h2>Selected Result</h2>
-                    <pre>{JSON.stringify(selectedResult, null, 2)}</pre>
+                   <pre>{selectedResult}</pre>
                 </div>
             )}
         </div>
