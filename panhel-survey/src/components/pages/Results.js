@@ -11,11 +11,16 @@ const Results = () => {
     const [pnmResults, setPNMResults] = useState([]); //RAW PNM SURVEYS RESULTS
     const [chapterResults, setChapterResults] = useState([]); //RAW CHAPTER SURVEY RESULTS
     const [bumpGroupResults, setBumpGroupResults] = useState([]); //RAW BUMP GROUP SURVEY RESULTS
-   
+    const [openGroups, setOpenGroups] = useState({});
     const [selectedIndex, setSelectedIndex] = useState(null); //variable used to control who is being clicked for their survey results
     const [displayNames, setDisplayNames] = useState([]); //holds an array with the name and whether they submmited the survey or not in the form of true/false
     const [selectedResult, setSelectedResult] = useState(null); //used to hold the data from the selected person
-    const [openGroups, setOpenGroups] = useState({});
+    const [bumpGroups, setBumpGroups] = useState([]);
+    const [listOfDictionaries, setListOfDictionaries] = useState([]);//created by Maya this holds all the members extracted bump groups so just one big array w all people 
+    const [pnmDictionaries, setPNMDictionary] = useState([]); //one big array that holds all PNMS in one array ^same format as above array **** this doesnt seem to be used anywhere
+    const [detailedBumpGroups, setDetailedBumpGroups] = useState({});
+    const [matches, setMatches] = useState({});
+    const [numberOfPNMs, setNumberOfPNMs] = useState();
 
     const handleListItemClick = (name) => {
         const result = chapterResults.find(result => {
@@ -154,11 +159,293 @@ const Results = () => {
         }
     }, [chapterResults, bumpGroupResults]);
 
+    // WHERE LOGIC OF ALGORITHM BEGINS
+    const handleClick = () => {
+        console.log('Button clicked!');
+
+        // This if statement formats member data
+        if (chapterResults.length > 0) {
+            const listOfDictionaries = chapterResults.map(result => {
+                const state = result.surveyData["State"]
+                const countyKey = state + " Counties";
+
+                return {
+                    FirstName: result.surveyData["First Name"],
+                    LastName: result.surveyData["Last Name"],
+                    Hometown: result.surveyData["Hometown"],
+                    State: state,
+                    County: result.surveyData[countyKey],
+                    Major: result.surveyData["Major"],
+                    Involvement: result.surveyData["Involvement"],
+                    Activities: result.surveyData["Activities"]
+                };
+            });
+            // Log the list of dictionaries
+            console.log("PARSED MEMBERS FOR FOR ALG:", listOfDictionaries);
+
+            setListOfDictionaries(listOfDictionaries);
+        }
+
+        // This if statement formats pnm data
+        if (pnmResults.length > 0) {
+            const pnmDictionaries = pnmResults.map(result => {
+                const state = result.surveyData["State"]
+                const countyKey = state + " Counties";
+
+                return {
+                    FirstName: result.surveyData["First Name"],
+                    LastName: result.surveyData["Last Name"],
+                    Hometown: result.surveyData["Hometown"],
+                    State: state,
+                    County: result.surveyData[countyKey],
+                    Major: result.surveyData["Major"],
+                    Involvement: result.surveyData["Involvement"],
+                    Activities: result.surveyData["Activities"]
+                };
+            });
+
+            // Sorts alphabetically and assigns PNM numbers
+            const sortedListOfPNMs = pnmDictionaries.sort((a, b) => {
+                if (a['LastName'] < b['LastName']) return -1;
+                if (a['LastName'] > b['LastName']) return 1;
+                return 0; // If last names are equal, maintain original order
+            });
+            
+            // Assign PNM number to each entry
+            let counter = 1;
+            sortedListOfPNMs.forEach(entry => {
+                entry["PNM number"] = counter;
+                counter++;
+            });
+            
+            setPNMDictionary(sortedListOfPNMs);
+            console.log("PNMS FOR ALG WITH NUMBERS:", sortedListOfPNMs);
+        }
+
+        // This if statement creates the appropriate bump groups
+        if (bumpGroupResults.length > 0) {
+            const bumpGroups = {};
+        
+            // Loop through each result
+            bumpGroupResults.forEach(result => {
+              // Loop through each bump group key
+              Object.keys(result.surveyData).forEach(bumpKey => {
+                if (bumpKey.startsWith("Bump")) {
+                  // Extract the bump group object
+                  const bumpGroup = result.surveyData[bumpKey];
+        
+                  // Create an array of just the values (names), ignoring the keys
+                  const bumpGroupValues = Object.values(bumpGroup);
+        
+                  // If the bumpGroup key already exists, concatenate the new values
+                  if (bumpGroups[bumpKey]) {
+                    bumpGroups[bumpKey] = bumpGroups[bumpKey].concat(bumpGroupValues);
+                  } else {
+                    // Else, initialize it with the current values
+                    bumpGroups[bumpKey] = bumpGroupValues;
+                  }
+                }
+              });
+            });
+        
+            // Use bumpGroups as needed
+            console.log("Bump Groups Dictionary:", bumpGroups);
+            setBumpGroups(bumpGroups);
+          }
+
+          // This if statement extracts the size of bump groups for PNMs ONLY
+          if (bumpGroupResults.length > 0) {
+            // Create an object to store the number of PNMs for each result
+            const numberOfPNMs = bumpGroupResults.map(result => {
+              // Extract the "How many PNMS" value from surveyData
+              return result.surveyData["How many PNMS"];
+            });
+        
+            // Log the "How many PNMS" values for each result
+            console.log("How many PNMS per bump group:", numberOfPNMs);
+        
+            // If you need to store it in state, you could do it here
+            setNumberOfPNMs(numberOfPNMs);  // Example if you are using state
+          }
+    }
+
+
+        useEffect(() => {
+            const createBumpGroupsWithDetails = () => {
+                const bumpGroupsWithDetails = {};
+                Object.keys(bumpGroups).forEach(bumpKey => {
+                    bumpGroupsWithDetails[bumpKey] = [];
+                    const groupMembers = bumpGroups[bumpKey];
+    
+                    groupMembers.forEach(memberName => {
+                        const memberDetails = listOfDictionaries.find(
+                            member => `${member.FirstName} ${member.LastName}` === memberName
+                        );
+    
+                        if (memberDetails) {
+                            bumpGroupsWithDetails[bumpKey].push(memberDetails);
+                        }
+                    });
+                });
+    
+                console.log("Bump Groups with details:", bumpGroupsWithDetails);
+                setDetailedBumpGroups(bumpGroupsWithDetails);
+            };
+    
+            if (Object.keys(bumpGroups).length > 0 && listOfDictionaries.length > 0) {
+                createBumpGroupsWithDetails();
+            }
+        }, [bumpGroups, listOfDictionaries]);
+    
+        // useEffect to calculate percentages once detailedBumpGroups is updated
+        useEffect(() => {
+            
+            const calculatePercent = (detailedBumpGroups, pnmDictionaries) => {
+                // Initialize new data structure
+                const pnmCompatibility = {};
+                // Loop through each PNM
+                pnmDictionaries.forEach(pnm => {
+                        // Set an empty array for each PNM to hold percents
+                        pnmCompatibility[pnm['PNM number']] = []
+                        // Loop over bump groups
+                        for (const [bumpKey, bumpGroupMembers] of Object.entries(detailedBumpGroups)) {
+                            const bumpGroupMembers = detailedBumpGroups[bumpKey];
+                            // Check if bumpGroupMembers exists and has items
+                            if (!Array.isArray(bumpGroupMembers) || bumpGroupMembers.length === 0) {
+                              console.warn(`No members found for bump group ${bumpKey}`);
+                              return;
+                            }
+                            // 
+                            var locationTotal = 0;
+                            var majorTotal = 0;
+                            var interestsTotal = 0;
+                            var involvementTotal = 0;
+
+                            bumpGroupMembers.forEach(member => {
+                                locationTotal += location(member, pnm);
+                                majorTotal += major(member.Major, pnm.Major);
+                                interestsTotal += interests(member.Activities, pnm.Activities);
+                                involvementTotal += involvement(member.Involvement, pnm.Involvement);
+                                //console.log("calculating...");
+                            })
+                            var bumpGroupTotal = ((locationTotal + majorTotal + interestsTotal + involvementTotal) / (16 * bumpGroupMembers.length)) * 100;
+                            //console.log(bumpGroupTotal);
+                            // Edit this one line to add name 
+                            pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
+                        }
+                        });
+                // console.log("PNM Compatibility:", pnmCompatibility);
+                // console.log(pnmCompatibility[1]); // This shows that it is actually working just not printing in console
+                // console.warn(Object.entries(pnmDictionaries).length); There are only 50 PNMs so it makes sense that not all bump groups would be full
+              
+                return pnmCompatibility;
+              };
+              
+    
+            const location = (member, pnm) => {
+                // console.warn("member: " + member['State'] + " pnm: " + pnm["State"]);
+                if (member['State'] === pnm['State'] && member['County'] === pnm['County'] && member['Hometown'] === pnm['Hometown']) {
+                    return 5;
+                } else if (member['State'] === pnm['State'] && member['County'] === pnm['County']) {
+                    return (5 / 3) * 2;
+                } else if (member['State'] === pnm['State']) {
+                    return 5 / 3;
+                } else {
+                    return 0;
+                }
+            };
+        
+            const major = (memberMajors, pnmMajors) => {
+                // console.warn("member: " + memberMajors + " pnm: " + pnmMajors);
+                if (!Array.isArray(pnmMajors)) {
+                    return 0; // Return 0 if pnmInvs is not an array
+                }
+                if (!Array.isArray(memberMajors)) {
+                    return 0; // Return 0 if pnmInvs is not an array
+                }
+                return pnmMajors.some(pnmMajor => memberMajors.includes(pnmMajor)) ? 4 : 0;
+            };
+        
+            const interests = (memberInts, pnmInts) => {
+                // console.warn("member: " + memberInts + " pnm: " + pnmInts);
+                if (!Array.isArray(pnmInts)) {
+                    return 0; // Return 0 if pnmInvs is not an array
+                }
+                if (!Array.isArray(memberInts)) {
+                    return 0; // Return 0 if pnmInvs is not an array
+                }
+                return pnmInts.filter(pnmInt => memberInts.includes(pnmInt)).length;
+            };
+        
+            const involvement = (memberInvs, pnmInvs) => {
+                // console.warn("member: " + memberInvs + " pnm: " + pnmInvs);
+                if (!Array.isArray(pnmInvs)) {
+                    return 0; // Return 0 if pnmInvs is not an array
+                }
+                if (!Array.isArray(memberInvs)) {
+                    return 0; // Return 0 if memberInvs is not an array or is undefined
+                }
+                return pnmInvs.reduce((score, pnmInv) => {
+                    return memberInvs.includes(pnmInv) ? score + (4 / 3) : score;
+                }, 0);
+            };
+        
+            
+            const match = (pnmPcts) => {
+                const finalMatches = {};
+                for (let j = 1; j <= Object.keys(detailedBumpGroups).length; j++) {
+                    finalMatches[j] = [];
+                }
+                
+            // Why percents may be showing up as 0%:
+            // Empty Percent Lists: If percentList is empty, percentList.forEach() won't execute at all.
+            // Once we resolve the empty bump group issue, we can see if that's what's also causing issues with this
+
+                let processedPNMs = new Set();
+
+        
+                for (let i = 100; i >= 0; i--) {
+                    for (const [pnm, percentList] of Object.entries(pnmPcts)) {
+                        percentList.forEach((percent, index) => {
+                            // Round the percentage to the nearest integer
+                            const roundedPercent = Math.round(Number(percent));
+                            
+                            if (roundedPercent === i && finalMatches[index + 1].length <= numberOfPNMs && percent != null && Number(percent) != 0) {
+                                if (!processedPNMs.has(pnm)){
+                                    finalMatches[index + 1].push({ [pnm]: `${percent}%` }); // can change to roundedPercent if we want it to look cuter
+                                    processedPNMs.add(pnm);
+                                    pnmPcts[pnm] = [];
+                                }
+                            }
+                        });
+                    }
+                }
+            
+                // console.warn(finalMatches[8]);
+                return finalMatches;
+            };
+            
+        
+            const createMatches = () => {
+                const pnmPercents = calculatePercent(detailedBumpGroups, pnmDictionaries);
+                console.log(calculatePercent(detailedBumpGroups, pnmDictionaries));
+                const finalMatches = match(pnmPercents);
+        
+                console.log("Final Matches:", finalMatches);
+                setMatches(finalMatches);
+            };
+        
+            if (detailedBumpGroups && pnmDictionaries.length > 0) {
+                createMatches();
+            }
+        }, [detailedBumpGroups, pnmDictionaries]);
+    
     
 
     return (
         <div className="AboutUs">
             <h1>View Results</h1>
+            <button onClick={handleClick}>Click Me</button>
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
                     <div key={index}>
