@@ -10,7 +10,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 const Results = () => {
     const [pnmResults, setPNMResults] = useState([]); //RAW PNM SURVEYS RESULTS
     const [chapterResults, setChapterResults] = useState([]); //RAW CHAPTER SURVEY RESULTS
-    const [BumpGroupResults, setBumpGroupResults] = useState([]); //RAW BUMP GROUP SURVEY RESULTS
+    const [bumpGroupResults, setBumpGroupResults] = useState([]); //RAW BUMP GROUP SURVEY RESULTS
    
     const [selectedIndex, setSelectedIndex] = useState(null); //variable used to control who is being clicked for their survey results
     const [displayNames, setDisplayNames] = useState([]); //holds an array with the name and whether they submmited the survey or not in the form of true/false
@@ -102,7 +102,7 @@ const Results = () => {
 
     const extractBumpNames = (surveyResult) => { //Method to extract names from the bump group survey results
         const bumpGroups = {};
-          BumpGroupResults.forEach(result => { //iterate over reach result in bump group results 
+          bumpGroupResults.forEach(result => { //iterate over reach result in bump group results 
             Object.keys(result.surveyData).forEach(bumpKey => { //iterate over the keys in result.surveyData
               if (bumpKey.startsWith("Bump")) {
                 const bumpGroup = result.surveyData[bumpKey]; //gets the bump group data
@@ -132,11 +132,11 @@ const Results = () => {
     };
 
     useEffect(() => { // Sets the names to display in the list
-        if (chapterResults.length > 0 && BumpGroupResults.length > 0) { // If both chapterResults and BumpGroupResults are populated
+        if (chapterResults.length > 0 && bumpGroupResults.length > 0) { // If both chapterResults and BumpGroupResults are populated
             const namesOnly = extractNames(chapterResults);
             console.log('Names only:', namesOnly);
 
-            const bumpGroups = BumpGroupResults.map(result => extractBumpNames(result));
+            const bumpGroups = bumpGroupResults.map(result => extractBumpNames(result));
             const combinedBumpGroups = bumpGroups.reduce((acc, curr) => {
                 for (let bump in curr) {
                     if (acc[bump]) {
@@ -152,7 +152,7 @@ const Results = () => {
             console.log('Compared Names:', comparedNames);
             setDisplayNames(comparedNames);
         }
-    }, [chapterResults, BumpGroupResults]);
+    }, [chapterResults, bumpGroupResults]);
 
     
 
