@@ -6,13 +6,25 @@ import moriahheadshot from './photos/moriahheadshot.jpeg';
 import shayheadshot from './photos/shayheadshot.jpeg';
 import mayaheadshot from './photos/mayaheadshot.jpeg';
 import Carousel from './Carousel';
+import hoopspanhel from './photos/hoopspanhel.jpg';
+import castlepanhel from './photos/castlepanhel.png';
+import novadancepanhel from './photos/novadancepanhel.png';
+import amitha from './photos/amitha.png';
+import axo from './photos/axo.png';
+import dg from './photos/dg.png';
+import tridelt from './photos/tridelt.png';
 
 
 const AboutUs = () => {
     const images = [
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTs37vBWynSG_6T3SOtlhRXKxkewmRBb0xTPA&s',
+        castlepanhel,
         'https://villanovan.com/wp-content/uploads/2022/04/graydon-paul.jpeg',
-        'https://via.placeholder.com/800x400/5733ff/fff',
+        hoopspanhel,
+        novadancepanhel,
+        amitha,
+        axo,
+        dg,
+        tridelt,
       ];
     return (
         <div className = "AboutUs">

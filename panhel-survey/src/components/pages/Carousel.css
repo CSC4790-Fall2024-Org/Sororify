@@ -1,49 +1,54 @@
-
 .carousel {
-    position: relative;
-    max-width: 100%;
-    overflow: hidden;
-    margin: 0 auto;
-    border-radius: 0.5rem;
-    display: flex;
-    justify-content: center; /* Center images horizontally */
-    align-items: center; /* Center images vertically */
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-  .carousel img {
-    width: 50%; /* Ensure images take up the full width of the carousel */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 400px; /* Set a maximum height for the images */
-    object-fit: cover /* Ensure images cover the area without distortion */
+
+.carousel__inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
 }
-  .carousel__btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: rgb(20, 13, 13);
-    font-size: 1.5rem;
-    border: none;
-    padding: 1rem;
-    cursor: pointer;
-    z-index: 1;
-    transition: background-color 0.3s;
-  }
-  .carousel__btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-  .carousel__btn--prev {
-    left: 0;
-  }
-  .carousel__btn--next {
-    right: 0;
-  }
-  .carousel__img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 0.3s ease-in-out;
-  }
-  .carousel__img:hover {
-    transform: scale(1.05);
-  }
-  
+
+.carousel__item {
+  min-width: 40%; /* Adjust this value to control the size of the preview */
+  margin: 0 10px; /* Adjust this value to control the spacing between images */
+  flex-shrink: 0;
+}
+
+.carousel img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.carousel__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: rgb(20, 13, 13);
+  font-size: 1.5rem;
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  transition: background-color 0.3s;
+}
+
+.carousel__btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel__btn--prev {
+  left: 0;
+}
+
+.carousel__btn--next {
+  right: 0;
+}
