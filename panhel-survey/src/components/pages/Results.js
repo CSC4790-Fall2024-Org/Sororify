@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AboutUs.css';
 import DoneIcon from '@mui/icons-material/Done';
-import { List, ListItemButton, ListItemText, ListItemIcon, Collapse, Button } from '@mui/material';
+import { Container, List, ListItemButton, ListItemText, ListItemIcon, Collapse, Button } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
@@ -450,8 +450,14 @@ const Results = () => {
 
     return (
         <div className="AboutUs">
-            <h1 style={{ fontFamily: 'Georgia, serif' }}>View Results</h1>
-
+            <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>View Results</h2>
+            <Container
+             sx={{
+                height: '300px', // Set the desired height
+                overflowY: 'auto', // Enable vertical scrolling
+                overflowX: 'hidden' // Disable horizontal scrolling
+            }}
+            >
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
                     <div key={index}>
@@ -481,9 +487,10 @@ const Results = () => {
                     </div>
                 ))}
             </List>
+            </Container>
             {selectedResult && (
                 <div className="selected-result">
-                    <h2>Selected Result</h2>
+                    <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Selected Result</h2>
                    <pre>{selectedResult}</pre>
                 </div>
             )}
