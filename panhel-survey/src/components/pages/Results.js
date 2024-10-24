@@ -451,13 +451,7 @@ const Results = () => {
     return (
         <div className="AboutUs">
             <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>View Results</h2>
-            <Container
-             sx={{
-                height: '300px', // Set the desired height
-                overflowY: 'auto', // Enable vertical scrolling
-                overflowX: 'hidden' // Disable horizontal scrolling
-            }}
-            >
+           
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
                     <div key={index}>
@@ -487,7 +481,6 @@ const Results = () => {
                     </div>
                 ))}
             </List>
-            </Container>
             {selectedResult && (
                 <div className="selected-result">
                     <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Selected Result</h2>
