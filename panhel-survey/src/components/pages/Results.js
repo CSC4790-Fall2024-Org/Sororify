@@ -468,7 +468,7 @@ const Results = () => {
              <ul>
                 {Object.keys(matches).map((key) => (
                     <li key={key}>
-                        <strong>Group {key}:</strong>
+                        <strong>Bump {key}:</strong>
                         <ul>
                             {matches[key].map((match, index) => (
                                 <li key={index}>
