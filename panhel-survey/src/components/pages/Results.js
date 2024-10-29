@@ -160,11 +160,8 @@ const Results = () => {
         }
     }, [chapterResults, bumpGroupResults]);
 
-    // WHERE LOGIC OF ALGORITHM BEGINS
-    const handleClick = () => {
-        console.log('Button clicked!');
 
-        // This if statement formats member data
+    useEffect(() => { // Sets the names to display in the list
         if (chapterResults.length > 0) {
             const listOfDictionaries = chapterResults.map(result => {
                 const state = result.surveyData["State"]
@@ -268,8 +265,16 @@ const Results = () => {
             // If you need to store it in state, you could do it here
             setNumberOfPNMs(numberOfPNMs);  // Example if you are using state
           }
-    }
 
+
+    }, [chapterResults, bumpGroupResults]);
+
+    // WHERE LOGIC OF ALGORITHM BEGINS
+
+
+
+
+ 
 
         useEffect(() => {
             const createBumpGroupsWithDetails = () => {
@@ -452,6 +457,31 @@ const Results = () => {
         <div className="AboutUs">
             <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>View Results</h2>
            
+            
+            {selectedResult && (
+                <div className="selected-result">
+                    <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Selected Result</h2>
+                   <pre>{selectedResult}</pre>
+                </div>
+            )}
+            <div className="matches">
+             <ul>
+                {Object.keys(matches).map((key) => (
+                    <li key={key}>
+                        <strong>Group {key}:</strong>
+                        <ul>
+                            {matches[key].map((match, index) => (
+                                <li key={index}>
+                                    {Object.entries(match).map(([id, percent]) => (
+                                        <span key={id}>{`PNM: ${id}, Percent: ${percent}`}</span>
+                                    ))}
+                                </li>
+                            ))}
+                      </ul>
+                     </li>
+                     ))}
+              </ul>
+            </div>
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
                     <div key={index}>
@@ -481,45 +511,8 @@ const Results = () => {
                     </div>
                 ))}
             </List>
-            {selectedResult && (
-                <div className="selected-result">
-                    <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Selected Result</h2>
-                   <pre>{selectedResult}</pre>
-                </div>
-            )}
-            <div className="matches">
-            <Button
-                variant="text"
-                onClick={handleClick}
-                sx={{
-                    color: '#F94EA0',
-                    fontSize: '20px', // Adjust the size as needed
-                    fontFamily: 'Georgia, serif',
-                    display: 'block',
-                    margin: '0 auto',
-                    textTransform: 'none',
-                }}
-            >
-                 Matches
-            </Button>
-                
-             <ul>
-                {Object.keys(matches).map((key) => (
-                    <li key={key}>
-                        <strong>Group {key}:</strong>
-                        <ul>
-                            {matches[key].map((match, index) => (
-                                <li key={index}>
-                                    {Object.entries(match).map(([id, percent]) => (
-                                        <span key={id}>{`PNM: ${id}, Percent: ${percent}`}</span>
-                                    ))}
-                                </li>
-                            ))}
-                </ul>
-            </li>
-        ))}
-    </ul>
-            </div>
+
+
         </div>
     );
 };
