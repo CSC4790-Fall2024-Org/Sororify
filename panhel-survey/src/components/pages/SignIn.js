@@ -85,7 +85,8 @@ export default function SignIn(props) {
       event.preventDefault();
       return;
     }
-    const data = new FormData(document.getElementById(event.currentTarget));
+    const form = event.currentTarget;
+    const data = new FormData(form);
     const email = data.get('email');
     const password = data.get('password');
     console.log({

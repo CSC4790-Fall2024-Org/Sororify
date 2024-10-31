@@ -127,26 +127,28 @@ export default function SignUp() {
   };
 
   const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+  
     if (nameError || emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+  
+    const form = event.currentTarget; // Get the form element
+    const data = new FormData(form); // Create a FormData object from the form element
+  
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/signup/', { username, email, password });
+      const response = await axios.post('http://localhost:8000/api/auth/signup/', {
+        username: data.get('username'),
+        email: data.get('email'),
+        password: data.get('password'),
+        role: data.get('role'),
+      });
       console.log(response.data);
       // Handle successful sign-up (e.g., redirect to login page)
     } catch (error) {
       console.error('There was an error!', error);
       setError('Failed to sign up. Please try again.');
     }
-
-    const data = new FormData(document.getElementById(event.currentTarget));
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   return (
