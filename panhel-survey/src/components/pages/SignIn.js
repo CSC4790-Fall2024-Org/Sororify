@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
+import axios from 'axios';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -79,16 +80,26 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     if (emailError || passwordError) {
       event.preventDefault();
       return;
     }
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(document.getElementById(event.currentTarget));
+    const email = data.get('email');
+    const password = data.get('password');
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: email,
+      password: password,
     });
+    try {
+        const response = await axios.post('/api/auth/login/', { email, password });
+        console.log(response.data);
+        // Handle successful login (e.g., redirect to home page)
+      } catch (error) {
+        console.error('There was an error!', error);
+        // Handle error (e.g., show error message)
+      }
   };
 
   const validateInputs = () => {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -17,6 +18,7 @@ import MuiCard from '@mui/material/Card';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import axios from 'axios';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -64,6 +66,10 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [role, setRole] = React.useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
     // Check if there is a preferred mode in localStorage
@@ -120,12 +126,21 @@ export default function SignUp() {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     if (nameError || emailError || passwordError) {
       event.preventDefault();
       return;
     }
-    const data = new FormData(event.currentTarget);
+    try {
+      const response = await axios.post('http://localhost:3000/api/auth/signup/', { username, email, password });
+      console.log(response.data);
+      // Handle successful sign-up (e.g., redirect to login page)
+    } catch (error) {
+      console.error('There was an error!', error);
+      setError('Failed to sign up. Please try again.');
+    }
+
+    const data = new FormData(document.getElementById(event.currentTarget));
     console.log({
       name: data.get('name'),
       lastName: data.get('lastName'),
