@@ -17,6 +17,7 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -217,7 +218,7 @@ export default function SignIn(props) {
               Don&apos;t have an account?{' '}
               <span>
                 <Link
-                  href="/material-ui/getting-started/templates/sign-in/"
+                  href="/SignUp/"
                   variant="body2"
                   sx={{ alignSelf: 'center' }}
                 >
