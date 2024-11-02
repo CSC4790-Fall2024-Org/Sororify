@@ -339,6 +339,7 @@ const Results = () => {
                             //console.log(bumpGroupTotal);
                             // Edit this one line to add name 
                             pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
+                            //pnmCompatibility[pnm["Name"]].push(pnm.FirstName + pnm.LastName);
                         }
                         });
                 // console.log("PNM Compatibility:", pnmCompatibility);
@@ -347,7 +348,6 @@ const Results = () => {
               
                 return pnmCompatibility;
               };
-              
     
             const location = (member, pnm) => {
                 // console.warn("member: " + member['State'] + " pnm: " + pnm["State"]);
@@ -423,7 +423,13 @@ const Results = () => {
                                     const pnmDict = pnmDictionaries.find(dict => dict.pnm === pnm);
                                     finalMatches[index + 1].push({ [pnm]: pnmDict['FirstName']});
                                     */
-                                    finalMatches[index + 1].push({ [pnm]: `${roundedPercent}%` }); // can change to roundedPercent if we want it to look cuter
+                                    const fullName = getFullNameByPNMNumber(Number(pnm), pnmDictionaries);
+                                    finalMatches[index + 1].push({
+                                         [pnm]: { 
+                                            name: fullName, 
+                                            compatibility: `${roundedPercent}%`
+                                        }
+                                    }); 
                                     processedPNMs.add(pnm);
                                     pnmPcts[pnm] = [];
                                 }
@@ -450,7 +456,11 @@ const Results = () => {
                 createMatches();
             }
         }, [detailedBumpGroups, pnmDictionaries]);
-    
+
+        const getFullNameByPNMNumber = (pnmNumber, data) => {
+            const pnm = data.find(item => item["PNM number"] === pnmNumber);
+            return pnm ? `${pnm.FirstName} ${pnm.LastName}` : null; // Return null if PNM number is not found
+        };
     
 
     return (
