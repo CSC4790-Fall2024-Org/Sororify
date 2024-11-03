@@ -475,22 +475,24 @@ const Results = () => {
                 </div>
             )}
             <div className="matches">
-             <ul>
-                {Object.keys(matches).map((key) => (
-                    <li key={key}>
-                        <strong>Bump {key}:</strong>
-                        <ul>
-                            {matches[key].map((match, index) => (
-                                <li key={index}>
-                                    {Object.entries(match).map(([id, percent]) => (
-                                        <span key={id}>{`PNM: ${id}, Percent: ${percent}`}</span>
-                                    ))}
-                                </li>
-                            ))}
-                      </ul>
-                     </li>
-                     ))}
-              </ul>
+            <ul>
+    {Object.keys(matches).map((key) => (
+        <li key={key}>
+            <strong>Bump {key}:</strong>
+            <ul>
+                {matches[key].map((match, index) => (
+                    <li key={index}>
+                        {Object.entries(match).map(([id, details]) => (
+                            <span key={id}>
+                                {`${details.name}, PNM ${id} - Compatibility: ${details.compatibility}`}
+                            </span>
+                        ))}
+                    </li>
+                ))}
+            </ul>
+        </li>
+    ))}
+</ul>
             </div>
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
