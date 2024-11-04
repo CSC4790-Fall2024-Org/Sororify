@@ -15,7 +15,6 @@ import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import MuiCard from '@mui/material/Card';
-import MenuItem from '@mui/material/MenuItem';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
