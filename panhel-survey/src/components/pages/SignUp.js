@@ -199,21 +199,6 @@ export default function SignUp() {
                 />
               </FormControl>
               <FormControl>
-          <FormLabel htmlFor="role">Role</FormLabel>
-          <Select
-            id="role"
-            placeholder="Select your role"
-            name="role"
-            value={role}
-            onChange={handleRoleChange}
-            required
-            fullWidth
-          >
-            <MenuItem value="member">Member</MenuItem>
-            <MenuItem value="pnm">PNM</MenuItem>
-          </Select>
-        </FormControl>
-              <FormControl>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <TextField
                   required
