@@ -48,7 +48,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['file', 'console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
     },
@@ -117,7 +117,12 @@ DATABASES = {
             'NAME': 'SororifySurvey',
             'ENFORCE_SCHEMA': False,
             'CLIENT': {
-                'host': 'mongodb+srv://sororify-admin:Sororify1!@mycluster.o1kdr.mongodb.net/'
+                'host': 'mongodb+srv://sororify-admin:Sororify1!@mycluster.o1kdr.mongodb.net/',
+                'port': 5000,
+                'username': 'sororify-admin',
+                'password': 'Sororify1!',
+                'authSource':'admin',
+                'authMechanism': 'SCRAM-SHA-1',
             }  
         }
 }
