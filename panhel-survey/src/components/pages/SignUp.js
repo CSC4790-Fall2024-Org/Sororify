@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -12,11 +13,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
-import MuiCard from '@mui/material/Card';
 import MenuItem from '@mui/material/MenuItem';
+import MuiCard from '@mui/material/Card';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import axios from 'axios';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -63,7 +65,11 @@ export default function SignUp() {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [role, setRole] = React.useState('Select your role');
+  const [role, setRole] = React.useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
     // Check if there is a preferred mode in localStorage
@@ -82,6 +88,7 @@ export default function SignUp() {
   const handleRoleChange = (event) => {
     setRole(event.target.value);
   };
+
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
@@ -119,18 +126,29 @@ export default function SignUp() {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+  
     if (nameError || emailError || passwordError) {
-      event.preventDefault();
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  
+    const form = event.currentTarget; // Get the form element
+    const data = new FormData(form); // Create a FormData object from the form element
+  
+    try {
+      const response = await axios.post('http://localhost:8000/api/auth/signup/', {
+        username: data.get('username'),
+        email: data.get('email'),
+        password: data.get('password'),
+        role: data.get('role'),
+      });
+      console.log(response.data);
+      // Handle successful sign-up (e.g., redirect to login page)
+    } catch (error) {
+      console.error('There was an error!', error);
+      setError('Failed to sign up. Please try again.');
+    }
   };
 
   return (
@@ -151,21 +169,7 @@ export default function SignUp() {
               onSubmit={handleSubmit}
               sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
             >
-              <FormControl>
-                <FormLabel htmlFor="name">Full name</FormLabel>
-                <TextField
-                  autoComplete="name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="name"
-                  placeholder="Jon Snow"
-                  error={nameError}
-                  helperText={nameErrorMessage}
-                  color={nameError ? 'error' : 'primary'}
-                />
-              </FormControl>
-              <FormControl>
+            <FormControl>
           <FormLabel htmlFor="role">Role</FormLabel>
           <Select
             id="role"
@@ -180,6 +184,20 @@ export default function SignUp() {
             <MenuItem value="pnm">PNM</MenuItem>
           </Select>
         </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="name">Full name</FormLabel>
+                <TextField
+                  autoComplete="name"
+                  name="name"
+                  required
+                  fullWidth
+                  id="name"
+                  placeholder="Jon Snow"
+                  error={nameError}
+                  helperText={nameErrorMessage}
+                  color={nameError ? 'error' : 'primary'}
+                />
+              </FormControl>
               <FormControl>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <TextField

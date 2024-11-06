@@ -1,0 +1,3 @@
+(0.001) QUERY = 'SELECT "auth_group"."id", "auth_group"."name" FROM "auth_group" WHERE "auth_group"."name" = %s LIMIT 21' - PARAMS = ('Admin',); args=('Admin',); alias=default
+(0.001) QUERY = 'SELECT "auth_permission"."id", "auth_permission"."name", "auth_permission"."content_type_id", "auth_permission"."codename" FROM "auth_permission" WHERE "auth_permission"."codename" = %s LIMIT 21' - PARAMS = ('add_user',); args=('add_user',); alias=default
+(0.052) QUERY = 'INSERT INTO "auth_group_permissions" ("group_id", "permission_id") VALUES (%s, %s)' - PARAMS = (4, 13); args=(4, 13); alias=default
