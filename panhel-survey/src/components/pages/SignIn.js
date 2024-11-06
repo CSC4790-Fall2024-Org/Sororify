@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -71,6 +72,7 @@ export default function SignIn(props) {
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const defaultTheme = createTheme({ palette: { mode } });
   const SignUpTheme = createTheme(getSignUpTheme(mode));
+  const [successMessage, setSuccessMessage] = useState(''); // State variable for success message
 
 
   const handleClickOpen = () => {
@@ -87,21 +89,35 @@ export default function SignIn(props) {
       return;
     }
     const form = event.currentTarget;
-    const data = new FormData(form);
+    console.log('Form submitted'); // Debugging statement
+    const data = new FormData(event.currentTarget);
+    // const data = new FormData(form);
     const email = data.get('email');
     const password = data.get('password');
+    console.log('Form data:', { email, password }); // Debugging statement
     console.log({
       email: email,
       password: password,
     });
     try {
-        const response = await axios.post('/api/auth/login/', { email, password });
-        console.log(response.data);
-        // Handle successful login (e.g., redirect to home page)
-      } catch (error) {
-        console.error('There was an error!', error);
-        // Handle error (e.g., show error message)
+      const response = await axios.post('/api/signin', { email, password });
+      console.log('Server response:', response.data); // Debugging statement
+      if (response.data.success) {
+        // Handle successful sign in
+        console.log('Sign in successful');
+        setSuccessMessage('Sign in successful'); // Update success message
+      } else {
+        // Handle sign in error
+        console.log('Sign in unsuccessful');
+        setEmailError(true);
+        setEmailErrorMessage(response.data.message);
       }
+    } catch (error) {
+      // Handle server error
+      console.error('Error during sign in:', error); // Debugging statement
+      setEmailError(true);
+      setEmailErrorMessage('Server error, please try again later.');
+    }
   };
 
   const validateInputs = () => {
@@ -144,6 +160,10 @@ export default function SignIn(props) {
           >
             Sign in
           </Typography>
+          {successMessage && (
+            <Typography variant="body1" color="success.main">
+              {successMessage}
+            </Typography> )}
           <Box
             component="form"
             onSubmit={handleSubmit}
