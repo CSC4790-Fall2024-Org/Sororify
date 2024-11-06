@@ -19,6 +19,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -74,6 +75,7 @@ export default function SignIn(props) {
   const SignUpTheme = createTheme(getSignUpTheme(mode));
   const [successMessage, setSuccessMessage] = useState(''); // State variable for success message
 
+  const navigate = useNavigate(); // Get the navigate function
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -106,6 +108,7 @@ export default function SignIn(props) {
         // Handle successful sign in
         console.log('Sign in successful');
         setSuccessMessage('Sign in successful'); // Update success message
+        navigate('/'); // Redirect to the About Us page
       } else {
         // Handle sign in error
         console.log('Sign in unsuccessful');
