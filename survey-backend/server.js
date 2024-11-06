@@ -36,9 +36,10 @@ function getSurveyModel(surveyType) {
     // Check if the model already exists to prevent re-registering the same model
     return mongoose.models[collectionName] || mongoose.model(collectionName, surveyResultSchema, collectionName);
 }
-
-app.post('/api/signin', async (req, res) => {
+// Sign-In Endpoint
+app.post('/api/auth/signin', async (req, res) => {
     const { email, password } = req.body;
+    console.log('Sign in request received:', { email, password }); // Debugging statement
   
     try {
       const user = await User.findOne({ email });

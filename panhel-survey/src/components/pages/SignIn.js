@@ -102,7 +102,7 @@ export default function SignIn(props) {
       password: password,
     });
     try {
-      const response = await axios.post('/api/signin', { email, password });
+      const response = await axios.post('http://localhost:5000/api/auth/signin/', { email, password });
       console.log('Server response:', response.data); // Debugging statement
       if (response.data.success) {
         // Handle successful sign in
