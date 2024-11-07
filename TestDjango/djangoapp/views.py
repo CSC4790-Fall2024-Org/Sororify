@@ -9,6 +9,8 @@ import json
 from django.contrib.auth.hashers import make_password
 import logging
 from django.http import HttpResponse
+from django.contrib.auth.hashers import check_password
+
 
 
 #logging.basicConfig(level=logging.INFO)
@@ -51,21 +53,32 @@ def signup(request):
             return JsonResponse({'success': False, 'error': 'Error inserting user into MongoDB'})
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
-def login(request):
+@csrf_exempt
+def signin(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
 
+        print(f'Received sign-in request: email={email}, password={password}')  # Debugging statement
+
         if not email or not password:
+            print('Email and password are required')  # Debugging statement
             return JsonResponse({'error': 'Email and password are required'}, status=400)
 
         # Check if user exists
         user = users_collection.find_one({'email': email})
         if not user:
-            # Create new user
-            users_collection.insert_one({'email': email, 'password': password})
+            print('User not found')  # Debugging statement
+            return JsonResponse({'error': 'Invalid email or password'}, status=400)
 
-        return JsonResponse({'success': True})
+        # Verify password
+        if not check_password(password, user['password']):
+            print('Password does not match')  # Debugging statement
+            return JsonResponse({'error': 'Invalid email or password'}, status=400)
 
+        print('Sign in successful')  # Debugging statement
+        return JsonResponse({'success': True, 'message': 'Sign in successful'})
+
+    print('Invalid request method')  # Debugging statement
     return JsonResponse({'error': 'Invalid request method'}, status=405)

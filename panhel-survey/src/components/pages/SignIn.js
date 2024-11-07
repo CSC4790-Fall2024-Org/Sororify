@@ -86,13 +86,15 @@ export default function SignIn(props) {
   };
 
   const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+  
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const form = event.currentTarget;
     console.log('Form submitted'); // Debugging statement
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(form);
     // const data = new FormData(form);
     const email = data.get('email');
     const password = data.get('password');
@@ -102,7 +104,8 @@ export default function SignIn(props) {
       password: password,
     });
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/signin/', { email, password });
+      console.log('Sending request to server...'); // Debugging statement
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password });
       console.log('Server response:', response.data); // Debugging statement
       if (response.data.success) {
         // Handle successful sign in
@@ -118,6 +121,13 @@ export default function SignIn(props) {
     } catch (error) {
       // Handle server error
       console.error('Error during sign in:', error); // Debugging statement
+      if (error.response) {
+        console.error('Server responded with an error:', error.response.data); // Debugging statement
+      } else if (error.request) {
+        console.error('No response received from server:', error.request); // Debugging statement
+      } else {
+        console.error('Error setting up the request:', error.message); // Debugging statement
+      }
       setEmailError(true);
       setEmailErrorMessage('Server error, please try again later.');
     }
