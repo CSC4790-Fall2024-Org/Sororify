@@ -9,6 +9,7 @@ import json
 from django.contrib.auth.hashers import make_password
 import logging
 from django.http import HttpResponse
+from .models import Profile
 
 
 #logging.basicConfig(level=logging.INFO)
@@ -33,6 +34,7 @@ def signup(request):
             username = data['username']
             email = data['email']
             password = make_password(data['password'])  # Hash the password
+            role = data.get('role')
 
             # Check if the user already exists
             if users_collection.find_one({'email': email}):
@@ -42,9 +44,19 @@ def signup(request):
             result = users_collection.insert_one({
                 'username': username,
                 'email': email,
-                'password': password
+                'password': password,
+                'role': role
             })
             logging.info(f'User {username} inserted with id {result.inserted_id}')
+
+            # Store user data in Django
+            user = User.objects.create(
+                username=username,
+                email=email,
+                password=password
+            )
+            Profile.objects.create(user=user, role=role)
+
             return JsonResponse({'success': True})
         except Exception as e:
             logging.error(f'Error inserting user: {e}')
