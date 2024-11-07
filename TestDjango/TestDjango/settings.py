@@ -96,10 +96,20 @@ DATABASES = {
             'NAME': 'SororifySurvey',
             'ENFORCE_SCHEMA': False,
             'CLIENT': {
-                'host': 'mongodb+srv://sororify-admin:Sororify1!@mycluster.o1kdr.mongodb.net/'
+                'host': 'mongodb+srv://sororify-admin:Sororify1!@mycluster.o1kdr.mongodb.net/SororifySurvey?retryWrites=true&w=majority',
+                'username': 'sororify-admin',
+                'password': 'Sororify1!',
+                'authSource':'admin',
+                'authMechanism': 'SCRAM-SHA-1',
             }  
         }
 }
+# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_SECURE = False  # Set to True in production
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
 
 
 # Password validation

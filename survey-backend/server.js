@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const bcrypt = require('bcryptjs');
+const User = require('./models/User');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -34,6 +36,56 @@ function getSurveyModel(surveyType) {
     // Check if the model already exists to prevent re-registering the same model
     return mongoose.models[collectionName] || mongoose.model(collectionName, surveyResultSchema, collectionName);
 }
+// Sign-In Endpoint
+app.post('/api/auth/signin', async (req, res) => {
+    const { email, password } = req.body;
+    console.log('Sign in request received:', { email, password }); // Debugging statement
+  
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ success: false, message: 'Invalid email or password' });
+      }
+  
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: 'Invalid email or password' });
+      }
+      console.log('Sign in successful for user:', email);
+      res.json({ success: true, message: 'Sign in successful' });
+    } catch (error) {
+      console.error('Error during sign in:', error);
+      res.status(500).json({ success: false, message: 'Server error, please try again later' });
+    }
+  });
+
+// Sign-Up Endpoint
+app.post('/api/auth/signup', async (req, res) => {
+    const { username, email, password, role } = req.body;
+  
+    try {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ success: false, message: 'Email already in use' });
+      }
+  
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+  
+      const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+        role
+      });
+  
+      await newUser.save();
+      res.status(201).json({ success: true, message: 'User registered successfully' });
+    } catch (error) {
+      console.error('Error during sign up:', error);
+      res.status(500).json({ success: false, message: 'Server error, please try again later' });
+    }
+  });
 
 // API Endpoint to save survey results
 app.post('/api/survey-results', (req, res) => {
