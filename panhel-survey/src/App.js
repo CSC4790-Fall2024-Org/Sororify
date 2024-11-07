@@ -17,7 +17,9 @@ import Results from './components/pages/Results';
 import SignUp from './components/pages/SignUp';
 import SignIn from './components/pages/SignIn';
 
+
 function App() {
+  
   return (
     <div>
       <Navbar />
@@ -39,6 +41,7 @@ function App() {
 
           
         </Routes>
+        
     </div>
   )
     
