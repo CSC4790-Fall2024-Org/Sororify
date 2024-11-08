@@ -2,6 +2,8 @@
 /* Navbar */
 .navbar { 
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: white;
   padding: 1rem;
 }
@@ -13,6 +15,13 @@
     margin-right: 1rem; /* Add some space between the logo and the links */
   }
 
+  .navbar-menu {
+    list-style: none; /* Remove bullet points */
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
 
 .nav-link, .dropbtn {
   color: #f94ea0;

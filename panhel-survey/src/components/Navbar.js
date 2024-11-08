@@ -32,6 +32,7 @@ export const Navbar = () => {
     return (
       <nav className="navbar">
       <NavLink to="/"> <img src={logo} alt="Logo" className="navbar-logo" /></NavLink>
+      <ul className="navbar-menu">
       {user ? (
             <>
               <li style={{ fontFamily: 'Georgia, serif', color: '#F94EA0' }}>Welcome, {user.email}</li>
@@ -61,6 +62,7 @@ export const Navbar = () => {
               <li><NavLink to="/SignIn" className="nav-link">Sign In</NavLink></li>
             </>
           )}
+          </ul>
     </nav>
     );
 }
