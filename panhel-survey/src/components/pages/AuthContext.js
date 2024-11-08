@@ -1,0 +1,51 @@
+import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    console.log('Auth token:', authToken); // Debugging line
+    if (authToken) {
+      // Fetch user data based on the token
+      fetchUserData(authToken).then(userData => {
+        setUser(userData);
+      });
+    }
+  }, []);
+
+  const signIn = (userData, token) => {
+    console.log('Setting auth token:', token); 
+    localStorage.setItem('authToken', token);
+    setUser(userData);
+  };
+
+  const signOut = () => {
+    localStorage.removeItem('authToken');
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, signIn, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const fetchUserData = async (token) => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/auth/user/', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log('Fetched user data:', response.data);
+      return response.data; // Assuming the response data contains user information
+    } catch (error) {
+      console.error('There was an error fetching user data!', error);
+      return null;
+    }
+  };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -18,6 +18,7 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import axios from 'axios';
+import { AuthContext } from './AuthContext';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -63,7 +64,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props) {
+const SignIn = () =>{
   const [mode, setMode] = React.useState('light');
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
@@ -73,8 +74,8 @@ export default function SignIn(props) {
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const defaultTheme = createTheme({ palette: { mode } });
   const SignUpTheme = createTheme(getSignUpTheme(mode));
+  const { user, signIn } = useContext(AuthContext);
   const [successMessage, setSuccessMessage] = useState(''); // State variable for success message
-
   const navigate = useNavigate(); // Get the navigate function
 
   const handleClickOpen = () => {
@@ -83,54 +84,6 @@ export default function SignIn(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-  
-    if (emailError || passwordError) {
-      return;
-    }
-
-    const form = event.currentTarget;
-    console.log('Form submitted'); // Debugging statement
-    const data = new FormData(form);
-    // const data = new FormData(form);
-    const email = data.get('email');
-    const password = data.get('password');
-    console.log('Form data:', { email, password }); // Debugging statement
-    console.log({
-      email: email,
-      password: password,
-    });
-    try {
-      console.log('Sending request to server...'); // Debugging statement
-      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password });
-      console.log('Server response:', response.data); // Debugging statement
-      if (response.data.success) {
-        // Handle successful sign in
-        console.log('Sign in successful');
-        setSuccessMessage('Sign in successful'); // Update success message
-        navigate('/'); // Redirect to the About Us page
-      } else {
-        // Handle sign in error
-        console.log('Sign in unsuccessful');
-        setEmailError(true);
-        setEmailErrorMessage(response.data.message);
-      }
-    } catch (error) {
-      // Handle server error
-      console.error('Error during sign in:', error); // Debugging statement
-      if (error.response) {
-        console.error('Server responded with an error:', error.response.data); // Debugging statement
-      } else if (error.request) {
-        console.error('No response received from server:', error.request); // Debugging statement
-      } else {
-        console.error('Error setting up the request:', error.message); // Debugging statement
-      }
-      setEmailError(true);
-      setEmailErrorMessage('Server error, please try again later.');
-    }
   };
 
   const validateInputs = () => {
@@ -159,6 +112,61 @@ export default function SignIn(props) {
 
     return isValid;
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+  
+    if (emailError || passwordError) {
+      return;
+    }
+
+    const form = event.currentTarget;
+    console.log('Form submitted'); // Debugging statement
+    const data = new FormData(form);
+    const email = data.get('email');
+    const password = data.get('password');
+    console.log('Form data:', { email, password }); // Debugging statement
+    console.log({
+      email: email,
+      password: password,
+    });
+    
+    
+    try {
+      console.log('Sending request to server...'); // Debugging statement
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password });
+      console.log('Server response:', response.data); // Debugging statement
+      if (response.data.success) {
+        // Handle successful sign in
+        console.log('Sign in successful');
+        const userData = { email }; // Replace with actual user data fetching logic
+        setSuccessMessage('Sign in successful'); // Update success message
+        signIn(userData, response.data.token);
+        navigate('/'); // Redirect to the About Us page
+      } else {
+        // Handle sign in error
+        console.log('Sign in unsuccessful');
+        setEmailError(true);
+        setEmailErrorMessage(response.data.message);
+      }
+    } catch (error) {
+      // Handle server error
+      console.error('Error during sign in:', error); // Debugging statement
+      if (error.response) {
+        console.error('Server responded with an error:', error.response.data); // Debugging statement
+      } else if (error.request) {
+        console.error('No response received from server:', error.request); // Debugging statement
+      } else {
+        console.error('Error setting up the request:', error.message); // Debugging statement
+      }
+      setEmailError(true);
+      setEmailErrorMessage('No account found with the provided email and password.');
+    }
+  };
+
+  if (user) {
+    return <div>{user.name} is logged in</div>;
+  }
 
   return (
     <ThemeProvider theme={showCustomTheme ? SignUpTheme : defaultTheme}>
@@ -283,4 +291,9 @@ export default function SignIn(props) {
       </SignInContainer>
     </ThemeProvider>
   );
+
+  
+
+  
 }
+export default SignIn;
