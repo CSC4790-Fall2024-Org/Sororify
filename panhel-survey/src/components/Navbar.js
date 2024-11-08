@@ -35,8 +35,10 @@ export const Navbar = () => {
       <ul className="navbar-menu">
       {user ? (
             <>
-              <li style={{ fontFamily: 'Georgia, serif', color: '#F94EA0' }}>Welcome, {user.email}</li>
-              <li>
+              <li className="navbar-item" style={{ fontFamily: 'Georgia, serif', color: '#F94EA0' }}>
+              Welcome, {user.email}
+            </li>
+              <li className="navbar-item">
                 <button onClick={toggleDropdown} className="dropbtn">Member Surveys</button>
                 {dropdownOpen && (
                   <div className="dropdown-content">

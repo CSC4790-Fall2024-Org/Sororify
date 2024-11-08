@@ -23,6 +23,11 @@
     padding: 0;
   }
 
+  .navbar-item {
+    margin-left: 20px;
+    position: relative; /* Ensure dropdown is positioned correctly */
+  }
+
 .nav-link, .dropbtn {
   color: #f94ea0;
   padding: 14px 20px;
