@@ -34,7 +34,7 @@ export const Navbar = () => {
       <NavLink to="/"> <img src={logo} alt="Logo" className="navbar-logo" /></NavLink>
       {user ? (
             <>
-              <li>Welcome, {user.email}</li>
+              <li style={{ fontFamily: 'Georgia, serif', color: '#F94EA0' }}>Welcome, {user.email}</li>
               <li>
                 <button onClick={toggleDropdown} className="dropbtn">Member Surveys</button>
                 {dropdownOpen && (
