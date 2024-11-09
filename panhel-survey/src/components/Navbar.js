@@ -11,6 +11,7 @@ export const Navbar = () => {
     const { user, signOut } = useContext(AuthContext);
 
     const toggleDropdown = () => {
+      console.log('Dropdown button clicked');
       setDropdownOpen(!dropdownOpen);
     };
 
@@ -40,8 +41,7 @@ export const Navbar = () => {
             </li>
               <li className="navbar-item">
                 <button onClick={toggleDropdown} className="dropbtn">Member Surveys</button>
-                {dropdownOpen && (
-                  <div className="dropdown-content">
+                <div className={`dropdown-content ${dropdownOpen ? 'show' : ''}`}>
                     <NavLink to="/PNMSurvey" className="dropdown-item">PNM Survey</NavLink>
                     <NavLink to="/AXOSurvey" className="dropdown-item">AXO</NavLink>
                     <NavLink to="/AGDSurvey" className="dropdown-item">AGD</NavLink>
@@ -52,7 +52,7 @@ export const Navbar = () => {
                     <NavLink to="/KDSurvey" className="dropdown-item">KD</NavLink>
                     <NavLink to="/KKGSurvey" className="dropdown-item">KKG</NavLink>
                   </div>
-                )}
+                
               </li>
               <li><NavLink to="/InfoPage" className="nav-link">Info Page</NavLink></li>
               <li><NavLink to="/Results" className="nav-link">Results</NavLink></li>
