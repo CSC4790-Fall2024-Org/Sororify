@@ -1,10 +1,12 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // Use useHistory hook
 
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
@@ -38,6 +40,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = () => {
     localStorage.removeItem('authToken');
     setUser(null);
+    navigate('/'); // Redirect to home page
   };
 
   return (
