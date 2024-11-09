@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import make_password
 import logging
 from django.http import HttpResponse
 from django.contrib.auth.hashers import check_password
-from .models import Profile
+from .models import User, Profile
 
 #logging.basicConfig(level=logging.INFO)
 
@@ -78,6 +78,7 @@ def signin(request):
 
         # Check if user exists
         user = users_collection.find_one({'email': email})
+        role = user.get('role') if user else None
         if not user:
             print('User not found')  # Debugging statement
             return JsonResponse({'error': 'Invalid email or password'}, status=400)
@@ -88,7 +89,8 @@ def signin(request):
             return JsonResponse({'error': 'Invalid email or password'}, status=400)
 
         print('Sign in successful')  # Debugging statement
-        return JsonResponse({'success': True, 'message': 'Sign in successful'})
+        return JsonResponse({'success': True, 'message': 'Sign in successful', 'role': role})
+
 
     print('Invalid request method')  # Debugging statement
     return JsonResponse({'error': 'Invalid request method'}, status=405)

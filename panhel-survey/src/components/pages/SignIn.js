@@ -125,21 +125,23 @@ const SignIn = () =>{
     const data = new FormData(form);
     const email = data.get('email');
     const password = data.get('password');
-    console.log('Form data:', { email, password }); // Debugging statement
+    const role = data.get('role');
+    console.log('Form data:', { email, password, role }); // Debugging statement
     console.log({
       email: email,
       password: password,
+      role: role,
     });
     
     
     try {
       console.log('Sending request to server...'); // Debugging statement
-      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password });
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role });
       console.log('Server response:', response.data); // Debugging statement
       if (response.data.success) {
         // Handle successful sign in
         console.log('Sign in successful');
-        const userData = { email }; // Replace with actual user data fetching logic
+        const userData = { email, role: response.data.role }; // Replace with actual user data fetching logic
         setSuccessMessage('Sign in successful'); // Update success message
         signIn(userData, response.data.token);
         navigate('/'); // Redirect to the About Us page

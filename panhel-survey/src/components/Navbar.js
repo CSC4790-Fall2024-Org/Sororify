@@ -37,12 +37,19 @@ export const Navbar = () => {
       {user ? (
             <>
               <li className="navbar-item" style={{ fontFamily: 'Georgia, serif', color: '#F94EA0' }}>
-              Welcome, {user.email}
-            </li>
+              Welcome, {user.email} ({user.role})!
+              </li>
               <li className="navbar-item">
                 <button onClick={toggleDropdown} className="dropbtn">Member Surveys</button>
                 <div className={`dropdown-content ${dropdownOpen ? 'show' : ''}`}>
-                    <NavLink to="/PNMSurvey" className="dropdown-item">PNM Survey</NavLink>
+                {user.role === 'pnm' && (
+                <>
+                <NavLink to="/PNMSurvey" className="dropdown-item">PNM Survey</NavLink>
+                </>
+              )}
+                
+                {user.role === 'member' && (
+                  <>
                     <NavLink to="/AXOSurvey" className="dropdown-item">AXO</NavLink>
                     <NavLink to="/AGDSurvey" className="dropdown-item">AGD</NavLink>
                     <NavLink to="/APHISurvey" className="dropdown-item">APHI</NavLink>
@@ -51,11 +58,18 @@ export const Navbar = () => {
                     <NavLink to="/DGSurvey" className="dropdown-item">DG</NavLink>
                     <NavLink to="/KDSurvey" className="dropdown-item">KD</NavLink>
                     <NavLink to="/KKGSurvey" className="dropdown-item">KKG</NavLink>
-                  </div>
+                  </>
+                )}
+              </div>
                 
               </li>
-              <li><NavLink to="/InfoPage" className="nav-link">Info Page</NavLink></li>
-              <li><NavLink to="/Results" className="nav-link">Results</NavLink></li>
+              {user.role === 'member' && (
+                <>
+                <li><NavLink to="/InfoPage" className="nav-link">Info Page</NavLink></li>
+                <li><NavLink to="/Results" className="nav-link">Results</NavLink></li>
+                </>
+              )}
+              
               <li><button onClick={signOut} className="nav-link">Logout</button></li>
             </>
           ) : (
