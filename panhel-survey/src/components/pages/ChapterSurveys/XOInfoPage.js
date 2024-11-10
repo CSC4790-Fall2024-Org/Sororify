@@ -1593,7 +1593,19 @@ function XOInfoPage() {
     );
 
     // Function to handle survey completion
-  
+    chapterInfo.onComplete.add(function (sender) {
+      // 'sender.data' contains the survey data
+      axios.post('http://localhost:5000/api/survey-results', {
+          surveyType: 'XO Bump Survey',  // Unique identifier for DG Survey
+          surveyData: sender.data
+      })
+      .then(response => {
+          console.log('KKG Survey result saved:', response.data);
+      })
+      .catch(error => {
+          console.error('Error saving XO Bump Survey result:', error);
+      });
+    });
 
     return (
         <div>

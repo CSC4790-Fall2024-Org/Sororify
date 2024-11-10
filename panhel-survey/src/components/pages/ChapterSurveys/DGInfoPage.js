@@ -1600,10 +1600,10 @@ function DGInfoPage() {
           surveyData: sender.data
       })
       .then(response => {
-          console.log('KKG Survey result saved:', response.data);
+          console.log('DG Bump Survey result saved:', response.data);
       })
       .catch(error => {
-          console.error('Error saving KKG Survey result:', error);
+          console.error('Error saving DG Bump Survey result:', error);
       });
     });
 

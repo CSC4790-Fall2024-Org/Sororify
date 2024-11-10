@@ -12,6 +12,8 @@ import girl from './photos/girl.png';
 import kd from './photos/kd.png';
 import red from './photos/red.png';
 import kappamain from './photos/kappamain.png';
+import aphichurch from './photos/aphichurch.png';
+import dgcampus from './photos/DGcampus.png';
 
 
 const AboutUs = () => {
@@ -30,16 +32,15 @@ const AboutUs = () => {
       ];
     return (
         <div className="container">
-
-     
-        <div className = "AboutUs">
             <img src={kappamain} alt="Kappa Main" className="about-us-image" />
-            <h2 style={{ fontFamily: 'Georgia, serif' }}>Our Mission</h2>
-            <p>“Sororify” seeks to streamline the Villanova Panhellenic Recruitment process. At Villanova roughly 600 girls rush eight sororities in the first round of recruitment known as Sisterhood Round. The process of “matching” girls to each sorority’s existing members based on like qualities takes hours to ensure that potential members have a good experience. All of the tedious work done by hand still doesn’t guarantee the PNMs will be matched with their compatible counterparts in sororities.</p>
-            <p>Our algorithm bridges the gap by ensuring the best possible match between PNMS and current chapter members the sorority that fits them the best.</p>
-            
+           <div className="text-and-images">
+                <p>“Sororify” seeks to streamline the Villanova Panhellenic Recruitment process. At Villanova roughly 600 girls rush eight sororities in the first round of recruitment known as Sisterhood Round. The process of “matching” girls to each sorority’s existing members based on like qualities takes hours to ensure that potential members have a good experience. All of the tedious work done by hand still doesn’t guarantee the PNMs will be matched with their compatible counterparts in sororities. Our algorithm bridges the gap by ensuring the best possible match between PNMS and current chapter members the sorority that fits them the best.</p>
+                <div className="image-container">
+                    <img src={aphichurch} alt="Aphi Church" />
+                    <img src={dgcampus} alt="DG Campus" />
+                </div>
+            </div>
         </div>
-         </div>
     );
 };
 

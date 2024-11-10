@@ -3965,7 +3965,7 @@ function KKGSurvey() {
   // Function to handle survey completion
   KKGSurveys.onComplete.add(function (sender) {
     // 'sender.data' contains the survey data
-    axios.post('http://localhost:5000/api/kappabumpresults', {
+    axios.post('http://localhost:5000/api/survey-results', {
         surveyType: 'KKG Survey',  // Unique identifier for DG Survey
         surveyData: sender.data
     })

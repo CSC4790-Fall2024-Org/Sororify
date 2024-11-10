@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 body {
     background-color: #FCFBF4;
 }
@@ -7,32 +9,45 @@ body {
     margin-right: 2rem;
 }
 
-.AboutUs h1, .AboutUs h2 {
-    text-align: center;
-    color: #F94EA0;
+.AboutUs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
 }
 
 .AboutUs p {
+    font-family: 'Poppins', sans-serif;
     text-align: center;
-    margin-left: 100px;
-    margin-right: 100px;
+    color: #000080
 }
 
 .about-us-image {
     width: 100%; /* Make the image take the full width of its container */
-    max-width: 800px; /* Set a maximum width */
-    height: auto; /* Maintain aspect ratio */
+    height: 500px; /* Maintain aspect ratio */
     display: block; /* Center the image */
-    margin: 20px auto; /* Center the image with margin on top and bottom */
+    margin: 10px auto; /* Center the image with margin on top and bottom */
   }
 
 
-
-.centered-image {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  .image-container {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
 }
+
+.image-container img {
+    width: 100%;
+    max-width: 200px; /* Set a maximum width for the images */
+    height: auto;
+    margin-left: 1rem; /* Add space between the images */
+}
+
+
 
 
 .results-list {
