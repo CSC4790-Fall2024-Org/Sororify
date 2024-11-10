@@ -7,7 +7,6 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 
-
 const Results = () => {
     const [pnmResults, setPNMResults] = useState([]); //RAW PNM SURVEYS RESULTS
     const [chapterResults, setChapterResults] = useState([]); //RAW CHAPTER SURVEY RESULTS
@@ -63,7 +62,9 @@ const Results = () => {
     };
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
-        axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
+        const surveyType = 'KD Survey'; // or any other survey type you want to access
+        axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
+        //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
                 setChapterResults(response.data);  // Update the state with fetched results
                 console.log('KD Survey results fetched:', response.data);
