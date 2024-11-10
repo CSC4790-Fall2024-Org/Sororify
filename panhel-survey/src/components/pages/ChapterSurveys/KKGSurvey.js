@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const KKGSurveyJson =
 {
-    "title": "KKΓ",
+    "title": "KKΓ Info Page",
     "logoPosition": "right",
     "pages": [
       {
@@ -3965,7 +3965,7 @@ function KKGSurvey() {
   // Function to handle survey completion
   KKGSurveys.onComplete.add(function (sender) {
     // 'sender.data' contains the survey data
-    axios.post('http://localhost:5000/api/survey-results', {
+    axios.post('http://localhost:5000/api/kappabumpresults', {
         surveyType: 'KKG Survey',  // Unique identifier for DG Survey
         surveyData: sender.data
     })

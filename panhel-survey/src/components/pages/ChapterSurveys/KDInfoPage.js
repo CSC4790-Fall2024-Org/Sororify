@@ -6,7 +6,7 @@ import axios from 'axios';
 import './InfoPage.css';
 
 const chapterInfoSurvey ={
-    "title": "Chapter Information",
+    "title": " KΔ Chapter Information",
     "logoPosition": "right",
     "pages": [
       {
@@ -1477,7 +1477,7 @@ const chapterInfoSurvey ={
     ]
   }  
    
-function InfoPage() {
+function KDInfoPage() {
     const chapterInfo= new Model(chapterInfoSurvey);
    // const [surveyResults, setSurveyResults] = useState([]);
    //const [selectedIndex, setSelectedIndex] = useState(null); // State to track selected person
@@ -1656,4 +1656,4 @@ function InfoPage() {
 
 
 
-export default InfoPage;
+export default KDInfoPage;
