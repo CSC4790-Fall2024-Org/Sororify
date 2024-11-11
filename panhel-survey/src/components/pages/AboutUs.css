@@ -5,8 +5,8 @@ body {
 }
 
 .container {
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
 }
 
 .AboutUs {
@@ -28,7 +28,7 @@ body {
 
 .about-us-image {
     width: 100%; /* Make the image take the full width of its container */
-    height: 500px; /* Maintain aspect ratio */
+    height: auto; /* Maintain aspect ratio */
     display: block; /* Center the image */
     margin: 10px auto; /* Center the image with margin on top and bottom */
   }

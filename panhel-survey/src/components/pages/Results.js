@@ -464,7 +464,7 @@ const Results = () => {
     
 
     return (
-        <div className="AboutUs">
+        <div>
             <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>View Results</h2>
            
             
@@ -474,26 +474,28 @@ const Results = () => {
                    <pre>{selectedResult}</pre>
                 </div>
             )}
+
             <div className="matches">
             <ul>
-    {Object.keys(matches).map((key) => (
-        <li key={key}>
-            <strong>Bump {key}:</strong>
-            <ul>
-                {matches[key].map((match, index) => (
-                    <li key={index}>
-                        {Object.entries(match).map(([id, details]) => (
-                            <span key={id}>
-                                {`${details.name}, PNM ${id} - Compatibility: ${details.compatibility}`}
-                            </span>
-                        ))}
+                {Object.keys(matches).map((key) => (
+                    <li key={key}>
+                        <strong>Bump {key}:</strong>
+                        <ul>
+                            {matches[key].map((match, index) => (
+                                <li key={index}>
+                                    {Object.entries(match).map(([id, details]) => (
+                                        <span key={id}>
+                                            {`${details.name}, PNM ${id} - Compatibility: ${details.compatibility}`}
+                                        </span>
+                                    ))}
+                                </li>
+                            ))}
+                        </ul>
                     </li>
                 ))}
             </ul>
-        </li>
-    ))}
-</ul>
             </div>
+
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
                     <div key={index}>
