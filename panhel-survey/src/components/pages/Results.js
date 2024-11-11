@@ -7,7 +7,6 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 
-
 const Results = () => {
     const [pnmResults, setPNMResults] = useState([]); //RAW PNM SURVEYS RESULTS
     const [chapterResults, setChapterResults] = useState([]); //RAW CHAPTER SURVEY RESULTS
@@ -63,7 +62,9 @@ const Results = () => {
     };
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
-        axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
+        const surveyType = 'KKG Survey'; // or any other survey type you want to access
+        axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
+        //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
                 setChapterResults(response.data);  // Update the state with fetched results
                 console.log('KD Survey results fetched:', response.data);
@@ -339,6 +340,7 @@ const Results = () => {
                             //console.log(bumpGroupTotal);
                             // Edit this one line to add name 
                             pnmCompatibility[pnm["PNM number"]].push(bumpGroupTotal);
+                            //pnmCompatibility[pnm["Name"]].push(pnm.FirstName + pnm.LastName);
                         }
                         });
                 // console.log("PNM Compatibility:", pnmCompatibility);
@@ -347,7 +349,6 @@ const Results = () => {
               
                 return pnmCompatibility;
               };
-              
     
             const location = (member, pnm) => {
                 // console.warn("member: " + member['State'] + " pnm: " + pnm["State"]);
@@ -423,7 +424,13 @@ const Results = () => {
                                     const pnmDict = pnmDictionaries.find(dict => dict.pnm === pnm);
                                     finalMatches[index + 1].push({ [pnm]: pnmDict['FirstName']});
                                     */
-                                    finalMatches[index + 1].push({ [pnm]: `${roundedPercent}%` }); // can change to roundedPercent if we want it to look cuter
+                                    const fullName = getFullNameByPNMNumber(Number(pnm), pnmDictionaries);
+                                    finalMatches[index + 1].push({
+                                         [pnm]: { 
+                                            name: fullName, 
+                                            compatibility: `${roundedPercent}%`
+                                        }
+                                    }); 
                                     processedPNMs.add(pnm);
                                     pnmPcts[pnm] = [];
                                 }
@@ -450,7 +457,11 @@ const Results = () => {
                 createMatches();
             }
         }, [detailedBumpGroups, pnmDictionaries]);
-    
+
+        const getFullNameByPNMNumber = (pnmNumber, data) => {
+            const pnm = data.find(item => item["PNM number"] === pnmNumber);
+            return pnm ? `${pnm.FirstName} ${pnm.LastName}` : null; // Return null if PNM number is not found
+        };
     
 
     return (
@@ -465,22 +476,24 @@ const Results = () => {
                 </div>
             )}
             <div className="matches">
-             <ul>
-                {Object.keys(matches).map((key) => (
-                    <li key={key}>
-                        <strong>Bump {key}:</strong>
-                        <ul>
-                            {matches[key].map((match, index) => (
-                                <li key={index}>
-                                    {Object.entries(match).map(([id, percent]) => (
-                                        <span key={id}>{`PNM: ${id}, Percent: ${percent}`}</span>
-                                    ))}
-                                </li>
-                            ))}
-                      </ul>
-                     </li>
-                     ))}
-              </ul>
+            <ul>
+    {Object.keys(matches).map((key) => (
+        <li key={key}>
+            <strong>Bump {key}:</strong>
+            <ul>
+                {matches[key].map((match, index) => (
+                    <li key={index}>
+                        {Object.entries(match).map(([id, details]) => (
+                            <span key={id}>
+                                {`${details.name}, PNM ${id} - Compatibility: ${details.compatibility}`}
+                            </span>
+                        ))}
+                    </li>
+                ))}
+            </ul>
+        </li>
+    ))}
+</ul>
             </div>
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
