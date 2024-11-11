@@ -1,42 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 body {
-    background-color: #FDF7FC;
+    background-color: #FCFBF4;
 }
 
-.AboutUs h1, .AboutUs h2 {
-    text-align: center;
-    color: #F94EA0;
+.container {
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+.AboutUs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
 }
 
 .AboutUs p {
+    font-family: 'Poppins', sans-serif;
     text-align: center;
-    margin-left: 100px;
-    margin-right: 100px;
+    color: #000080
 }
 
+.about-us-image {
+    width: 100%; /* Make the image take the full width of its container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Center the image */
+    margin: 10px auto; /* Center the image with margin on top and bottom */
+  }
 
-.team-images {
+
+  .image-container {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
 }
 
-.centered-image {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.image-container img {
+    width: 100%;
+    max-width: 200px; /* Set a maximum width for the images */
+    height: auto;
+    margin-left: 1rem; /* Add space between the images */
 }
 
-.circle-image {
-    border-radius: 50%; /* This will make the image round */
-    width: 200px; /* Set the width of the image */
-    height: 200px; /* Set the height of the image */
-    object-fit: cover; /* This will ensure the image covers the whole area of the circle */
-}
 
-.team-images {
-    display: flex;
-    gap: 100px;
-    justify-content: center; /* This will add some space between the images */
-}
+
 
 .results-list {
     padding: 0;
