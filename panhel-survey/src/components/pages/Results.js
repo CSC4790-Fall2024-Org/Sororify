@@ -62,7 +62,7 @@ const Results = () => {
     };
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
-        const surveyType = 'KD Survey'; // or any other survey type you want to access
+        const surveyType = 'KKG Survey'; // or any other survey type you want to access
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
         //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
