@@ -62,7 +62,7 @@ const Results = () => {
     };
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
-        const surveyType = 'KD Survey'; // or any other survey type you want to access
+        const surveyType = 'KKG Survey'; // or any other survey type you want to access
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
         //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
@@ -75,8 +75,9 @@ const Results = () => {
     }, []);  // Empty dependency array ensures this runs once on component load
 
 
-    useEffect(() => { // FETCH BUMP GROUPS 
-        axios.get('http://localhost:5000/api/survey-results?surveyType=Info Page')
+    useEffect(() => { // FETCH BUMP GROUPS
+        const bumpSurveyType = 'KKG Bump Survey'
+        axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(bumpSurveyType)}`)
             .then((response) => {
                 setBumpGroupResults(response.data);  // Update the state with fetched results
                 console.log('Info Page survey results fetched:', response.data);
