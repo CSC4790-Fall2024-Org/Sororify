@@ -19,16 +19,6 @@
   font-style: italic;
 }
 
-.details-container {
-  text-align: left;
-  max-width: 50%; /* Adjust as needed */
-  margin: 0 auto; /* Centers the container horizontally */
-}
-
-.key {
-  display: block;
-}
-
 
 .results-list {
   padding: 0;
