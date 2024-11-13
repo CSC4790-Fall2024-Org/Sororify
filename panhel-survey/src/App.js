@@ -14,7 +14,7 @@ import KKGSurvey from './components/pages/ChapterSurveys/KKGSurvey';
 import Results from './components/pages/Results';
 import SignUp from './components/pages/SignUp';
 import SignIn from './components/pages/SignIn';
-
+import { AuthProvider } from './components/pages/AuthContext';
 import AXOInfoPage from './components/pages/ChapterSurveys/AXOInfoPage';
 import APHIInfoPage from './components/pages/ChapterSurveys/APHIInfoPage';
 import XOInfoPage from './components/pages/ChapterSurveys/XOInfoPage';
@@ -26,6 +26,7 @@ function App() {
   
   return (
     <div>
+      <AuthProvider>
       <Navbar />
         <Routes>
           <Route path = "/" element = {<AboutUs />} />
@@ -50,6 +51,8 @@ function App() {
           <Route path = "/KKGInfoPage" element = {<KKGInfoPage />} />
           
         </Routes>
+      </AuthProvider>
+      
         
     </div>
   )

@@ -11,6 +11,8 @@
 
 .navbar { 
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color:  #FCFBF4;
   padding: 1rem;
   font-family: 'Poppins', sans-serif;
@@ -36,6 +38,18 @@ align-items: center;
     margin-right: 1rem; /* Add some space between the logo and the links */
   }
 
+  .navbar-menu {
+    list-style: none; /* Remove bullet points */
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar-item {
+    margin-left: 20px;
+    position: relative; /* Ensure dropdown is positioned correctly */
+  }
 
 .nav-link, .dropbtn {
   color: #000080;
@@ -68,6 +82,10 @@ align-items: center;
     color: #f94ea0;
   padding: 12px 16px;
   text-decoration: none;
+  display: block;
+}
+
+.dropdown-content.show {
   display: block;
 }
 

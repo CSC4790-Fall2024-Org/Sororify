@@ -4,3 +4,15 @@ from django.contrib.auth.models import User # Built-in User model
 from django.db.models import UniqueConstraint # Constrains fields to unique values
 from django.db.models.functions import Lower # Returns lower cased value of field
 
+
+class Profile(models.Model):
+    ROLE_CHOICES = [
+        ('member', 'Member'),
+        ('pnm', 'PNM'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES) # e.g., 'admin', 'member', 'pnm'
+
+    def __str__(self):
+        return self.user.username
