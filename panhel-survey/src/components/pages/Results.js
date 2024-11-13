@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './AboutUs.css';
+import  './Results.css';
 import DoneIcon from '@mui/icons-material/Done';
-import { Container, List, ListItemButton, ListItemText, ListItemIcon, Collapse, Button } from '@mui/material';
+import { List, ListItemButton, ListItemText, ListItemIcon, Collapse, Button, Card, CardContent, Typography } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
@@ -62,7 +62,7 @@ const Results = () => {
     };
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
-        const surveyType = 'KKG Survey'; // or any other survey type you want to access
+        const surveyType = 'KD Survey'; // or any other survey type you want to access
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
         //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
@@ -75,9 +75,8 @@ const Results = () => {
     }, []);  // Empty dependency array ensures this runs once on component load
 
 
-    useEffect(() => { // FETCH BUMP GROUPS
-        const bumpSurveyType = 'KKG Bump Survey'
-        axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(bumpSurveyType)}`)
+    useEffect(() => { // FETCH BUMP GROUPS 
+        axios.get('http://localhost:5000/api/survey-results?surveyType=Info Page')
             .then((response) => {
                 setBumpGroupResults(response.data);  // Update the state with fetched results
                 console.log('Info Page survey results fetched:', response.data);
@@ -466,37 +465,34 @@ const Results = () => {
     
 
     return (
-        <div>
-            <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>View Results</h2>
+        <div className="results-container">
+            <h2 className="results-heading">VIEW RESULTS</h2>
            
             
-            {selectedResult && (
-                <div className="selected-result">
-                    <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Selected Result</h2>
-                   <pre>{selectedResult}</pre>
-                </div>
-            )}
-
             <div className="matches">
-            <ul>
-                {Object.keys(matches).map((key) => (
-                    <li key={key}>
-                        <strong>Bump {key}:</strong>
-                        <ul>
-                            {matches[key].map((match, index) => (
-                                <li key={index}>
-                                    {Object.entries(match).map(([id, details]) => (
-                                        <span key={id}>
-                                            {`${details.name}, PNM ${id} - Compatibility: ${details.compatibility}`}
-                                        </span>
-                                    ))}
-                                </li>
-                            ))}
-                        </ul>
-                    </li>
-                ))}
-            </ul>
-            </div>
+    <ul>
+        {Object.keys(matches).map((key) => (
+            <Card key={key} className="card">
+                <CardContent>
+                    <Typography variant="h6" className="bump-heading">
+                        Bump {key}:
+                    </Typography>
+                    <ul>
+                        {matches[key].map((match, index) => (
+                            <li key={index}>
+                                {Object.entries(match).map(([id, details]) => (
+                                    <span key={id}>
+                                        {`${details.name}, PNM ${id} - Compatibility: ${details.compatibility}`}
+                                    </span>
+                                ))}
+                            </li>
+                        ))}
+                    </ul>
+                </CardContent>
+            </Card>
+        ))}
+    </ul>
+</div>
 
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
@@ -528,7 +524,12 @@ const Results = () => {
                 ))}
             </List>
 
-
+            {selectedResult && (
+                <div className="selected-result">
+                    <h2 className="results-heading">Selected Result</h2>
+                   <pre>{selectedResult}</pre>
+                </div>
+            )}
         </div>
     );
 };
