@@ -19,6 +19,7 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -70,6 +71,8 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Get the navigate function
+
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
     // Check if there is a preferred mode in localStorage
@@ -144,6 +147,7 @@ export default function SignUp() {
         role: data.get('role'),
       });
       console.log(response.data);
+      navigate('/signin');
       // Handle successful sign-up (e.g., redirect to login page)
     } catch (error) {
       console.error('There was an error!', error);
