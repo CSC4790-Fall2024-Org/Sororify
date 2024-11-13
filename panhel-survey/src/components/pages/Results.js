@@ -470,6 +470,21 @@ const Results = () => {
            
             
             <div className="matches">
+
+        <div class="centered-navy-text">
+            <details>
+                <summary class="expandable-text">What is a good percentage match?</summary>
+                <div class="details-container">
+                <p class="key">100% - PNM is exactly the same person as every member in the bump group</p>
+                <p class="key">20% - Extremely good match</p>
+                <p class="key">10% - Good match</p>
+                <p class="key">5% - Average match</p>
+                <p class="key">Under 3% - PNM is probably very unique and/or didn't submit many interests or involvements</p>
+                </div>
+
+            </details>
+        </div>
+
     <ul>
         {Object.keys(matches).map((key) => (
             <Card key={key} className="card">
