@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const KKGSurveyJson =
 {
-    "title": "KKΓ Info Page",
+    "title": "KKΓ",
     "logoPosition": "right",
     "pages": [
       {

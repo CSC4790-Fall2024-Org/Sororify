@@ -53,17 +53,19 @@ export const Navbar = () => {
                     <NavLink to="/DGSurvey" className="dropdown-item">DG</NavLink>
                     <NavLink to="/KDSurvey" className="dropdown-item">KD</NavLink>
                     <NavLink to="/KKGSurvey" className="dropdown-item">KKG</NavLink>
+                    < NavLink to="/AXOInfoPage" className="dropdown-item">AXO Info</NavLink>
+                    <NavLink to="/APHIInfoPage" className="dropdown-item">APHI Info</NavLink>
+                    <NavLink to="/XOInfoPage" className="dropdown-item">XO Info</NavLink>
+                    <NavLink to ="/DDDInfoPage" className="dropdown-item">DDD Info</NavLink>
+                    <NavLink to="/DGInfoPage" className="dropdown-item">DG Info</NavLink>
+                    <NavLink to="/KDInfoPage" className="dropdown-item">KD Info</NavLink>
+                    <NavLink to="/KKGInfoPage" className="dropdown-item">KKG Info</NavLink>
                   </>
                 )}
               </div>
                 
               </li>
-              {user.role === 'member' && (
-                <>
-                <li><NavLink to="/InfoPage" className="nav-link">Info Page</NavLink></li>
-                
-                </>
-              )}
+    
               
               <li><button onClick={signOut} className="nav-link">Logout</button></li>
             </>
