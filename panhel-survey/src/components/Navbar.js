@@ -2,18 +2,13 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import './Navbar.css';
 import logo from './logo.png';
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { AuthContext } from './pages/AuthContext';
 
 
 export const Navbar = () => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const { user, signOut } = useContext(AuthContext);
 
-    const toggleDropdown = () => {
-      console.log('Dropdown button clicked');
-      setDropdownOpen(!dropdownOpen);
-    };
 
     useEffect(() => {
       const handleStorageChange = () => {
@@ -40,8 +35,8 @@ export const Navbar = () => {
               Welcome, {user.email} ({user.role})!
               </li>
               <li className="navbar-item">
-                <button onClick={toggleDropdown} className="dropbtn">Member Surveys</button>
-                <div className={`dropdown-content ${dropdownOpen ? 'show' : ''}`}>
+                
+                <div>
                 {user.role === 'pnm' && (
                 <>
                 <NavLink to="/PNMSurvey" className="dropdown-item">PNM Survey</NavLink>
@@ -66,7 +61,7 @@ export const Navbar = () => {
               {user.role === 'member' && (
                 <>
                 <li><NavLink to="/InfoPage" className="nav-link">Info Page</NavLink></li>
-                <li><NavLink to="/Results" className="nav-link">Results</NavLink></li>
+                
                 </>
               )}
               
@@ -74,6 +69,8 @@ export const Navbar = () => {
             </>
           ) : (
             <>
+
+              <li><NavLink to="/Results" className="nav-link">Results</NavLink></li>
               <li><NavLink to="/SignUp" className="nav-link">Sign Up</NavLink></li>
               <li><NavLink to="/SignIn" className="nav-link">Sign In</NavLink></li>
             </>
