@@ -66,6 +66,7 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [role, setRole] = React.useState('');
+  const [chapter, setChapter] = React.useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -87,7 +88,13 @@ export default function SignUp() {
 
   const handleRoleChange = (event) => {
     setRole(event.target.value);
+    
   };
+  const handleChapterChange = (event) => {
+    setChapter(event.target.value);
+    
+  };
+  
 
   const validateInputs = () => {
     const email = document.getElementById('email');
@@ -182,6 +189,26 @@ export default function SignUp() {
           >
             <MenuItem value="member">Member</MenuItem>
             <MenuItem value="pnm">PNM</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="chapter">Chapter</FormLabel>
+          <Select
+            id="chapter"
+            placeholder="Select your chapter"
+            name="chapter"
+            value={chapter}
+            onChange={handleChapterChange}
+            required
+            fullWidth
+          >
+            <MenuItem value="aphi">APHI</MenuItem>
+            <MenuItem value="axo">AXO</MenuItem>
+            <MenuItem value="ddd">DDD</MenuItem>
+            <MenuItem value="kkg">KKG</MenuItem>
+            <MenuItem value="kd">KD</MenuItem>
+            <MenuItem value="chio">CHIO</MenuItem>
+            <MenuItem value="dg">DG</MenuItem>
           </Select>
         </FormControl>
               <FormControl>
