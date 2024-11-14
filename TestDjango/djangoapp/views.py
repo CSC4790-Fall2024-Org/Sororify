@@ -35,6 +35,7 @@ def signup(request):
             email = data['email']
             password = make_password(data['password'])  # Hash the password
             role = data.get('role')
+            chapter = data.get('chapter')
 
             # Check if the user already exists
             if users_collection.find_one({'email': email}):
@@ -45,7 +46,8 @@ def signup(request):
                 'username': username,
                 'email': email,
                 'password': password,
-                'role': role
+                'role': role,
+                'chapter': chapter
             })
             logging.info(f'User {username} inserted with id {result.inserted_id}')
 
@@ -55,7 +57,7 @@ def signup(request):
                 email=email,
                 password=password
             )
-            Profile.objects.create(user=user, role=role)
+            Profile.objects.create(user=user, role=role, chapter=chapter)
 
             return JsonResponse({'success': True})
         except Exception as e:

@@ -149,6 +149,7 @@ export default function SignUp() {
         email: data.get('email'),
         password: data.get('password'),
         role: data.get('role'),
+        chapter: data.get('chapter'),
       });
       console.log(response.data);
       // Handle successful sign-up (e.g., redirect to login page)
