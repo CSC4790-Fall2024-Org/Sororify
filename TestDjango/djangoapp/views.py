@@ -87,6 +87,7 @@ def signup(request):
 def signin(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        username = data.get('username')
         email = data.get('email')
         password = data.get('password')
 

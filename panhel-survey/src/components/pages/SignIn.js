@@ -89,6 +89,7 @@ const SignIn = () =>{
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
+    const username = document.getElementById('username');
 
     let isValid = true;
 

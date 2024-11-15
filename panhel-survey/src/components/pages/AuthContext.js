@@ -47,16 +47,16 @@ export const AuthProvider = ({ children }) => {
 };
 
 const fetchUserData = async (token) => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/auth/user/', {
-        headers: {
+  try {
+    const response = await axios.get('http://localhost:8000/api/auth/user/', {
+      headers: {
           Authorization: `Bearer ${token}`
         }
       });
       console.log('Fetched user data:', response.data);
       return response.data; // Assuming the response data contains user information
-    } catch (error) {
-      console.error('There was an error fetching user data!', error);
+  } catch (error) {
+    console.error('There was an error fetching user data!', error);
       return null;
-    }
-  };
+  }
+};

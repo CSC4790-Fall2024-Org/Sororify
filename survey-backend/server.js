@@ -38,8 +38,8 @@ function getSurveyModel(surveyType) {
 }
 // Sign-In Endpoint
 app.post('/api/auth/signin', async (req, res) => {
-    const { email, password } = req.body;
-    console.log('Sign in request received:', { email, password }); // Debugging statement
+    const { username, email, password } = req.body;
+    console.log('Sign in request received:', { username, email, password }); // Debugging statement
   
     try {
       const user = await User.findOne({ email });
@@ -51,7 +51,7 @@ app.post('/api/auth/signin', async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ success: false, message: 'Invalid email or password' });
       }
-      console.log('Sign in successful for user:', email);
+      console.log('Sign in successful for user:', username);
       res.json({ success: true, message: 'Sign in successful' });
     } catch (error) {
       console.error('Error during sign in:', error);
