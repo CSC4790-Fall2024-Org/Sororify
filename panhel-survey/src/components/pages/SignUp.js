@@ -19,6 +19,7 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import getSignUpTheme from './getSignUpTheme';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -85,7 +86,7 @@ export default function SignUp() {
       setMode(systemPrefersDark ? 'dark' : 'light');
     }
   }, []);
-
+  const navigate = useNavigate();
   const handleRoleChange = (event) => {
     setRole(event.target.value);
     
@@ -152,7 +153,9 @@ export default function SignUp() {
         chapter: data.get('chapter'),
       });
       console.log(response.data);
-      // Handle successful sign-up (e.g., redirect to login page)
+      navigate('/SignIn');
+      
+      
     } catch (error) {
       console.error('There was an error!', error);
       setError('Failed to sign up. Please try again.');
