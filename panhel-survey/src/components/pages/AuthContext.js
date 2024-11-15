@@ -15,11 +15,7 @@ export const AuthProvider = ({ children }) => {
       // Fetch user data based on the token
       fetchUserData(authToken).then(userData => {
         console.log('Fetched user data:', userData); // Debugging line
-        if (userData && userData.role) {
-          console.log('User role:', userData.role); // Debugging line
-        } else {
-          console.log('User role not found'); // Debugging line
-        }
+        
         setUser(userData);
       });
     }
@@ -29,10 +25,10 @@ export const AuthProvider = ({ children }) => {
     //console.log('Setting auth token:', token); 
     localStorage.setItem('authToken', token);
     console.log('Signing in user:', userData); // Debugging line
-    if (userData && userData.role) {
-      console.log('User role:', userData.role); // Debugging line
+    if (userData && userData.username) {
+      console.log('Username:', userData.username); // Debugging line
     } else {
-      console.log('User role not found'); // Debugging line
+      console.log('Username not found'); // Debugging line
     }
     setUser(userData);
   };

@@ -99,7 +99,7 @@ export default function SignUp() {
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const name = document.getElementById('name');
+    const username = document.getElementById('username');
 
     let isValid = true;
 
@@ -121,7 +121,7 @@ export default function SignUp() {
       setPasswordErrorMessage('');
     }
 
-    if (!name.value || name.value.length < 1) {
+    if (!username.value || username.value.length < 1) {
       setNameError(true);
       setNameErrorMessage('Name is required.');
       isValid = false;
@@ -213,13 +213,13 @@ export default function SignUp() {
           </Select>
         </FormControl>
               <FormControl>
-                <FormLabel htmlFor="name">Full name</FormLabel>
+                <FormLabel htmlFor="username">Full name</FormLabel>
                 <TextField
-                  autoComplete="name"
-                  name="name"
+                  autoComplete="username"
+                  name="username"
                   required
                   fullWidth
-                  id="name"
+                  id="username"
                   placeholder="Jon Snow"
                   error={nameError}
                   helperText={nameErrorMessage}

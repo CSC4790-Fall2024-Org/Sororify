@@ -50,19 +50,37 @@ def signup(request):
                 'chapter': chapter
             })
             logging.info(f'User {username} inserted with id {result.inserted_id}')
+            
+            # Return success response for MongoDB
+            mongo_response = JsonResponse({'success': True, 'message': 'User inserted into MongoDB'})
+            mongo_response.status_code = 201
 
+        except Exception as e:
+            logging.error(f'Error inserting user into MongoDB: {e}')
+            return JsonResponse({'success': False, 'error': 'Error inserting user into MongoDB'})
+
+        try:
             # Store user data in Django
-            user = User.objects.create(
+            user = User.objects.create_user(
                 username=username,
                 email=email,
-                password=password
+                password=password,
             )
-            Profile.objects.create(user=user, role=role, chapter=chapter)
+            Profile.objects.create(
+                user=user,
+                role=role,
+                chapter=chapter,
+            )
 
-            return JsonResponse({'success': True})
+            # Return success response for Django
+            django_response = JsonResponse({'success': True, 'message': 'User inserted into Django'})
+            django_response.status_code = 201
+            return django_response
+
         except Exception as e:
-            logging.error(f'Error inserting user: {e}')
-            return JsonResponse({'success': False, 'error': 'Error inserting user into MongoDB'})
+            logging.error(f'Error inserting user into Django: {e}')
+            return JsonResponse({'success': False, 'error': 'Error inserting user into Django'})
+
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 @csrf_exempt
