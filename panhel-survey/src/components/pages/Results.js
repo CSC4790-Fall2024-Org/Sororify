@@ -61,28 +61,28 @@ const Results = () => {
         }));
     };
 
-    useEffect(() => {  // FETCH CHAPTER SURVEY
-        const surveyType = 'KD Survey'; // or any other survey type you want to access
+    useEffect(() => {  // FETCH CHAPTER SURVEY (this is fine)
+        const surveyType = 'KKG Survey'; // or any other survey type you want to access
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
-        //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
                 setChapterResults(response.data);  // Update the state with fetched results
-                console.log('KD Survey results fetched:', response.data);
+                console.log('Chapter survey results fetched:', response.data); // needs to be edited
             })
             .catch((error) => {
-                console.error('Error fetching DG Survey results:', error);
+                console.error('Error fetching chapter survey results:', error);
             });
     }, []);  // Empty dependency array ensures this runs once on component load
 
 
-    useEffect(() => { // FETCH BUMP GROUPS 
-        axios.get('http://localhost:5000/api/survey-results?surveyType=Info Page')
+    useEffect(() => { // FETCH BUMP GROUPS
+        const infoSurveyType = 'KKG Bump Survey'
+        axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(infoSurveyType)}`)
             .then((response) => {
-                setBumpGroupResults(response.data);  // Update the state with fetched results
-                console.log('Info Page survey results fetched:', response.data);
+                setBumpGroupResults([response.data[(response.data.length-1)]]);  // Update the state with fetched results
+                console.log('Bump survey results fetched:', response.data[(response.data.length-1)]);
             })
             .catch((error) => {
-                console.error('Error fetching Info Page survey results:', error);
+                console.error('Error fetching Bump survey results:', error);
             });
     }, []);
 
@@ -222,7 +222,9 @@ const Results = () => {
         }
 
         // This if statement creates the appropriate bump groups
+        console.log("results length:", bumpGroupResults.length);
         if (bumpGroupResults.length > 0) {
+            console.log("GOT HERE");
             const bumpGroups = {};
         
             // Loop through each result
@@ -250,6 +252,10 @@ const Results = () => {
             // Use bumpGroups as needed
             console.log("Bump Groups Dictionary:", bumpGroups);
             setBumpGroups(bumpGroups);
+            
+          }
+          else{
+            console.log("getting here which is wrong");
           }
 
           // This if statement extracts the size of bump groups for PNMs ONLY
@@ -295,7 +301,7 @@ const Results = () => {
                     });
                 });
     
-                console.log("Bump Groups with details:", bumpGroupsWithDetails);
+                console.log("Bump Groups with details:", bumpGroupsWithDetails); // we are not getting to here! 11/18/24
                 setDetailedBumpGroups(bumpGroupsWithDetails);
             };
     
