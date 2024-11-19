@@ -72,6 +72,8 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Get the navigate function
+
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
     // Check if there is a preferred mode in localStorage
@@ -153,9 +155,8 @@ export default function SignUp() {
         chapter: data.get('chapter'),
       });
       console.log(response.data);
-      navigate('/SignIn');
-      
-      
+      navigate('/signin');
+      // Handle successful sign-up (e.g., redirect to login page)
     } catch (error) {
       console.error('There was an error!', error);
       setError('Failed to sign up. Please try again.');
