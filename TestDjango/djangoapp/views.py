@@ -50,44 +50,25 @@ def signup(request):
                 'chapter': chapter
             })
             logging.info(f'User {username} inserted with id {result.inserted_id}')
-            
-            # Return success response for MongoDB
-            mongo_response = JsonResponse({'success': True, 'message': 'User inserted into MongoDB'})
-            mongo_response.status_code = 201
 
-        except Exception as e:
-            logging.error(f'Error inserting user into MongoDB: {e}')
-            return JsonResponse({'success': False, 'error': 'Error inserting user into MongoDB'})
-
-        try:
             # Store user data in Django
-            user = User.objects.create_user(
+            user = User.objects.create(
                 username=username,
                 email=email,
-                password=password,
+                password=password
             )
-            Profile.objects.create(
-                user=user,
-                role=role,
-                chapter=chapter,
-            )
+            Profile.objects.create(user=user, role=role)
 
-            # Return success response for Django
-            django_response = JsonResponse({'success': True, 'message': 'User inserted into Django'})
-            django_response.status_code = 201
-            return django_response
-
+            return JsonResponse({'success': True})
         except Exception as e:
-            logging.error(f'Error inserting user into Django: {e}')
-            return JsonResponse({'success': False, 'error': 'Error inserting user into Django'})
-
+            logging.error(f'Error inserting user: {e}')
+            return JsonResponse({'success': False, 'error': 'Error inserting user into MongoDB'})
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 @csrf_exempt
 def signin(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        username = data.get('username')
         email = data.get('email')
         password = data.get('password')
 
@@ -99,6 +80,7 @@ def signin(request):
 
         # Check if user exists
         user = users_collection.find_one({'email': email})
+        chapter = user.get('chapter')
         role = user.get('role') if user else None
         if not user:
             print('User not found')  # Debugging statement
@@ -110,7 +92,7 @@ def signin(request):
             return JsonResponse({'error': 'Invalid email or password'}, status=400)
 
         print('Sign in successful')  # Debugging statement
-        return JsonResponse({'success': True, 'message': 'Sign in successful', 'role': role})
+        return JsonResponse({'success': True, 'message': 'Sign in successful', 'role': role, 'chapter': chapter})
 
 
     print('Invalid request method')  # Debugging statement

@@ -88,7 +88,6 @@ export default function SignUp() {
       setMode(systemPrefersDark ? 'dark' : 'light');
     }
   }, []);
-  const navigate = useNavigate();
   const handleRoleChange = (event) => {
     setRole(event.target.value);
     
