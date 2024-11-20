@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Container } from '@mui/material';
+import { Container, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box } from '@mui/material';
+import axios from 'axios';
 import './Dashboard.css'; // Import the CSS file
+import KDSurvey from './ChapterSurveys/KDSurvey'; 
+import SuperAdminSurvey from './ChapterSurveys/SuperAdminSurvey';
 
 const Dashboard = () => {
-
+    const [rows, setRows] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [adminInfo, setAdminInfo] = useState([])
     
-    const [rows, setRows] = useState([
-        { id: 1, name: 'Isabelle Kellezi', chapter: 'AXO', email: 'ikellezi@villanove.edu', pin: 4371 },
-        { id: 2, name: 'Ava Tower', chapter: 'XO', email: 'atower@villanova.edu', pin: 3215 },
-        { id: 3, name: 'Julia Marcus', chapter: 'KD', email: 'jmarcus@villanova.edu', pin: 1234 },
-        { id: 4, name: 'Sophia Lee', chapter: 'DG', email: 'slee@villanova.edu', pin: 5678 },
-        { id: 5, name: 'Mia Johnson', chapter: 'DDD', email: 'hihi@villanova.edu', pin: 9876 },
-        { id: 6, name: 'Liv Cornwall', chapter: 'APHI', email: 'lcornwall@villanova.edu', pin: 5432 },
-        { id: 7, name: 'Maddie Smith', chapter: 'KKG', email: 'msmith@villanova.edu', pin: 8765 },
-     ]);
+
 
     const columns = [
         { field: 'name', headerName: 'Name', width: 150, editable: true },
@@ -23,19 +20,86 @@ const Dashboard = () => {
         { field: 'pin', headerName: 'PIN', width: 200, editable: true },
     ];
 
-    const handleEditCellChange = (params) => {
-        const updatedRows = rows.map((row) => {
-            if (row.id === params.id) {
-                return { ...row, [params.field]: params.value };
-            }
-            return row;
-        });
-        setRows(updatedRows);
+
+    useEffect(() => {  // FETCH CHAPTER SURVEY
+        // or any other survey type you want to access
+        axios.get(`http://localhost:5000/api/survey-results?surveyType=Admin Survey`)
+        //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
+            .then((response) => {
+                setAdminInfo(response.data);  // Update the state with fetched results
+                console.log('KD Survey results fetched:', response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching DG Survey results:', error);
+            });
+    }, []); 
+
+    useEffect(() => {
+        // Transform the fetched data into the format required by the DataGrid
+        const transformedRows = adminInfo.map((item) => ({
+            id: item._id,
+            name: item.surveyData.question1.Name,
+            chapter: item.surveyData.question1.Chapter,
+            email: item.surveyData.question1.Email,
+            pin: item.surveyData.question1.Pin,
+        }));
+        setRows(transformedRows);
+    }, [adminInfo]);
+    
+
+    const handleClickOpen = () => {
+        setOpen(true);
     };
+    
+    const handleClose = () => {
+        setOpen(false);
+
+    }
+
+    const handleAddRow = () => {
+        const newRow = { name: '', chapter: '', email: '', pin: '' };
+        axios.post('http://localhost:5000/api/rows', newRow)
+            .then(response => {
+                console.log('Added row:', response.data); // Log the added row
+                setRows([...rows, response.data]);
+            })
+            .catch(error => {
+                console.error('There was an error adding the row!', error); // Log any errors
+            });;
+    };
+
 
     return (
         <Container>
             <h1 className="dashboard-header">Dashboard</h1>
+            <Box display="flex" justifyContent="center" mb={2}>
+                <Button variant="text"  sx={{ color: '#000080' }} onClick={handleClickOpen}>
+                    Add Admin
+                </Button>
+            </Box>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                maxWidth="md"
+                fullWidth
+                sx={{
+                    '& .MuiPaper-root': {
+                        backgroundColor: '#FCFBF4', // Light gray background color
+                        color: '#000080', // Navy blue text color
+                    },
+                }}
+            >
+                <DialogContent>
+                    <SuperAdminSurvey />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="000080">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={rows}
@@ -44,7 +108,7 @@ const Dashboard = () => {
                     rowsPerPageOptions={[5]}
                     checkboxSelection
                     disableSelectionOnClick
-                    onEditCellChangeCommitted={handleEditCellChange}
+                    getRowId={(row) => row.id}
                     sx={{
                         '& .MuiDataGrid-root': {
                             backgroundColor: '#ffffff', // White background color

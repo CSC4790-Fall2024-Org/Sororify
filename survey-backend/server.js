@@ -28,6 +28,34 @@ const surveyResultSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+const rowSchema = new mongoose.Schema({
+  name: String,
+  chapter: String,
+  email: String,
+  pin: Number,
+});
+const Row = mongoose.model('Row', rowSchema)
+
+
+
+app.post('/api/rows', async (req, res) => {
+  try {
+    console.log('Received request to add row:', req.body); // Log the request body
+    const newRow = new Row(req.body);
+    await newRow.save();
+    console.log('Row added successfully:', newRow); // Log the added row
+    res.json(newRow);
+  } catch (error) {
+    console.error('Error adding row 2:', error); // Log any errors
+    res.status(500).json({ message: 'Error adding row', error });
+  }
+});
+
+
+
+
+
+
 // Function to dynamically get or create a model for the specific collection
 function getSurveyModel(surveyType) {
     // Convert surveyType like "DG Survey" to a collection-friendly name "DGSurveyResults"
