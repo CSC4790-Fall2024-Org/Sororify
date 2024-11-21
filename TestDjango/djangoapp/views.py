@@ -11,6 +11,7 @@ import logging
 from django.http import HttpResponse
 from django.contrib.auth.hashers import check_password
 from .models import User, Profile
+from django.contrib.auth.decorators import login_required
 
 #logging.basicConfig(level=logging.INFO)
 
@@ -97,3 +98,13 @@ def signin(request):
 
     print('Invalid request method')  # Debugging statement
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@login_required
+def get_user_data(request):
+    user = request.user
+    user_data = {
+        'username': user.username,
+        'email': user.email,
+        'role': user.profile.role,  # Assuming you have a profile model with a role field
+    }
+    return JsonResponse(user_data)
