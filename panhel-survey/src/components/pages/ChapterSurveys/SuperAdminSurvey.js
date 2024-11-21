@@ -1,4 +1,5 @@
 import 'survey-core/defaultV2.min.css';
+import React, { useState, useEffect } from 'react';
 import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
 import axios from 'axios';
@@ -43,6 +44,7 @@ const adminSurveyJson =
   }
 function SuperAdminSurvey() {
   const adminSurveys = new Model(adminSurveyJson);
+
 
   
 
@@ -155,11 +157,13 @@ function SuperAdminSurvey() {
     })
     .then(response => {
         console.log('Admin Survey result saved:', response.data);
+       
     })
     .catch(error => {
         console.error('Error saving Admin Survey result:', error);
     });
   });
+   
 
   return (
     <div>

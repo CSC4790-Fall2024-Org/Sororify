@@ -34,6 +34,10 @@ const Dashboard = () => {
             });
     }, []); 
 
+
+
+
+
     useEffect(() => {
         // Transform the fetched data into the format required by the DataGrid
         const transformedRows = adminInfo.map((item) => ({
@@ -53,6 +57,16 @@ const Dashboard = () => {
     
     const handleClose = () => {
         setOpen(false);
+
+        axios.get(`http://localhost:5000/api/survey-results?surveyType=Admin Survey`)
+        //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
+            .then((response) => {
+                setAdminInfo(response.data);  // Update the state with fetched results
+                console.log('Admin Survey results fetched:', response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching DG Survey results:', error);
+            });        
 
     }
 
