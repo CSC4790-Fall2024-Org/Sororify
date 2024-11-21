@@ -45,14 +45,14 @@ export const Navbar = () => {
                 
                 {user.role === 'member' && (
                   <>
-                    {user.chapter === 'AXO' && <NavLink to="/AXOSurvey" className="dropdown-item">AXO</NavLink>}
-                    {user.chapter === 'AGD' && <NavLink to="/AGDSurvey" className="dropdown-item">AGD</NavLink>}
-                    {user.chapter === 'APHI' && <NavLink to="/APHISurvey" className="dropdown-item">APHI</NavLink>}
-                    {user.chapter === 'XO' && <NavLink to="/XOSurvey" className="dropdown-item">XO</NavLink>}
-                    {user.chapter === 'DDD' && <NavLink to="/DDDSurvey" className="dropdown-item">DDD</NavLink>}
-                    {user.chapter === 'DG' && <NavLink to="/DGSurvey" className="dropdown-item">DG</NavLink>}
-                    {user.chapter === 'KD' && <NavLink to="/KDSurvey" className="dropdown-item">KD</NavLink>}
-                    {user.chapter === 'KKG' && <NavLink to="/KKGSurvey" className="dropdown-item">KKG</NavLink>}
+                    {user.chapter === 'axo' && <NavLink to="/AXOSurvey" className="dropdown-item">AXO</NavLink>}
+                    {user.chapter === 'agd' && <NavLink to="/AGDSurvey" className="dropdown-item">AGD</NavLink>}
+                    {user.chapter === 'aphi' && <NavLink to="/APHISurvey" className="dropdown-item">APHI</NavLink>}
+                    {user.chapter === 'xo' && <NavLink to="/XOSurvey" className="dropdown-item">XO</NavLink>}
+                    {user.chapter === 'ddd' && <NavLink to="/DDDSurvey" className="dropdown-item">DDD</NavLink>}
+                    {user.chapter === 'dg' && <NavLink to="/DGSurvey" className="dropdown-item">DG</NavLink>}
+                    {user.chapter === 'kd' && <NavLink to="/KDSurvey" className="dropdown-item">KD</NavLink>}
+                    {user.chapter === 'kkg' && <NavLink to="/KKGSurvey" className="dropdown-item">KKG</NavLink>}
                     < NavLink to="/AXOInfoPage" className="dropdown-item">AXO Info</NavLink>
                     <NavLink to="/APHIInfoPage" className="dropdown-item">APHI Info</NavLink>
                     <NavLink to="/XOInfoPage" className="dropdown-item">XO Info</NavLink>
