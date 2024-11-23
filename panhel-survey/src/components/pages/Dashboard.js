@@ -121,6 +121,16 @@ console.log(lineChartData);
     return (
         <Container>
             <h1 className="dashboard-header">Dashboard</h1>
+            
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 3,
+                    mb: 3,
+                }}
+            >
+                
             <Container
                 sx={{
                     width: 600,
@@ -180,6 +190,8 @@ console.log(lineChartData);
                 </LineChart>
                 
             </Container>
+            </Box>
+
          
 
             <Dialog
