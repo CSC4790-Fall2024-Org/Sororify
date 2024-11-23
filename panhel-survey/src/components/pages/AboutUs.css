@@ -20,9 +20,20 @@ body {
     border-radius: 8px;
 }
 
-.AboutUs p {
+.text-and-images {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    margin-right: 5rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.text-and-images  p {
     font-family: 'Poppins', sans-serif;
-    text-align: center;
+    text-align: left;
     color: #000080
 }
 
@@ -42,7 +53,7 @@ body {
 
 .image-container img {
     width: 100%;
-    max-width: 200px; /* Set a maximum width for the images */
+    max-width: 700; /* Set a maximum width for the images */
     height: auto;
     margin-left: 1rem; /* Add space between the images */
 }
