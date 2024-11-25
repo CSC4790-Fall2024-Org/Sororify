@@ -77,6 +77,12 @@ const SignIn = () =>{
   const { user, signIn } = useContext(AuthContext);
   const [successMessage, setSuccessMessage] = useState(''); // State variable for success message
   const navigate = useNavigate(); // Get the navigate function
+  const [pin, setPin] = useState('');
+  const [pinError, setPinError] = useState(false);
+  const [pinErrorMessage, setPinErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -113,6 +119,48 @@ const SignIn = () =>{
 
     return isValid;
   };
+  
+  const handlePinChange = (event) => {
+    const pin = event.target.value;
+    // Update the state or perform any other necessary actions with the pin value
+    console.log('PIN changed:', pin); // Debugging statement
+    // Assuming you have a state variable for the pin, you can update it like this:
+    setPin(pin);
+  };
+
+  const verifyUsernameAndPassword = async (email, password) => {
+    try {
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password });
+      return response.data.success;
+    } catch (error) {
+      console.error('Error verifying username and password:', error);
+      return false;
+    }
+  };
+  
+  const verifyMemberPin = async (email, pin) => {
+    console.log('verifyMemberPin called with email:', email, 'and pin:', pin); // Debugging statement
+    const params = {
+      surveyType: 'Admin Survey',
+      email: email,
+      pin: pin
+    };
+    console.log('Request params:', params); // Log the params object
+    try {
+      const response = await axios.get('http://localhost:5000/api/survey-results', { params });
+      
+      if (response.data.valid) {
+        console.log('PIN verification successful for email:', email); // Debugging statement
+        return true; // Return true if the PIN verification is successful
+      } else {
+        console.log('PIN verification failed for email:', email); // Debugging statement
+        return false; // Return false if the PIN verification fails
+      }
+    } catch (error) {
+      console.error('Error verifying member PIN:', error);
+      return false; // Return false if there is an error during the request
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
@@ -120,7 +168,6 @@ const SignIn = () =>{
     if (emailError || passwordError) {
       return;
     }
-
     const form = event.currentTarget;
     console.log('Form submitted'); // Debugging statement
     const data = new FormData(form);
@@ -130,40 +177,85 @@ const SignIn = () =>{
     const role = data.get('role');
     const chapter = data.get('chapter');
     console.log('Form data:', { username, email, password, role, chapter }); // Debugging statement
-    
-    
-    
-    try {
-      console.log('Sending request to server...'); // Debugging statement
-      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter});
-      console.log('Server response:', response.data); // Debugging statement
-      if (response.data.success) {
-        // Handle successful sign in
-        console.log('Sign in successful');
-        const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
-        setSuccessMessage('Sign in successful'); // Update success message
-        signIn(userData, response.data.token);
-        navigate('/'); // Redirect to the About Us page
-      } else {
-        // Handle sign in error
-        console.log('Sign in unsuccessful');
-        setEmailError(true);
-        setEmailErrorMessage(response.data.message);
-      }
-    } catch (error) {
-      // Handle server error
-      console.error('Error during sign in:', error); // Debugging statement
-      if (error.response) {
-        console.error('Server responded with an error:', error.response.data); // Debugging statement
-      } else if (error.request) {
-        console.error('No response received from server:', error.request); // Debugging statement
-      } else {
-        console.error('Error setting up the request:', error.message); // Debugging statement
-      }
-      setEmailError(true);
-      setEmailErrorMessage('No account found with the provided email and password.');
+
+    let memberPin = null;
+
+    const isCredentialsValid = await verifyUsernameAndPassword(email, password);
+    if (!isCredentialsValid) {
+      setErrorMessage('Invalid username or password');
+      return; // Prevent form submission if username or password is invalid
     }
+  
+    // Store PIN only for members
+    // if (role === 'member') {
+    //   memberPin = pin;
+    //   console.log('Member PIN stored:', memberPin);
+
+    memberPin = pin;
+    console.log('Member PIN stored:', memberPin);
+    const isPinValid = await verifyMemberPin(email, memberPin);
+    if (!isPinValid) {
+      setErrorMessage('Invalid email or PIN');
+      return; // Prevent form submission if email or PIN is invalid
+    }
+
+    
+    // try {
+    //   console.log('Sending request to server...'); // Debugging statement
+    //   const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter });
+    //   console.log('Server response:', response.data); // Debugging statement
+    //   if (response.data.success) {
+    //     // Handle successful sign in
+    //     console.log('Sign in successful');
+    //     const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
+    //     setSuccessMessage('Sign in successful'); // Update success message
+    //     signIn(userData, response.data.token);
+    //     navigate('/'); // Redirect to the About Us page
+    //   } else {
+    //     // Handle sign in error
+    //     console.log('Sign in unsuccessful');
+    //     setEmailError(true);
+    //     setEmailErrorMessage(response.data.message);
+    //   }
+    // } catch (error) {
+    //   // Handle server error
+    //   console.error('Error during sign in:', error); // Debugging statement
+    //   setErrorMessage('Error sending request to server. Please try again.');
+    // }
   };
+
+    
+  //   try {
+  //     console.log('Sending request to server...'); // Debugging statement
+  //     const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter});
+  //     console.log('Server response:', response.data); // Debugging statement
+  //     if (response.data.success) {
+  //       // Handle successful sign in
+  //       console.log('Sign in successful');
+  //       const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
+  //       setSuccessMessage('Sign in successful'); // Update success message
+  //       signIn(userData, response.data.token);
+  //       navigate('/'); // Redirect to the About Us page
+  //     } else {
+  //       // Handle sign in error
+  //       console.log('Sign in unsuccessful');
+  //       setEmailError(true);
+  //       setEmailErrorMessage(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     // Handle server error
+  //     console.error('Error during sign in:', error); // Debugging statement
+  //     if (error.response) {
+  //       console.error('Server responded with an error:', error.response.data); // Debugging statement
+  //     } else if (error.request) {
+  //       console.error('No response received from server:', error.request); // Debugging statement
+  //     } else {
+  //       console.error('Error setting up the request:', error.message); // Debugging statement
+  //     }
+  //     setEmailError(true);
+  //     setEmailErrorMessage('No account found with the provided email and password.');
+  //   }
+  // };
 
   if (user) {
     return <div>{user.username} is logged in</div>;
@@ -242,6 +334,21 @@ const SignIn = () =>{
                 variant="outlined"
                 color={passwordError ? 'error' : 'primary'}
               />
+              <FormLabel htmlFor="pin">Pin</FormLabel>
+              <TextField
+                error={pinError}
+                helperText={pinErrorMessage}
+                name="pin"
+                placeholder="Enter 4-digit PIN"
+                type="text"
+                id="pin"
+                inputProps={{ maxLength: 4 }}
+                required
+                fullWidth
+                variant="outlined"
+                color={pinError ? 'error' : 'primary'}
+                onChange={handlePinChange}
+              />
             </FormControl>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -256,6 +363,8 @@ const SignIn = () =>{
             >
               Sign in
             </Button>
+            {successMessage && <p>{successMessage}</p>}
+            {errorMessage && <p>{errorMessage}</p>}
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <span>
