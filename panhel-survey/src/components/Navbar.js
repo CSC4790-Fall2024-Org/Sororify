@@ -31,39 +31,39 @@ export const Navbar = () => {
       <ul className="navbar-menu">
       {user ? (
             <>
-              <li className="navbar-item" style={{ fontFamily: 'Georgia, serif', color: '#F94EA0' }}>
+              <li className="navbar-item" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 'bold', color: '#000080' }}>
               Welcome, {user.username} !
               </li>
-              <li className="navbar-item">
+              <li className="nav-link">
                 
                 <div>
                 {user.role === 'pnm' && (
                 <>
-                <NavLink to="/PNMSurvey" className="dropdown-item">PNM Survey</NavLink>
+                <NavLink to="/PNMSurvey" className="dropdown-item" style={{ textDecoration: 'none' }}>PNM Survey</NavLink>
                 </>
               )}
                 
                 {user.role === 'member' && (
                   <>
-                    {user.chapter === 'axo' && <NavLink to="/AXOSurvey" className="dropdown-item">AXO Survey</NavLink>}
-                    {user.chapter === 'aphi' && <NavLink to="/APHISurvey" className="dropdown-item">APHI Survey</NavLink>}
-                    {user.chapter === 'xo' && <NavLink to="/XOSurvey" className="dropdown-item">XO Survey</NavLink>}
-                    {user.chapter === 'ddd' && <NavLink to="/DDDSurvey" className="dropdown-item">DDD Survey</NavLink>}
-                    {user.chapter === 'dg' && <NavLink to="/DGSurvey" className="dropdown-item">DG Survey</NavLink>}
-                    {user.chapter === 'kd' && <NavLink to="/KDSurvey" className="dropdown-item">KD Survey</NavLink>}
+                    {user.chapter === 'axo' && <NavLink to="/AXOSurvey" className="dropdown-item" style={{ textDecoration: 'none' }}>AXO Survey</NavLink>}
+                    {user.chapter === 'aphi' && <NavLink to="/APHISurvey" className="dropdown-item" style={{ textDecoration: 'none' }}>APHI Survey</NavLink>}
+                    {user.chapter === 'xo' && <NavLink to="/XOSurvey" className="dropdown-item" style={{ textDecoration: 'none' }}>XO Survey</NavLink>}
+                    {user.chapter === 'ddd' && <NavLink to="/DDDSurvey" className="dropdown-item" style={{ textDecoration: 'none' }}>DDD Survey</NavLink>}
+                    {user.chapter === 'dg' && <NavLink to="/DGSurvey" className="dropdown-item" style={{ textDecoration: 'none' }}>DG Survey</NavLink>}
+                    {user.chapter === 'kd' && <NavLink to="/KDSurvey" className="dropdown-item" style={{ textDecoration: 'none' }}>KD Survey</NavLink>}
                     {user.chapter === 'kkg' && <NavLink to="/KKGSurvey" className="dropdown-item">KKG Survey</NavLink>}
                   </>
                 )}
 
                 {user.role === 'chair' && (
                   <>
-                    {user.chapter === 'axo' && <NavLink to="/AXOInfoPage" className="dropdown-item">AXO Info</NavLink>}
-                    {user.chapter === 'aphi' && <NavLink to="/APHIInfoPage" className="dropdown-item">APHI Info</NavLink>}
-                    {user.chapter === 'xo' && <NavLink to="/XOInfoPage" className="dropdown-item">XO Info</NavLink>}
-                    {user.chapter === 'ddd' && <NavLink to ="/DDDInfoPage" className="dropdown-item">DDD Info</NavLink>}
-                    {user.chapter === 'dg' && <NavLink to="/DGInfoPage" className="dropdown-item">DG Info</NavLink>}
-                    {user.chapter === 'kd' && <NavLink to="/KDInfoPage" className="dropdown-item">KD Info</NavLink>}
-                    {user.chapter === 'kkg' && <NavLink to="/KKGInfoPage" className="dropdown-item">KKG Info</NavLink>}
+                    {user.chapter === 'axo' && <NavLink to="/AXOInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>AXO Info</NavLink>}
+                    {user.chapter === 'aphi' && <NavLink to="/APHIInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>APHI Info</NavLink>}
+                    {user.chapter === 'xo' && <NavLink to="/XOInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>XO Info</NavLink>}
+                    {user.chapter === 'ddd' && <NavLink to ="/DDDInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>DDD Info</NavLink>}
+                    {user.chapter === 'dg' && <NavLink to="/DGInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>DG Info</NavLink>}
+                    {user.chapter === 'kd' && <NavLink to="/KDInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>KD Info</NavLink>}
+                    {user.chapter === 'kkg' && <NavLink to="/KKGInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>KKG Info</NavLink>}
                   
                   </>
                 )}
