@@ -127,30 +127,32 @@ app.get('/api/survey-results', async (req, res) => {
   console.log('Fetching results for survey type:', surveyType);
 
   try {
-      const SurveyResult = getSurveyModel(surveyType);
+    const SurveyResult = getSurveyModel(surveyType);
 
-      // Log the email and pin before the if statement
-      console.log('Received email:', email);
-      console.log('Received pin:', pin);
+    // Log the email and pin before the if statement
+    console.log('Received email:', email);
+    console.log('Received pin:', pin);
 
-      // If email and pin are provided, perform PIN verification
-      if (email && pin) {
-        console.log('Verifying PIN for email:', email);
-        const surveyResult = await SurveyResult.findOne({ email, pin });
-        console.log('Query result:', surveyResult); // Log the query result
+    // If email and pin are provided, perform PIN verification
+    if (email && pin) {
+      console.log('Verifying PIN for email:', email);
+      const surveyResult = await SurveyResult.findOne({ 
+        'surveyData.question1.Email': email, 
+        'surveyData.question1.Pin': pin 
+      });
+      console.log('Query result:', surveyResult); // Log the query result
 
-        if (!surveyResult) {
-            return res.status(404).json({ valid: false, message: 'Survey result not found or invalid PIN' });
-        }
-
-        // If the survey result is found, the PIN is valid
-        return res.status(200).json({ valid: true, message: 'PIN verification successful' });
+      if (surveyResult) {
+        return res.json([surveyResult]); // Return the survey result in an array if found
+      } else {
+        console.log('Incorrect Pin'); // Log Incorrect Pin if no match is found
+        return res.json([]); // Return an empty array if no match is found
+      }
     }
-
-      // If email and pin are not provided, fetch all survey results for the given survey type
-      const results = await SurveyResult.find({});  // Fetch only surveys with the matching type
-      res.json(results);  // Send the filtered results as a JSON response
-      console.log('responses:', results);
+    // If email and pin are not provided, fetch all survey results for the given survey type
+    const results = await SurveyResult.find({});  // Fetch only surveys with the matching type
+    res.json(results);  // Send the filtered results as a JSON response
+    console.log('responses:', results);
   } catch (err) {
       console.error('Error fetching survey results:', err);
       res.status(500).json({ error: 'Failed to fetch survey results' });

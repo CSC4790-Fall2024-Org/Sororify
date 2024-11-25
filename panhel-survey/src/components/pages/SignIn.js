@@ -148,12 +148,14 @@ const SignIn = () =>{
     console.log('Request params:', params); // Log the params object
     try {
       const response = await axios.get('http://localhost:5000/api/survey-results', { params });
-      
-      if (response.data.valid) {
+      console.log('Response from server:', response); // Log the entire response object
+
+
+      if (response.data.length > 0) {
         console.log('PIN verification successful for email:', email); // Debugging statement
         return true; // Return true if the PIN verification is successful
       } else {
-        console.log('PIN verification failed for email:', email); // Debugging statement
+        console.log('Incorrect Pin'); // Print Incorrect Pin if no match is found
         return false; // Return false if the PIN verification fails
       }
     } catch (error) {
@@ -200,28 +202,28 @@ const SignIn = () =>{
     }
 
     
-    // try {
-    //   console.log('Sending request to server...'); // Debugging statement
-    //   const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter });
-    //   console.log('Server response:', response.data); // Debugging statement
-    //   if (response.data.success) {
-    //     // Handle successful sign in
-    //     console.log('Sign in successful');
-    //     const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
-    //     setSuccessMessage('Sign in successful'); // Update success message
-    //     signIn(userData, response.data.token);
-    //     navigate('/'); // Redirect to the About Us page
-    //   } else {
-    //     // Handle sign in error
-    //     console.log('Sign in unsuccessful');
-    //     setEmailError(true);
-    //     setEmailErrorMessage(response.data.message);
-    //   }
-    // } catch (error) {
-    //   // Handle server error
-    //   console.error('Error during sign in:', error); // Debugging statement
-    //   setErrorMessage('Error sending request to server. Please try again.');
-    // }
+    try {
+      console.log('Sending request to server...'); // Debugging statement
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter });
+      console.log('Server response:', response.data); // Debugging statement
+      if (response.data.success) {
+        // Handle successful sign in
+        console.log('Sign in successful');
+        const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
+        setSuccessMessage('Sign in successful'); // Update success message
+        signIn(userData, response.data.token);
+        navigate('/'); // Redirect to the About Us page
+      } else {
+        // Handle sign in error
+        console.log('Sign in unsuccessful');
+        setEmailError(true);
+        setEmailErrorMessage(response.data.message);
+      }
+    } catch (error) {
+      // Handle server error
+      console.error('Error during sign in:', error); // Debugging statement
+      setErrorMessage('Error sending request to server. Please try again.');
+    }
   };
 
     
