@@ -3,6 +3,8 @@ import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
 import axios from 'axios';
 
+const taken = [];
+
 const surveyJson = 
 {
   
@@ -3968,6 +3970,10 @@ function PNMsurvey() {
   // Function to handle survey completion
   survey.onComplete.add(function (sender) {
     // 'sender.data' contains the survey data
+    if(taken.length > 0) {
+      alert("You have already taken this survey. Please do not take it again.");
+      taken.push(sender.data);
+    } else {
     axios.post('http://localhost:5000/api/survey-results', {
         surveyType: 'PNM Survey',  // Unique identifier for DG Survey
         surveyData: sender.data
@@ -3978,13 +3984,15 @@ function PNMsurvey() {
     .catch(error => {
         console.error('Error saving PNM Survey result:', error);
     });
+    }
+    taken.push(sender.data);
   });
 
   return (
     <div>
-        <Survey model={survey} />
+      <Survey model={survey} />
     </div>
-);
+  );
 }
 
 export default PNMsurvey;
