@@ -9,6 +9,7 @@ class Profile(models.Model):
     ROLE_CHOICES = [
         ('member', 'Member'),
         ('pnm', 'PNM'),
+        ('chair', 'Chair'),
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
