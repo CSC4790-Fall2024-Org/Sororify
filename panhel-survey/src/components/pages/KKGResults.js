@@ -62,7 +62,7 @@ const Results = () => {
     };
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
-        const surveyType = 'KD Survey'; 
+        const surveyType = 'KGG Survey'; 
         // Edit above line to change what chapter is being accessed
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
             .then((response) => {
@@ -76,7 +76,7 @@ const Results = () => {
 
 
     useEffect(() => { // FETCH BUMP GROUPS
-        const infoSurveyType = 'KD Bump Survey'
+        const infoSurveyType = 'KGG Bump Survey'
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(infoSurveyType)}`)
             .then((response) => {
                 setBumpGroupResults([response.data[(response.data.length-1)]]);  // Update the state with fetched results
