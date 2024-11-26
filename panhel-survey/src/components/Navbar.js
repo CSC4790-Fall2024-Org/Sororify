@@ -34,7 +34,7 @@ export const Navbar = () => {
               <li className="navbar-item" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 'bold', color: '#000080' }}>
               Welcome, {user.username} !
               </li>
-              <li className="nav-link">
+              <li className="nav-item">
                 
                 <div>
                 {user.role === 'pnm' && (
