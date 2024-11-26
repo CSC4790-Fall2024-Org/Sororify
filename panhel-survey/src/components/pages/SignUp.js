@@ -68,7 +68,7 @@ export default function SignUp() {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [role, setRole] = React.useState('');
   const [chapter, setChapter] = React.useState('');
-  const [username, setUsername] = React.useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -193,7 +193,6 @@ export default function SignUp() {
           >
             <MenuItem value="member">Member</MenuItem>
             <MenuItem value="pnm">PNM</MenuItem>
-            <MenuItem value="chair">Recruitment Chair</MenuItem>
           </Select>
         </FormControl>
         <FormControl>

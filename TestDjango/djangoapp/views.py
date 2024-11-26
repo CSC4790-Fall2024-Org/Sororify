@@ -72,7 +72,6 @@ def signin(request):
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
-        username = data.get('username')
 
         print(f'Received sign-in request: email={email}, password={password}')  # Debugging statement
 
@@ -83,7 +82,6 @@ def signin(request):
         # Check if user exists
         user = users_collection.find_one({'email': email})
         chapter = user.get('chapter')
-        username = user.get('username')
         role = user.get('role') if user else None
         if not user:
             print('User not found')  # Debugging statement
