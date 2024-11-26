@@ -245,7 +245,7 @@ const Results = () => {
                     bumpGroups[bumpKey] = bumpGroupValues;
                   }
                 }
-              });
+              });   
             });
         
             // Use bumpGroups as needed

@@ -63,7 +63,9 @@ export const Navbar = () => {
                     {user.chapter === 'ddd' && <NavLink to ="/DDDInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>DDD Info</NavLink>}
                     {user.chapter === 'dg' && <NavLink to="/DGInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>DG Info</NavLink>}
                     {user.chapter === 'kd' && <NavLink to="/KDInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>KD Info</NavLink>}
+                    {user.chapter === 'kd' && <NavLink to="/Results" className="dropdown-item" style={{ textDecoration: 'none' }}>KD Results</NavLink>}
                     {user.chapter === 'kkg' && <NavLink to="/KKGInfoPage" className="dropdown-item" style={{ textDecoration: 'none' }}>KKG Info</NavLink>}
+                    {user.chapter === 'kkg' && <NavLink to="/KKGResults" className="dropdown-item" style={{ textDecoration: 'none' }}>KKG Results</NavLink>}
                   
                   </>
                 )}
