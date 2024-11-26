@@ -134,7 +134,7 @@ app.get('/api/survey-results', async (req, res) => {
       console.log('Received pin:', pin);
 
       // If email and pin are provided, perform PIN verification
-      if (surveyType === 'admin survey' && email && pin) {
+      if (surveyType === 'Admin Survey') {
         console.log('Verifying PIN for email:', email);
         const surveyResult = await SurveyResult.findOne({ 
           'surveyData.question1.Email': email, 
