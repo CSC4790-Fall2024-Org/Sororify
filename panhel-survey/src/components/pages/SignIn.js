@@ -204,7 +204,7 @@ const SignIn = () =>{
     
     try {
       console.log('Sending request to server...'); // Debugging statement
-      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter });
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { username, email, password, role, chapter });
       console.log('Server response:', response.data); // Debugging statement
       if (response.data.success) {
         // Handle successful sign in
