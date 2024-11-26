@@ -200,28 +200,28 @@ const SignIn = () =>{
     }
 
     
-    // try {
-    //   console.log('Sending request to server...'); // Debugging statement
-    //   const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter });
-    //   console.log('Server response:', response.data); // Debugging statement
-    //   if (response.data.success) {
-    //     // Handle successful sign in
-    //     console.log('Sign in successful');
-    //     const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
-    //     setSuccessMessage('Sign in successful'); // Update success message
-    //     signIn(userData, response.data.token);
-    //     navigate('/'); // Redirect to the About Us page
-    //   } else {
-    //     // Handle sign in error
-    //     console.log('Sign in unsuccessful');
-    //     setEmailError(true);
-    //     setEmailErrorMessage(response.data.message);
-    //   }
-    // } catch (error) {
-    //   // Handle server error
-    //   console.error('Error during sign in:', error); // Debugging statement
-    //   setErrorMessage('Error sending request to server. Please try again.');
-    // }
+    try {
+      console.log('Sending request to server...'); // Debugging statement
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter });
+      console.log('Server response:', response.data); // Debugging statement
+      if (response.data.success) {
+        // Handle successful sign in
+        console.log('Sign in successful');
+        const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
+        setSuccessMessage('Sign in successful'); // Update success message
+        signIn(userData, response.data.token);
+        navigate('/'); // Redirect to the About Us page
+      } else {
+        // Handle sign in error
+        console.log('Sign in unsuccessful');
+        setEmailError(true);
+        setEmailErrorMessage(response.data.message);
+      }
+    } catch (error) {
+      // Handle server error
+      console.error('Error during sign in:', error); // Debugging statement
+      setErrorMessage('Error sending request to server. Please try again.');
+    }
   };
 
     
