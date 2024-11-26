@@ -134,18 +134,21 @@ app.get('/api/survey-results', async (req, res) => {
       console.log('Received pin:', pin);
 
       // If email and pin are provided, perform PIN verification
-      if (email && pin) {
+      if (surveyType === 'admin survey' && email && pin) {
         console.log('Verifying PIN for email:', email);
-        const surveyResult = await SurveyResult.findOne({ email, pin });
+        const surveyResult = await SurveyResult.findOne({ 
+          'surveyData.question1.Email': email, 
+          'surveyData.question1.Pin': pin 
+        });
         console.log('Query result:', surveyResult); // Log the query result
 
-        if (!surveyResult) {
-            return res.status(404).json({ valid: false, message: 'Survey result not found or invalid PIN' });
+        if (surveyResult) {
+          return res.json([surveyResult]); // Return the survey result in an array if found
+        } else {
+          console.log('Incorrect Pin'); // Log Incorrect Pin if no match is found
+          return res.json([]); // Return an empty array if no match is found
         }
-
-        // If the survey result is found, the PIN is valid
-        return res.status(200).json({ valid: true, message: 'PIN verification successful' });
-    }
+      }
 
       // If email and pin are not provided, fetch all survey results for the given survey type
       const results = await SurveyResult.find({});  // Fetch only surveys with the matching type

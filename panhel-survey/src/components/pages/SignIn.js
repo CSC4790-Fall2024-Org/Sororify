@@ -148,12 +148,14 @@ const SignIn = () =>{
     console.log('Request params:', params); // Log the params object
     try {
       const response = await axios.get('http://localhost:5000/api/survey-results', { params });
-      
-      if (response.data.valid) {
+      console.log('Response from server:', response); // Log the entire response object
+
+
+      if (response.data.length > 0) {
         console.log('PIN verification successful for email:', email); // Debugging statement
         return true; // Return true if the PIN verification is successful
       } else {
-        console.log('PIN verification failed for email:', email); // Debugging statement
+        console.log('Incorrect Pin'); // Print Incorrect Pin if no match is found
         return false; // Return false if the PIN verification fails
       }
     } catch (error) {
