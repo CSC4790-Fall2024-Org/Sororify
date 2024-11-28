@@ -3981,8 +3981,6 @@ survey.onComplete.add(function (sender) {
   .then((response) => {
     // Check if the user's First and Last Name combination already exists
     const userExists = response.data.some((entry) => {
-      console.log('Entry:', entry); // Log each entry to inspect its structure
-      console.log('Comparing:', entry.surveyData['First Name'], entry.surveyData['Last Name'], 'with', sender.data['First Name'], sender.data['Last Name']);
       return entry.surveyData['First Name'] === sender.data['First Name'] && entry.surveyData['Last Name'] === sender.data['Last Name'];
     });
 
@@ -4015,7 +4013,7 @@ survey.onComplete.add(function (sender) {
   return (
     <div>
       <Survey model={survey} />
-      {errorMessage && <div style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</div>}
+      {errorMessage && <div style={{ color: '#000080', marginTop: '10px', textAlign: 'center' }}>{errorMessage}</div>}
     </div>
   );
 }
