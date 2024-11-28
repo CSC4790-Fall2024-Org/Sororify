@@ -2,6 +2,8 @@ import 'survey-core/defaultV2.min.css';
 import { Survey } from 'survey-react-ui';
 import { Model } from 'survey-core';
 import axios from 'axios';
+import React, { useState } from 'react';
+
 
 const taken = [];
 
@@ -3854,6 +3856,10 @@ const surveyJson =
 function PNMsurvey() {
   const survey = new Model(surveyJson);
 
+  const [errorMessage, setErrorMessage] = useState('');
+  const [pnmResults, setPNMResults] = useState([]); // RAW PNM SURVEYS RESULTS
+
+
 
   survey.applyTheme(
     {
@@ -3967,30 +3973,49 @@ function PNMsurvey() {
 
 
 
-  // Function to handle survey completion
-  survey.onComplete.add(function (sender) {
-    // 'sender.data' contains the survey data
-    if(taken.length > 0) {
-      alert("You have already taken this survey. Please do not take it again.");
-      taken.push(sender.data);
-    } else {
-    axios.post('http://localhost:5000/api/survey-results', {
-        surveyType: 'PNM Survey',  // Unique identifier for DG Survey
-        surveyData: sender.data
-    })
-    .then(response => {
-        console.log('PNM Survey result saved:', response.data);
-    })
-    .catch(error => {
-        console.error('Error saving PNM Survey result:', error);
+survey.onComplete.add(function (sender) {
+  // Check with the server if the user has already completed the survey
+  axios.get('http://localhost:5000/api/survey-results', {
+    params: { surveyType: 'PNM Survey' }, // Send surveyType as a query parameter
+  })
+  .then((response) => {
+    // Check if the user's First and Last Name combination already exists
+    const userExists = response.data.some((entry) => {
+      console.log('Entry:', entry); // Log each entry to inspect its structure
+      console.log('Comparing:', entry.surveyData['First Name'], entry.surveyData['Last Name'], 'with', sender.data['First Name'], sender.data['Last Name']);
+      return entry.surveyData['First Name'] === sender.data['First Name'] && entry.surveyData['Last Name'] === sender.data['Last Name'];
     });
+
+    if (userExists) {
+      // Show an error message if the user has already taken the survey
+      setErrorMessage('You may only take the survey once.');
+    } else {
+      // Save the survey data if the user hasn't completed it
+      axios
+        .post('http://localhost:5000/api/survey-results', {
+          surveyType: 'PNM Survey', // Unique identifier for the survey
+          surveyData: sender.data,
+        })
+        .then((saveResponse) => {
+          console.log('PNM Survey result saved:', saveResponse.data);
+          setErrorMessage(''); // Clear any previous error message
+        })
+        .catch((saveError) => {
+          console.error('Error saving PNM Survey result:', saveError);
+          setErrorMessage('An error occurred while saving your survey. Please try again later.');
+        });
     }
-    taken.push(sender.data);
+  })
+  .catch((error) => {
+    console.error('Error fetching survey results:', error);
+    setErrorMessage('An error occurred while checking your survey status. Please try again later.');
   });
+});
 
   return (
     <div>
       <Survey model={survey} />
+      {errorMessage && <div style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</div>}
     </div>
   );
 }
