@@ -5,8 +5,6 @@ import axios from 'axios';
 import React, { useState } from 'react';
 
 
-const taken = [];
-
 const surveyJson = 
 {
   
@@ -3857,7 +3855,7 @@ function PNMsurvey() {
   const survey = new Model(surveyJson);
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [pnmResults, setPNMResults] = useState([]); // RAW PNM SURVEYS RESULTS
+  const [isValidResponse, setIsValidResponse] = useState(true);
 
 
 
@@ -3987,6 +3985,7 @@ survey.onComplete.add(function (sender) {
     if (userExists) {
       // Show an error message if the user has already taken the survey
       setErrorMessage('You may only take the survey once.');
+      setIsValidResponse(false); // Prevent further rendering of the survey
     } else {
       // Save the survey data if the user hasn't completed it
       axios
@@ -4010,12 +4009,18 @@ survey.onComplete.add(function (sender) {
   });
 });
 
-  return (
-    <div>
+return (
+  <div>
+    {isValidResponse ? (
       <Survey model={survey} />
-      {errorMessage && <div style={{ color: '#000080', marginTop: '10px', textAlign: 'center' }}>{errorMessage}</div>}
-    </div>
-  );
+    ) : (
+      <div style={{ color: '#000080', marginTop: '10px', textAlign: 'center' }}>
+        {errorMessage}
+      </div>
+    )}
+  </div>
+);
+
 }
 
 export default PNMsurvey;
