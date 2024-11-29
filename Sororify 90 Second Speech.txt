@@ -1,0 +1,14 @@
+Person 1:
+We are Shay, Maya, Moriah, Julia, and Amitha, and our project is called Sororify. It is a full-stack website that uses a React frontend with Django roles-based access and is connected to a MongoDB backend. It directly addresses a need that we witnessed in Villanova’s Panhellenic Sorority Recruitment process.
+
+Person 2:
+Every year, about 600 Potential New Members, who we refer to as PNMs, have conversations with “bump groups” of 2-6 sorority members during the Sisterhood Round of recruitment. Sisters who are on the Recruitment Team of each sorority carefully curate which PNMs speak to which sorority members, so that the conversations they have are organic and free-flowing. However, this attempted personality matching is based on very little information and takes the Recruitment Team hours to create.
+
+Person 3:
+Sororify provides a solution to this problem. PNMs and the members of each sorority take personality surveys that collect their hometown, interests, and involvement on campus. Then, the Recruitment Chair of a sorority can also fill out a survey for which sisters will be in the same bump group and how many PNMs should be matched with each bump group. A bump group is just a group of sorority members who will all speak with the same group of PNMs during Sisterhood Round. 
+
+Person 4:
+Then, the results of all these surveys are inputted to our custom Sororify algorithm, which gives each PNM a percent similarity to each bump group. The PNMs are sorted ideally by percentage similarity into the bump groups of members they will speak to, and the results of this sorting are displayed only to the Recruitment Chair of each sorority.
+
+Person 5:
+Sororify takes many precautions to ensure that this data is private and correct. For example, PNMs and members only have access to take their respective surveys, which they can only take once to avoid duplicate entries. Only members of the Recruitment Team can view the final results, and they are given access to their accounts to do so only by a unique pin. This unique pin is shared with them by the “Super Admin”, who also has access to a dashboard of all the members and PNMs who have submitted the survey, and all the final matches. 
