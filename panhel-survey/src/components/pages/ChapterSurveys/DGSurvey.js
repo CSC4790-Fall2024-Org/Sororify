@@ -3289,7 +3289,6 @@ const DGSurveyJson =
             "title": "What borough in Alaska do you live in?",
             "isRequired": true,
             "choices": [
-              "Here are the areas in Alaska in the requested format:",
               "Aleutians East Borough",
               "Aleutians West Census Area",
               "Anchorage Municipality",
