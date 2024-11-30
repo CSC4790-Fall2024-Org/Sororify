@@ -23,6 +23,7 @@ const Results = () => {
     const [matches, setMatches] = useState([]); 
     const [numberOfPNMs, setNumberOfPNMs] = useState();
     const [openDialog, setOpenDialog] = useState(false);
+    const [adminInfo, setAdminInfo] = useState([])
 
     const handleListItemClick = (name) => {
         const result = chapterResults.find(result => {
@@ -71,10 +72,19 @@ const Results = () => {
             .then((response) => {
                 setChapterResults(response.data);  // Update the state with fetched results
                 console.log('Chapter survey results fetched:', response.data);
+
+                
             })
+
             .catch((error) => {
                 console.error('Error fetching chapter survey results:', error);
             });
+
+
+            axios.get(`http://localhost:5000/api/survey-results?surveyType=Admin Survey`)
+            .then((response) => { setAdminInfo(response.data); console.log('admin survey:', response.data);; 
+            })
+            .catch((error) => {console.error('Error fetching Admin Survey results:', error);});
     }, []);  // Empty dependency array ensures this runs once on component load
 
 

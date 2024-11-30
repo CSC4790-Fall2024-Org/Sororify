@@ -75,8 +75,6 @@ export const Navbar = () => {
             </>
           ) : (
             <>
-
-              <li><NavLink to="/Results" className="nav-link">Results</NavLink></li>
               <li><NavLink to="/SignUp" className="nav-link">Sign Up</NavLink></li>
               <li><NavLink to="/SignIn" className="nav-link">Sign In</NavLink></li>
               <li><NavLink to="/Dashboard" className="nav-link">Dashboard</NavLink></li>

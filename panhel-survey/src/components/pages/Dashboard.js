@@ -40,15 +40,15 @@ const Dashboard = () => {
     }));
 
 
-
     useEffect(() => {  // FETCH CHAPTER SURVEY
         // or any other survey type you want to access
         axios.get(`http://localhost:5000/api/survey-results?surveyType=Admin Survey`)
-            .then((response) => { setAdminInfo(response.data); })
+            .then((response) => { setAdminInfo(response.data); console.log('responses survey', response.data);; 
+            })
             .catch((error) => {console.error('Error fetching DG Survey results:', error);});
 
         axios.get(`http://localhost:5000/api/survey-results?surveyType=AXO Survey`)
-            .then((response) => { setAxoMembers(response.data); console.log('axo survey', response.data); })
+            .then((response) => { setAxoMembers(response.data);  })
             .catch((error) => {console.error('Error fetching DG Survey results:', error);});
 
         axios.get(`http://localhost:5000/api/survey-results?surveyType=APHI Survey`)
