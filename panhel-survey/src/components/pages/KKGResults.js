@@ -7,7 +7,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 
-const Results = () => {
+const KKGResults = () => {
     const [pnmResults, setPNMResults] = useState([]); // RAW PNM SURVEYS RESULTS
     const [chapterResults, setChapterResults] = useState([]); // RAW CHAPTER SURVEY RESULTS
     const [bumpGroupResults, setBumpGroupResults] = useState([]); // RAW BUMP GROUP SURVEY RESULTS
@@ -62,7 +62,7 @@ const Results = () => {
     };
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
-        const surveyType = 'KD Survey'; 
+        const surveyType = 'KKG Survey'; 
         // Edit above line to change what chapter is being accessed
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(surveyType)}`)
             .then((response) => {
@@ -76,7 +76,7 @@ const Results = () => {
 
 
     useEffect(() => { // FETCH BUMP GROUPS
-        const infoSurveyType = 'Info Page'
+        const infoSurveyType = 'KKG Bump Survey';
         axios.get(`http://localhost:5000/api/survey-results?surveyType=${encodeURIComponent(infoSurveyType)}`)
             .then((response) => {
                 setBumpGroupResults([response.data[(response.data.length-1)]]);  // Update the state with fetched results
@@ -525,4 +525,4 @@ const Results = () => {
     );
 };
 
-export default Results;
+export default KKGResults;
