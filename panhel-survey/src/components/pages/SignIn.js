@@ -336,7 +336,7 @@ const SignIn = () =>{
                 variant="outlined"
                 color={passwordError ? 'error' : 'primary'}
               />
-              <FormLabel htmlFor="pin">Pin</FormLabel>
+              <FormLabel htmlFor="pin">Pin (For current chapter Members and Admins) </FormLabel>
               <TextField
                 error={pinError}
                 helperText={pinErrorMessage}

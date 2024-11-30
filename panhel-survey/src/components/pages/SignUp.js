@@ -197,14 +197,13 @@ export default function SignUp() {
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="chapter">Chapter</FormLabel>
+          <FormLabel htmlFor="chapter">Chapter (For current Members or Admin) </FormLabel>
           <Select
             id="chapter"
             placeholder="Select your chapter"
             name="chapter"
             value={chapter}
             onChange={handleChapterChange}
-            required
             fullWidth
           >
             <MenuItem value="aphi">APHI</MenuItem>
@@ -261,10 +260,6 @@ export default function SignUp() {
                   color={passwordError ? 'error' : 'primary'}
                 />
               </FormControl>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive updates via email."
-              />
               <Button
                 type="submit"
                 fullWidth

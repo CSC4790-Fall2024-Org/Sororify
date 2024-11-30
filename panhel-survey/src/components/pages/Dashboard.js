@@ -27,6 +27,19 @@ const Dashboard = () => {
         { field: 'pin', headerName: 'PIN', width: 200, editable: true },
     ];
 
+    const pnmChartData = pnmSurvey
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) // Sort by createdAt
+    .map((item, index) => ({
+        createdAt: new Date(item.createdAt).toLocaleString('en-US', { // Format date
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        }),
+        responses: index + 1, // Sequential response count
+    }));
+
+
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
         // or any other survey type you want to access
@@ -110,13 +123,7 @@ const Dashboard = () => {
     ];
 
    // Format the data for the line chart
-   const lineChartData = pnmSurvey.map((item, index) => ({
-    index: index + 1, // Use the index as the x-axis value
-    count: 1, // Each entry represents one response
-}));
 
-// Log the lineChartData to the console
-console.log(lineChartData);
 
     return (
         <Container>
@@ -174,20 +181,27 @@ console.log(lineChartData);
                     mb: 3,
                 }}
             >
-                 
-                 <LineChart
-                    series={[
-                        {
-                            data: lineChartData.map(item => item.count),
-                            color: '#3f51b5', // Blue color
-                            showMark: false, // Disable points
-                        },
-                    ]}
-                    width={600}
-                    height={400}
-                >
-                    
-                </LineChart>
+             <LineChart
+                            xAxis={[
+                                {
+                                    data: pnmChartData.map((point) => point.createdAt), // Dates as x-axis labels
+                                    scaleType: 'band',
+                                    label: 'Submission Time',
+                                },
+                            ]}
+                            yAxis={[
+                                {
+                                    label: 'Number of Responses',
+                                },
+                            ]}
+                            series={[
+                                {
+                                    data: pnmChartData.map((point) => point.responses), // Sequential counts as y-axis values
+                                    color: '#4a90e2', // Blue line color
+                                    showMark: false,
+                                },
+                            ]}
+                        />
                 
             </Container>
             </Box>

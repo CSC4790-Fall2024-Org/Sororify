@@ -2,65 +2,61 @@
 
 body {
     background-color: #FCFBF4;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-    margin-left: 5rem;
-    margin-right: 5rem;
+    margin: 2 auto;
+    padding: 0 2rem;
+    width: 100%;
+    min-height: 100vh;
 }
 
-.AboutUs {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: left;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-.text-and-images {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: left;
-    margin-right: 5rem;
-    padding: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-.text-and-images  p {
-    font-family: 'Poppins', sans-serif;
-    text-align: left;
-    color: #000080
-}
 
 .about-us-image {
     width: 100%; /* Make the image take the full width of its container */
     height: auto; /* Maintain aspect ratio */
-    display: block; /* Center the image */
-    margin: 10px auto; /* Center the image with margin on top and bottom */
+    margin: 2rem auto; /* Center the image with margin on top and bottom */
   }
 
 
+.text-and-images {
+    display: flex;
+    align-items: stretch; /* Ensures both the paragraph and the images stretch to the same height */
+    gap: 2rem; /* Space between the paragraph and the images */
+    margin-top: 2rem; /* Add space above */
+    margin-bottom: 2rem; /* Add space below */
+    width: 100%; /* Make sure it takes up full width */
+}
+
+.text-and-images  p {
+    flex: 1; /* Allow the paragraph to grow and take up available space */
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0; /* Remove default margin */
+    display: flex;
+    flex-direction: column; /* Allow paragraph to grow in vertical space */
+    justify-content: center; /* Center text vertically */
+    color: #000080;
+    font-family: 'Poppins', sans-serif;
+    min-height: 300px; /* Force a minimum height for the paragraph */
+}
+
   .image-container {
     display: flex;
-    align-items: center;
-    margin-left: 1rem;
+    gap: 1rem;
+    flex: 1; /* Align items at the top */
 }
 
 .image-container img {
-    width: 100%;
-    max-width: 700; /* Set a maximum width for the images */
-    height: auto;
-    margin-left: 1rem; /* Add space between the images */
+    width: 100%; /* Set a fixed size for square images */
+    height: 100%;
+    max-width: 300px; /* Set a max width */
+    max-height: 300px; /* Ensure the images don’t exceed this size */
+    object-fit: cover; 
+
 }
-
-
-
-
 .results-list {
     padding: 0;
 }
