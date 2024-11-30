@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import  './Results.css';
 import DoneIcon from '@mui/icons-material/Done';
-import { List, ListItemButton, ListItemText, ListItemIcon, Collapse, Button, Card, CardContent, Typography } from '@mui/material';
+import { List, ListItemButton, ListItemText, ListItemIcon, Collapse, Button, Card, CardContent, Typography,  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+
 
 
 const KKGResults = () => {
@@ -21,6 +22,7 @@ const KKGResults = () => {
     const [detailedBumpGroups, setDetailedBumpGroups] = useState({}); // Data structure formatted with bump group members as well as their survey info
     const [matches, setMatches] = useState([]); 
     const [numberOfPNMs, setNumberOfPNMs] = useState();
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleListItemClick = (name) => {
         const result = chapterResults.find(result => {
@@ -31,6 +33,7 @@ const KKGResults = () => {
         if (result) {
             const formattedResult = formatSurveyData(result);
             setSelectedResult(formattedResult);
+            setOpenDialog(true); 
         } else {
             setSelectedResult(null);
         }
@@ -483,8 +486,10 @@ const KKGResults = () => {
             </Card>
         ))}
     </ul>
-</div>
 
+
+    </div>
+             <h2 className="results-heading">RECRUITING MEMBERS & BUMP GROUPS </h2>
             <List className="results-list">
                 {Object.keys(displayNames).map((bump, index) => (
                     <div key={index}>
@@ -492,36 +497,51 @@ const KKGResults = () => {
                             <ListItemText primary={bump} />
                             {openGroups[bump] ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
-                        <Collapse in={openGroups[bump]} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                {displayNames[bump].map((item, idx) => (
-                                    <ListItemButton 
-                                        key={idx} 
-                                        selected={selectedIndex === item.name} 
-                                        onClick={() => handleListItemClick(item.name)}
-                                        className="results-list-item"
-                                    >
-                                        <ListItemText primary={item.name} />
-                                        {item.isInNamesOnly && (
-                                            <ListItemIcon>
-                                                <DoneIcon />
-                                            </ListItemIcon>
-                                        )}
-                                    </ListItemButton>
-                                ))}
-                            </List>
-                        </Collapse>
+                         <Collapse in={openGroups[bump]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    {displayNames[bump].map((item, idx) => (
+                        <ListItemButton 
+                            key={idx} 
+                            selected={selectedIndex === item.name} 
+                            onClick={() => handleListItemClick(item.name)}
+                            className="results-list-item"
+                        >
+                            <ListItemText primary={item.name} />
+                            {item.isInNamesOnly && (
+                                <ListItemIcon>
+                                    <DoneIcon />
+                                </ListItemIcon>
+                            )}
+                        </ListItemButton>
+                    ))}
+                </List>
+            </Collapse>
                     </div>
                 ))}
             </List>
 
-            {selectedResult && (
-                <div className="selected-result">
-                    <h2 className="results-heading">Selected Result</h2>
-                   <pre>{selectedResult}</pre>
-                </div>
-            )}
-        </div>
+
+            <Dialog 
+            open={openDialog} 
+            onClose={() => setOpenDialog(false)}
+            maxWidth="md"s
+            fullWidth
+            >
+            <DialogTitle sx={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.5rem', color: '#f94ea0', textAlign: 'center' }}>Selected Result</DialogTitle>
+            <DialogContent sx={{ height: '30vh' }}>
+                    <DialogContentText  sx={{ whiteSpace: 'pre-wrap',  fontFamily: 'Poppins', fontSize: '1.3rem'  }}>
+                        {selectedResult && (
+                             <pre style={{ fontFamily: 'Poppins, sans-serif' }}>{selectedResult}</pre>
+                        )}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDialog(false)} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+    </div>
     );
 };
 
