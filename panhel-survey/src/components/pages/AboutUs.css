@@ -15,7 +15,7 @@ body {
 
 
 .about-us-image {
-    width: 100%; /* Make the image take the full width of its container */
+    width: 95%; /* Make the image take the full width of its container */
     height: auto; /* Maintain aspect ratio */
     margin: 2rem auto; /* Center the image with margin on top and bottom */
   }
