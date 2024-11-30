@@ -63,6 +63,7 @@ export const Navbar = () => {
                   {user.chapter === 'kd' && <NavLink to="/KDInfoPage" className="dropdown-item">KD Info</NavLink>}
                   {user.chapter === 'kkg' && <NavLink to="/KKGInfoPage" className="dropdown-item">KKG Info</NavLink>}
                   {user.chapter === 'kd' && <NavLink to="/Results" className="dropdown-item">KD Results</NavLink>}
+                  {user.chapter === 'kkg' && <NavLink to="/KKGResults" className="dropdown-item">KKG Results</NavLink>}
                   </>
                 )}
               </div>

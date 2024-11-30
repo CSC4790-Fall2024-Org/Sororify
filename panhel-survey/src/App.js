@@ -22,6 +22,8 @@ import DGInfoPage from './components/pages/ChapterSurveys/DGInfoPage';
 import DDDInfoPage from './components/pages/ChapterSurveys/DDDInfoPage';
 import KDInfoPage from './components/pages/ChapterSurveys/KDInfoPage'; 
 import KKGInfoPage from './components/pages/ChapterSurveys/KKGInfoPage';
+import KKGResults from './components/pages/KKGResults';
+
 function App() {
   
   return (
@@ -49,6 +51,7 @@ function App() {
           <Route path = "/DDDInfoPage" element = {<DDDInfoPage />} />
           <Route path = "/KDInfoPage" element = {<KDInfoPage />} />
           <Route path = "/KKGInfoPage" element = {<KKGInfoPage />} />
+          <Route path = "/KKGResults" element = {<KKGResults />} />
           
         </Routes>
       </AuthProvider>
