@@ -222,7 +222,7 @@ const SignIn = () =>{
     } catch (error) {
       // Handle server error
       console.error('Error during sign in:', error); // Debugging statement
-      setErrorMessage('Incoirrect email or password');
+      setErrorMessage('Incorrect email or password combination');
     }
   };
 
