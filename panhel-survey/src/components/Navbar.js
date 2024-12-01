@@ -32,7 +32,7 @@ export const Navbar = () => {
       {user ? (
             <>
               <li className="navbar-item" style={{ fontFamily: 'Georgia, serif', color: '#F94EA0' }}>
-              Welcome, {user.username} !
+              Welcome!
               </li>
               <li className="navbar-item">
                 
