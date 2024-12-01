@@ -135,6 +135,33 @@ export default function SignUp() {
     return isValid;
   };
 
+
+  const verifyChair = async (email, chapter) => {
+    console.log('verifyChair called with email:', email, 'and chapter', chapter); // Debugging statement
+    const params = {
+      surveyType: 'Chair Survey',
+      email: email,
+      chapter: chapter
+    };
+    console.log('Request params:', params); // Log the params object
+    try {
+      const response = await axios.get('http://localhost:5000/api/survey-results', { params });
+      console.log('Response from server:', response); // Log the entire response object
+
+
+      if (response.data.length > 0) {
+        console.log('Chair verification successful for chapter:', chapter); // Debugging statement
+        return true; // Return true if the PIN verification is successful
+      } else {
+        console.log('Incorrect Chair'); // Print Incorrect Pin if no match is found
+        return false; // Return false if the PIN verification fails
+      }
+    } catch (error) {
+      console.error('Error verifying chair email:', error);
+      return false; // Return false if there is an error during the request
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
   
@@ -144,6 +171,19 @@ export default function SignUp() {
   
     const form = event.currentTarget; // Get the form element
     const data = new FormData(form); // Create a FormData object from the form element
+
+    const role = data.get('role'); // Get the role value
+
+    if (role === 'chair') {
+      const email = data.get('email');
+      const chapter = data.get('chapter'); // Get the chapter value
+
+      const chairVerification =  await verifyChair(email, chapter);
+      if (!chairVerification) {
+        setError('Not a valid recruitment chair');
+        return;
+      }
+    }
   
     try {
       const response = await axios.post('http://localhost:8000/api/auth/signup/', {
@@ -260,6 +300,7 @@ export default function SignUp() {
                   color={passwordError ? 'error' : 'primary'}
                 />
               </FormControl>
+              {error && <div style={{ color: 'red' }}>{error}</div>}
               <Button
                 type="submit"
                 fullWidth

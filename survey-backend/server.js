@@ -138,7 +138,7 @@ app.post('/api/survey-results', (req, res) => {
 
 
 app.get('/api/survey-results', async (req, res) => {
-  const { surveyType, pin, chapter } = req.query;  // Get the survey type, email, and pin from the query parameters
+  const { surveyType, pin, chapter, email } = req.query;  // Get the survey type, email, and pin from the query parameters
   console.log('Fetching results for survey type:', surveyType);
 
   try {
@@ -161,6 +161,22 @@ app.get('/api/survey-results', async (req, res) => {
           return res.json([surveyResult]); // Return the survey result in an array if found
         } else {
           console.log('Incorrect Pin'); // Log Incorrect Pin if no match is found
+          return res.json([]); // Return an empty array if no match is found
+        }
+      }
+
+      if (surveyType === 'Chair Survey') {
+        console.log('Verifying Chair for Chapter:', chapter);
+        const surveyResult = await SurveyResult.findOne({ 
+          'surveyData.question1.Email': email,
+          'surveyData.question1.Chapter': chapter
+        });
+        console.log('Query result:', surveyResult); // Log the query result
+
+        if (surveyResult) {
+          return res.json([surveyResult]); // Return the survey result in an array if found
+        } else {
+          console.log('Incorrect Email'); 
           return res.json([]); // Return an empty array if no match is found
         }
       }
