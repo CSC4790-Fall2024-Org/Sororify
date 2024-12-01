@@ -43,7 +43,7 @@ const Dashboard = () => {
 
     useEffect(() => {  // FETCH CHAPTER SURVEY
         // or any other survey type you want to access
-        axios.get(`http://localhost:5000/api/survey-results?surveyType=Admin Survey`)
+        axios.get(`http://localhost:5000/api/admin-survey-results?surveyType=Admin Survey`)
             .then((response) => { setAdminInfo(response.data); })
             .catch((error) => {console.error('Error fetching DG Survey results:', error);});
 
@@ -100,7 +100,7 @@ const Dashboard = () => {
     const handleClose = () => {
         setOpen(false);
 
-        axios.get(`http://localhost:5000/api/survey-results?surveyType=Admin Survey`)
+        axios.get(`http://localhost:5000/api/admin-survey-results?surveyType=Admin Survey`)
         //axios.get('http://localhost:5000/api/survey-results?surveyType=KD Survey')
             .then((response) => {
                 setAdminInfo(response.data);  // Update the state with fetched results
