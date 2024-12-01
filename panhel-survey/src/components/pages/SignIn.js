@@ -193,7 +193,7 @@ const SignIn = () =>{
     //   memberPin = pin;
     //   console.log('Member PIN stored:', memberPin);
     memberPin = pin;
-    if(memberPin) {
+    if(memberPin !== null && role !== 'pnm') {
       console.log('Member PIN stored:', memberPin);
       const isPinValid = await verifyMemberPin(email, memberPin);
       if (!isPinValid) {
