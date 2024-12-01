@@ -192,14 +192,15 @@ const SignIn = () =>{
     // if (role === 'member') {
     //   memberPin = pin;
     //   console.log('Member PIN stored:', memberPin);
-
     memberPin = pin;
-    console.log('Member PIN stored:', memberPin);
-    const isPinValid = await verifyMemberPin(email, memberPin);
-    if (!isPinValid) {
-      setErrorMessage('Invalid email or PIN');
-      return; // Prevent form submission if email or PIN is invalid
-    }
+    if(memberPin) {
+      console.log('Member PIN stored:', memberPin);
+      const isPinValid = await verifyMemberPin(email, memberPin);
+      if (!isPinValid) {
+        setErrorMessage('Invalid email or PIN');
+        return; // Prevent form submission if email or PIN is invalid
+      }
+  }
 
     
     try {
