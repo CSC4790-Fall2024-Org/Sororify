@@ -151,21 +151,21 @@ app.post('/api/survey-results', (req, res) => {
 //     }
 // });
 app.get('/api/survey-results', async (req, res) => {
-  const { surveyType, email, pin } = req.query;  // Get the survey type, email, and pin from the query parameters
+  const { surveyType, pin, chapter } = req.query;  // Get the survey type, email, and pin from the query parameters
   console.log('Fetching results for survey type:', surveyType);
 
   try {
       const SurveyResult = getSurveyModel(surveyType);
 
       // Log the email and pin before the if statement
-      console.log('Received email:', email);
+      console.log('Received chapter:', chapter);
       console.log('Received pin:', pin);
 
       // If email and pin are provided, perform PIN verification
       if (surveyType === 'Admin Survey') {
-        console.log('Verifying PIN for email:', email);
+        console.log('Verifying PIN for Chapter:', chapter);
         const surveyResult = await SurveyResult.findOne({ 
-          'surveyData.question1.Email': email, 
+          'surveyData.question1.Chapter': chapter, 
           'surveyData.question1.Pin': pin 
         });
         console.log('Query result:', surveyResult); // Log the query result

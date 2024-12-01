@@ -22,6 +22,7 @@ import { AuthContext } from './AuthContext';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -84,6 +85,7 @@ const SignIn = () =>{
 
 
 
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -138,12 +140,12 @@ const SignIn = () =>{
     }
   };
   
-  const verifyMemberPin = async (email, pin) => {
-    console.log('verifyMemberPin called with email:', email, 'and pin:', pin); // Debugging statement
+  const verifyMemberPin = async (pin, chapter) => {
+    console.log('verifyMemberPin called with pin:', pin, 'and chapter', chapter); // Debugging statement
     const params = {
       surveyType: 'Admin Survey',
-      email: email,
-      pin: pin
+      pin: pin,
+      chapter: chapter
     };
     console.log('Request params:', params); // Log the params object
     try {
@@ -152,7 +154,7 @@ const SignIn = () =>{
 
 
       if (response.data.length > 0) {
-        console.log('PIN verification successful for email:', email); // Debugging statement
+        console.log('PIN verification successful for chapter:', chapter); // Debugging statement
         return true; // Return true if the PIN verification is successful
       } else {
         console.log('Incorrect Pin'); // Print Incorrect Pin if no match is found
@@ -180,33 +182,71 @@ const SignIn = () =>{
     const chapter = data.get('chapter');
     console.log('Form data:', { username, email, password, role, chapter }); // Debugging statement
 
-    let memberPin = null;
-
-    const isCredentialsValid = await verifyUsernameAndPassword(email, password);
-    if (!isCredentialsValid) {
-      setErrorMessage('Invalid username or password');
-      return; // Prevent form submission if username or password is invalid
-    }
+    // const isCredentialsValid = await verifyUsernameAndPassword(email, password);
+    // if (!isCredentialsValid) {
+    //   setErrorMessage('Invalid username or password');
+    //   return; // Prevent form submission if username or password is invalid
+    // }
   
-    // Store PIN only for members
-    // if (role === 'member') {
-    //   memberPin = pin;
+    // let memberPin = null;
+    // let chaptercheck = null;
+    // memberPin = pin;
+    // if (memberPin !== null && role !== 'pnm') {
     //   console.log('Member PIN stored:', memberPin);
-    memberPin = pin;
-    if(memberPin !== null && role !== 'pnm') {
-      console.log('Member PIN stored:', memberPin);
-      const isPinValid = await verifyMemberPin(email, memberPin);
-      if (!isPinValid) {
-        setErrorMessage('Invalid email or PIN');
-        return; // Prevent form submission if email or PIN is invalid
-      }
-  }
+    //   console.log('Role stored:', role);
+    //   try {
+    //     // Retrieve chapter information
+    //     console.log(`Fetching chapter information for email: ${email}`);
+    //     const chapterResponse = await axios.get('http://localhost:8000/api/auth/chapter', {
+    //       params: { email }
+    //     });
+    //     console.log('Chapter information response:', chapterResponse.data);
+    
+    //     if (chapterResponse.data && chapterResponse.data.chapter) {
+    //       chaptercheck = chapterResponse.data.chapter;
+    //       console.log('Chapter stored:', chaptercheck);
+    //     } else {
+    //       console.log('No chapter information found for user');
+    //     }
+    
+    //     // Verify member PIN with chapter information
+    //     const isPinValid = await verifyMemberPin(email, memberPin, chaptercheck);
+    //     if (!isPinValid) {
+    //       setErrorMessage('Invalid email or PIN');
+    //       return; // Prevent form submission if email or PIN is invalid
+    //     }
+    //   } catch (chapterError) {
+    //     console.error('Error fetching chapter information:', chapterError);
+    //     setErrorMessage('Failed to retrieve chapter information.');
+    //     return; // Prevent further actions if chapter information retrieval fails
+    //   }
+    // }
 
     
     try {
       console.log('Sending request to server...'); // Debugging statement
       const response = await axios.post('http://localhost:8000/api/auth/signin/', { username, email, password, role, chapter });
       console.log('Server response:', response.data); // Debugging statement
+      const isCredentialsValid = await verifyUsernameAndPassword(email, password);
+      if (!isCredentialsValid) {
+        setErrorMessage('Invalid username or password');
+        return; // Prevent form submission if username or password is invalid
+      }
+      let memberPin = null;
+      let chaptercheck = null;
+      memberPin = pin;
+      if (memberPin !== null && response.data.role !== 'pnm') {
+        console.log('Member PIN stored:', memberPin);
+        console.log('Role stored:', response.data.role);
+        console.log('Chapter stored:', response.data.chapter);
+        let chaptercheck = response.data.chapter;
+          // Verify member PIN with chapter information
+          const isPinValid = await verifyMemberPin(memberPin, chaptercheck);
+          if (!isPinValid) {
+            setErrorMessage('Invalid email or PIN');
+            return; // Prevent form submission if email or PIN is invalid
+          }
+        }
       if (response.data.success) {
         // Handle successful sign in
         console.log('Sign in successful');
