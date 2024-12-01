@@ -64,8 +64,12 @@ export const Navbar = () => {
                   {user.chapter === 'kkg' && <NavLink to="/KKGInfoPage" className="nav-link">KKG Info</NavLink>}
                   {user.chapter === 'kd' && <NavLink to="/Results" className="nav-link">KD Results</NavLink>}
                   {user.chapter === 'kkg' && <NavLink to="/KKGResults" className="nav-link">KKG Results</NavLink>}
-                  </>
-                )}
+                  </>)}
+                  {user.role === 'admin' && (
+                <>
+                  <NavLink to="/Dashboard" className="nav-link">Dashboard</NavLink>
+                </>
+              )}
               </div>
                 
               </li>
@@ -76,10 +80,10 @@ export const Navbar = () => {
           ) : (
             <>
 
-              <li><NavLink to="/Results" className="nav-link">Results</NavLink></li>
+              {/* <li><NavLink to="/Results" className="nav-link">Results</NavLink></li> */}
               <li><NavLink to="/SignUp" className="nav-link">Sign Up</NavLink></li>
               <li><NavLink to="/SignIn" className="nav-link">Sign In</NavLink></li>
-              <li><NavLink to="/Dashboard" className="nav-link">Dashboard</NavLink></li>
+              {/* <li><NavLink to="/Dashboard" className="nav-link">Dashboard</NavLink></li> */}
             </>
           )}
           </ul>
