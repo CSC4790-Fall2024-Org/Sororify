@@ -181,47 +181,6 @@ const SignIn = () =>{
     const role = data.get('role');
     const chapter = data.get('chapter');
     console.log('Form data:', { username, email, password, role, chapter }); // Debugging statement
-
-    // const isCredentialsValid = await verifyUsernameAndPassword(email, password);
-    // if (!isCredentialsValid) {
-    //   setErrorMessage('Invalid username or password');
-    //   return; // Prevent form submission if username or password is invalid
-    // }
-  
-    // let memberPin = null;
-    // let chaptercheck = null;
-    // memberPin = pin;
-    // if (memberPin !== null && role !== 'pnm') {
-    //   console.log('Member PIN stored:', memberPin);
-    //   console.log('Role stored:', role);
-    //   try {
-    //     // Retrieve chapter information
-    //     console.log(`Fetching chapter information for email: ${email}`);
-    //     const chapterResponse = await axios.get('http://localhost:8000/api/auth/chapter', {
-    //       params: { email }
-    //     });
-    //     console.log('Chapter information response:', chapterResponse.data);
-    
-    //     if (chapterResponse.data && chapterResponse.data.chapter) {
-    //       chaptercheck = chapterResponse.data.chapter;
-    //       console.log('Chapter stored:', chaptercheck);
-    //     } else {
-    //       console.log('No chapter information found for user');
-    //     }
-    
-    //     // Verify member PIN with chapter information
-    //     const isPinValid = await verifyMemberPin(email, memberPin, chaptercheck);
-    //     if (!isPinValid) {
-    //       setErrorMessage('Invalid email or PIN');
-    //       return; // Prevent form submission if email or PIN is invalid
-    //     }
-    //   } catch (chapterError) {
-    //     console.error('Error fetching chapter information:', chapterError);
-    //     setErrorMessage('Failed to retrieve chapter information.');
-    //     return; // Prevent further actions if chapter information retrieval fails
-    //   }
-    // }
-
     
     try {
       console.log('Sending request to server...'); // Debugging statement
@@ -263,42 +222,9 @@ const SignIn = () =>{
     } catch (error) {
       // Handle server error
       console.error('Error during sign in:', error); // Debugging statement
-      setErrorMessage('Error sending request to server. Please try again.');
+      setErrorMessage('Incoirrect email or password');
     }
   };
-
-    
-  //   try {
-  //     console.log('Sending request to server...'); // Debugging statement
-  //     const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role, chapter});
-  //     console.log('Server response:', response.data); // Debugging statement
-  //     if (response.data.success) {
-  //       // Handle successful sign in
-  //       console.log('Sign in successful');
-  //       const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
-  //       setSuccessMessage('Sign in successful'); // Update success message
-  //       signIn(userData, response.data.token);
-  //       navigate('/'); // Redirect to the About Us page
-  //     } else {
-  //       // Handle sign in error
-  //       console.log('Sign in unsuccessful');
-  //       setEmailError(true);
-  //       setEmailErrorMessage(response.data.message);
-  //     }
-  //   } catch (error) {
-  //     // Handle server error
-  //     console.error('Error during sign in:', error); // Debugging statement
-  //     if (error.response) {
-  //       console.error('Server responded with an error:', error.response.data); // Debugging statement
-  //     } else if (error.request) {
-  //       console.error('No response received from server:', error.request); // Debugging statement
-  //     } else {
-  //       console.error('Error setting up the request:', error.message); // Debugging statement
-  //     }
-  //     setEmailError(true);
-  //     setEmailErrorMessage('No account found with the provided email and password.');
-  //   }
-  // };
 
   if (user) {
     return <div>{user.username} is logged in</div>;
