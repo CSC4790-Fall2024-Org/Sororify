@@ -53,13 +53,14 @@ then go back into path mentioned above to runsever, or run in a separate termina
 
 superadmin address: http://127.0.0.1:8000/admin
 
-
-julia addition:
-
-cd survey-backend
-npm start
-
-open new terminal
-
-cd panhel-survey
-npm start
+**Steps to run Sororify (in order):** 
+1. Open a terminal and navigate to Sororify folder
+2. cd survey-backend
+3. run npm start
+4. Open a new terminal window and navigate to Sororify folder
+5. cd panhel-survey
+6. run npm start
+7. Open a new terminal window and navigate to Sororify folder
+8. run source env/bin/activate
+9. run cd TestDjango
+10. run python3 manage.py runserver
