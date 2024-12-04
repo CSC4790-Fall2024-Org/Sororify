@@ -67,7 +67,8 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [role, setRole] = React.useState('');
-  const [username, setUsername] = useState('');
+  const [chapter, setChapter] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -87,15 +88,20 @@ export default function SignUp() {
       setMode(systemPrefersDark ? 'dark' : 'light');
     }
   }, []);
-
   const handleRoleChange = (event) => {
     setRole(event.target.value);
+    
   };
+  const handleChapterChange = (event) => {
+    setChapter(event.target.value);
+    
+  };
+  
 
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
-    const name = document.getElementById('name');
+    const username = document.getElementById('username');
 
     let isValid = true;
 
@@ -117,7 +123,7 @@ export default function SignUp() {
       setPasswordErrorMessage('');
     }
 
-    if (!name.value || name.value.length < 1) {
+    if (!username.value || username.value.length < 1) {
       setNameError(true);
       setNameErrorMessage('Name is required.');
       isValid = false;
@@ -129,6 +135,33 @@ export default function SignUp() {
     return isValid;
   };
 
+
+  const verifyChair = async (email, chapter) => {
+    console.log('verifyChair called with email:', email, 'and chapter', chapter); // Debugging statement
+    const params = {
+      surveyType: 'Chair Survey',
+      email: email,
+      chapter: chapter
+    };
+    console.log('Request params:', params); // Log the params object
+    try {
+      const response = await axios.get('http://localhost:5000/api/survey-results', { params });
+      console.log('Response from server:', response); // Log the entire response object
+
+
+      if (response.data.length > 0) {
+        console.log('Chair verification successful for chapter:', chapter); // Debugging statement
+        return true; // Return true if the PIN verification is successful
+      } else {
+        console.log('Incorrect Chair'); // Print Incorrect Pin if no match is found
+        return false; // Return false if the PIN verification fails
+      }
+    } catch (error) {
+      console.error('Error verifying chair email:', error);
+      return false; // Return false if there is an error during the request
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
   
@@ -138,6 +171,19 @@ export default function SignUp() {
   
     const form = event.currentTarget; // Get the form element
     const data = new FormData(form); // Create a FormData object from the form element
+
+    const role = data.get('role'); // Get the role value
+
+    if (role === 'chair') {
+      const email = data.get('email');
+      const chapter = data.get('chapter'); // Get the chapter value
+
+      const chairVerification =  await verifyChair(email, chapter);
+      if (!chairVerification) {
+        setError('Not a valid recruitment chair');
+        return;
+      }
+    }
   
     try {
       const response = await axios.post('http://localhost:8000/api/auth/signup/', {
@@ -145,6 +191,7 @@ export default function SignUp() {
         email: data.get('email'),
         password: data.get('password'),
         role: data.get('role'),
+        chapter: data.get('chapter'),
       });
       console.log(response.data);
       navigate('/signin');
@@ -186,16 +233,36 @@ export default function SignUp() {
           >
             <MenuItem value="member">Member</MenuItem>
             <MenuItem value="pnm">PNM</MenuItem>
+            <MenuItem value="chair">Recruitment Chair</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="chapter">Chapter (For current Members or Admin) </FormLabel>
+          <Select
+            id="chapter"
+            placeholder="Select your chapter"
+            name="chapter"
+            value={chapter}
+            onChange={handleChapterChange}
+            fullWidth
+          >
+            <MenuItem value="aphi">APHI</MenuItem>
+            <MenuItem value="axo">AXO</MenuItem>
+            <MenuItem value="ddd">DDD</MenuItem>
+            <MenuItem value="kkg">KKG</MenuItem>
+            <MenuItem value="kd">KD</MenuItem>
+            <MenuItem value="chio">CHIO</MenuItem>
+            <MenuItem value="dg">DG</MenuItem>
           </Select>
         </FormControl>
               <FormControl>
-                <FormLabel htmlFor="name">Full name</FormLabel>
+                <FormLabel htmlFor="username">Full name</FormLabel>
                 <TextField
-                  autoComplete="name"
-                  name="name"
+                  autoComplete="username"
+                  name="username"
                   required
                   fullWidth
-                  id="name"
+                  id="username"
                   placeholder="Jon Snow"
                   error={nameError}
                   helperText={nameErrorMessage}
@@ -233,10 +300,7 @@ export default function SignUp() {
                   color={passwordError ? 'error' : 'primary'}
                 />
               </FormControl>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive updates via email."
-              />
+              {error && <div style={{ color: 'red' }}>{error}</div>}
               <Button
                 type="submit"
                 fullWidth
@@ -257,27 +321,6 @@ export default function SignUp() {
                   </Link>
                 </span>
               </Typography>
-            </Box>
-            <Divider>
-              <Typography sx={{ color: 'text.secondary' }}>or</Typography>
-            </Divider>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={() => alert('Sign up with Google')}
-                startIcon={<GoogleIcon />}
-              >
-                Sign up with Google
-              </Button>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={() => alert('Sign up with Facebook')}
-                startIcon={<FacebookIcon />}
-              >
-                Sign up with Facebook
-              </Button>
             </Box>
           </Card>
         </SignUpContainer>

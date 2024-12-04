@@ -28,6 +28,34 @@ const surveyResultSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+const rowSchema = new mongoose.Schema({
+  name: String,
+  chapter: String,
+  email: String,
+  pin: Number,
+});
+const Row = mongoose.model('Row', rowSchema)
+
+
+
+app.post('/api/rows', async (req, res) => {
+  try {
+    console.log('Received request to add row:', req.body); // Log the request body
+    const newRow = new Row(req.body);
+    await newRow.save();
+    console.log('Row added successfully:', newRow); // Log the added row
+    res.json(newRow);
+  } catch (error) {
+    console.error('Error adding row 2:', error); // Log any errors
+    res.status(500).json({ message: 'Error adding row', error });
+  }
+});
+
+
+
+
+
+
 // Function to dynamically get or create a model for the specific collection
 function getSurveyModel(surveyType) {
     // Convert surveyType like "DG Survey" to a collection-friendly name "DGSurveyResults"
@@ -38,8 +66,8 @@ function getSurveyModel(surveyType) {
 }
 // Sign-In Endpoint
 app.post('/api/auth/signin', async (req, res) => {
-    const { email, password } = req.body;
-    console.log('Sign in request received:', { email, password }); // Debugging statement
+    const { username, email, password } = req.body;
+    console.log('Sign in request received:', { username, email, password }); // Debugging statement
   
     try {
       const user = await User.findOne({ email });
@@ -51,7 +79,7 @@ app.post('/api/auth/signin', async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ success: false, message: 'Invalid email or password' });
       }
-      console.log('Sign in successful for user:', email);
+      console.log('Sign in successful for user:', username);
       res.json({ success: true, message: 'Sign in successful' });
     } catch (error) {
       console.error('Error during sign in:', error);
@@ -108,21 +136,76 @@ app.post('/api/survey-results', (req, res) => {
         });
 });
 
-//get request for survey results
-app.get('/api/survey-results', async (req, res) => {
-    const { surveyType } = req.query;  // Get the survey type from the route parameters
-    console.log('Fetching results for survey type:', surveyType);
 
-    try {
-        const SurveyResult = getSurveyModel(surveyType);
-        const results = await SurveyResult.find({});  // Fetch only surveys with the matching type
-        res.json(results);  // Send the filtered results as a JSON response
-        console.log('responses:', results);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch survey results' });
-    }
+app.get('/api/admin-survey-results', async (req, res) => {
+  const { surveyType } = req.query;  // Get the survey type from the route parameters
+  console.log('Fetching results for survey type:', surveyType);
+
+  try {
+      const SurveyResult = getSurveyModel(surveyType);
+      const results = await SurveyResult.find({});  // Fetch only surveys with the matching type
+      res.json(results);  // Send the filtered results as a JSON response
+      console.log('responses:', results);
+  } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch survey results' });
+  }
 });
 
+
+
+app.get('/api/survey-results', async (req, res) => {
+  const { surveyType, pin, chapter, email } = req.query;  // Get the survey type, email, and pin from the query parameters
+  console.log('Fetching results for survey type:', surveyType);
+
+  try {
+      const SurveyResult = getSurveyModel(surveyType);
+
+      // Log the email and pin before the if statement
+      console.log('Received chapter:', chapter);
+      console.log('Received pin:', pin);
+
+      // If email and pin are provided, perform PIN verification
+      if (surveyType === 'Admin Survey') {
+        console.log('Verifying PIN for Chapter:', chapter);
+        const surveyResult = await SurveyResult.findOne({ 
+          'surveyData.question1.Chapter': chapter, 
+          'surveyData.question1.Pin': pin 
+        });
+        console.log('Query result:', surveyResult); // Log the query result
+
+        if (surveyResult) {
+          return res.json([surveyResult]); // Return the survey result in an array if found
+        } else {
+          console.log('Incorrect Pin'); // Log Incorrect Pin if no match is found
+          return res.json([]); // Return an empty array if no match is found
+        }
+      }
+
+      if (surveyType === 'Chair Survey') {
+        console.log('Verifying Chair for Chapter:', chapter);
+        const surveyResult = await SurveyResult.findOne({ 
+          'surveyData.question1.Email': email,
+          'surveyData.question1.Chapter': chapter
+        });
+        console.log('Query result:', surveyResult); // Log the query result
+
+        if (surveyResult) {
+          return res.json([surveyResult]); // Return the survey result in an array if found
+        } else {
+          console.log('Incorrect Email'); 
+          return res.json([]); // Return an empty array if no match is found
+        }
+      }
+
+      // If email and pin are not provided, fetch all survey results for the given survey type
+      const results = await SurveyResult.find({});  // Fetch only surveys with the matching type
+      res.json(results);  // Send the filtered results as a JSON response
+      console.log('responses:', results);
+  } catch (err) {
+      console.error('Error fetching survey results:', err);
+      res.status(500).json({ error: 'Failed to fetch survey results' });
+  }
+});
 
 // Start the server
 app.listen(port, () => {

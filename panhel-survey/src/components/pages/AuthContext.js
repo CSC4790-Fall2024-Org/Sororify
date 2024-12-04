@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
       console.log('User role not found'); // Debugging line
     }
     setUser(userData);
+    navigate('/');
   };
 
   const signOut = () => {

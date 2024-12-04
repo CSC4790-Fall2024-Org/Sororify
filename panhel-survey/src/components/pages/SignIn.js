@@ -22,6 +22,7 @@ import { AuthContext } from './AuthContext';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -77,6 +78,13 @@ const SignIn = () =>{
   const { user, signIn } = useContext(AuthContext);
   const [successMessage, setSuccessMessage] = useState(''); // State variable for success message
   const navigate = useNavigate(); // Get the navigate function
+  const [pin, setPin] = useState('');
+  const [pinError, setPinError] = useState(false);
+  const [pinErrorMessage, setPinErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -89,6 +97,7 @@ const SignIn = () =>{
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
+    const username = document.getElementById('username');
 
     let isValid = true;
 
@@ -112,6 +121,50 @@ const SignIn = () =>{
 
     return isValid;
   };
+  
+  const handlePinChange = (event) => {
+    const pin = event.target.value;
+    // Update the state or perform any other necessary actions with the pin value
+    console.log('PIN changed:', pin); // Debugging statement
+    // Assuming you have a state variable for the pin, you can update it like this:
+    setPin(pin);
+  };
+
+  const verifyUsernameAndPassword = async (email, password) => {
+    try {
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password });
+      return response.data.success;
+    } catch (error) {
+      console.error('Error verifying username and password:', error);
+      return false;
+    }
+  };
+  
+  const verifyMemberPin = async (pin, chapter) => {
+    console.log('verifyMemberPin called with pin:', pin, 'and chapter', chapter); // Debugging statement
+    const params = {
+      surveyType: 'Admin Survey',
+      pin: pin,
+      chapter: chapter
+    };
+    console.log('Request params:', params); // Log the params object
+    try {
+      const response = await axios.get('http://localhost:5000/api/survey-results', { params });
+      console.log('Response from server:', response); // Log the entire response object
+
+
+      if (response.data.length > 0) {
+        console.log('PIN verification successful for chapter:', chapter); // Debugging statement
+        return true; // Return true if the PIN verification is successful
+      } else {
+        console.log('Incorrect Pin'); // Print Incorrect Pin if no match is found
+        return false; // Return false if the PIN verification fails
+      }
+    } catch (error) {
+      console.error('Error verifying member PIN:', error);
+      return false; // Return false if there is an error during the request
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
@@ -119,29 +172,44 @@ const SignIn = () =>{
     if (emailError || passwordError) {
       return;
     }
-
     const form = event.currentTarget;
     console.log('Form submitted'); // Debugging statement
     const data = new FormData(form);
     const email = data.get('email');
+    const username = data.get('username');
     const password = data.get('password');
     const role = data.get('role');
-    console.log('Form data:', { email, password, role }); // Debugging statement
-    console.log({
-      email: email,
-      password: password,
-      role: role,
-    });
-    
+    const chapter = data.get('chapter');
+    console.log('Form data:', { username, email, password, role, chapter }); // Debugging statement
     
     try {
       console.log('Sending request to server...'); // Debugging statement
-      const response = await axios.post('http://localhost:8000/api/auth/signin/', { email, password, role });
+      const response = await axios.post('http://localhost:8000/api/auth/signin/', { username, email, password, role, chapter });
       console.log('Server response:', response.data); // Debugging statement
+      const isCredentialsValid = await verifyUsernameAndPassword(email, password);
+      if (!isCredentialsValid) {
+        setErrorMessage('Invalid username or password');
+        return; // Prevent form submission if username or password is invalid
+      }
+      let memberPin = null;
+      let chaptercheck = null;
+      memberPin = pin;
+      if (memberPin !== null && response.data.role !== 'pnm') {
+        console.log('Member PIN stored:', memberPin);
+        console.log('Role stored:', response.data.role);
+        console.log('Chapter stored:', response.data.chapter);
+        let chaptercheck = response.data.chapter;
+          // Verify member PIN with chapter information
+          const isPinValid = await verifyMemberPin(memberPin, chaptercheck);
+          if (!isPinValid) {
+            setErrorMessage('Invalid email or PIN');
+            return; // Prevent form submission if email or PIN is invalid
+          }
+        }
       if (response.data.success) {
         // Handle successful sign in
         console.log('Sign in successful');
-        const userData = { email, role: response.data.role }; // Replace with actual user data fetching logic
+        const userData = { email, role: response.data.role, username: response.data.username, chapter: response.data.chapter }; // Replace with actual user data fetching logic
         setSuccessMessage('Sign in successful'); // Update success message
         signIn(userData, response.data.token);
         navigate('/'); // Redirect to the About Us page
@@ -154,20 +222,12 @@ const SignIn = () =>{
     } catch (error) {
       // Handle server error
       console.error('Error during sign in:', error); // Debugging statement
-      if (error.response) {
-        console.error('Server responded with an error:', error.response.data); // Debugging statement
-      } else if (error.request) {
-        console.error('No response received from server:', error.request); // Debugging statement
-      } else {
-        console.error('Error setting up the request:', error.message); // Debugging statement
-      }
-      setEmailError(true);
-      setEmailErrorMessage('No account found with the provided email and password.');
+      setErrorMessage('Incorrect email or password combination');
     }
   };
 
   if (user) {
-    return <div>{user.name} is logged in</div>;
+    return <div>{user.username} is logged in</div>;
   }
 
   return (
@@ -243,6 +303,21 @@ const SignIn = () =>{
                 variant="outlined"
                 color={passwordError ? 'error' : 'primary'}
               />
+              <FormLabel htmlFor="pin">Pin (For current chapter Members and Admins) </FormLabel>
+              <TextField
+                error={pinError}
+                helperText={pinErrorMessage}
+                name="pin"
+                placeholder="Enter 4-digit PIN"
+                type="text"
+                id="pin"
+                inputProps={{ maxLength: 4 }}
+                required
+                fullWidth
+                variant="outlined"
+                color={pinError ? 'error' : 'primary'}
+                onChange={handlePinChange}
+              />
             </FormControl>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -257,6 +332,8 @@ const SignIn = () =>{
             >
               Sign in
             </Button>
+            {successMessage && <p>{successMessage}</p>}
+            {errorMessage && <p>{errorMessage}</p>}
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <span>
@@ -269,25 +346,6 @@ const SignIn = () =>{
                 </Link>
               </span>
             </Typography>
-          </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Sign in with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Sign in with Facebook
-            </Button>
           </Box>
         </Card>
       </SignInContainer>

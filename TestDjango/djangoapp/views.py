@@ -11,6 +11,7 @@ import logging
 from django.http import HttpResponse
 from django.contrib.auth.hashers import check_password
 from .models import User, Profile
+from django.contrib.auth.decorators import login_required
 
 #logging.basicConfig(level=logging.INFO)
 
@@ -35,6 +36,7 @@ def signup(request):
             email = data['email']
             password = make_password(data['password'])  # Hash the password
             role = data.get('role')
+            chapter = data.get('chapter')
 
             # Check if the user already exists
             if users_collection.find_one({'email': email}):
@@ -45,7 +47,8 @@ def signup(request):
                 'username': username,
                 'email': email,
                 'password': password,
-                'role': role
+                'role': role,
+                'chapter': chapter
             })
             logging.info(f'User {username} inserted with id {result.inserted_id}')
 
@@ -69,6 +72,7 @@ def signin(request):
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
+        username = data.get('username')
 
         print(f'Received sign-in request: email={email}, password={password}')  # Debugging statement
 
@@ -78,6 +82,8 @@ def signin(request):
 
         # Check if user exists
         user = users_collection.find_one({'email': email})
+        chapter = user.get('chapter')
+        username = user.get('username')
         role = user.get('role') if user else None
         if not user:
             print('User not found')  # Debugging statement
@@ -89,8 +95,18 @@ def signin(request):
             return JsonResponse({'error': 'Invalid email or password'}, status=400)
 
         print('Sign in successful')  # Debugging statement
-        return JsonResponse({'success': True, 'message': 'Sign in successful', 'role': role})
+        return JsonResponse({'success': True, 'message': 'Sign in successful', 'role': role, 'chapter': chapter})
 
 
     print('Invalid request method')  # Debugging statement
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@login_required
+def get_user_data(request):
+    user = request.user
+    user_data = {
+        'username': user.username,
+        'email': user.email,
+        'role': user.profile.role,  # Assuming you have a profile model with a role field
+    }
+    return JsonResponse(user_data)
